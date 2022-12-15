@@ -1,10 +1,9 @@
 package com.salesianostriana.dam.kiloapi.dto.aportacion;
-
-import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,8 +12,11 @@ import java.util.List;
 @Builder
 public class GetAportacionDto {
 
+    private Long id;
     private LocalDate fecha;
 
-    private DetalleAportacion listaDePares;
+    //private List<ListaDeParesDto> listaDePares;
+
+    private Map<String, Double> aportaciones;
 
 }

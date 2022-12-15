@@ -20,9 +20,8 @@ public class DetalleAportacion {
     @EmbeddedId
     private DetalleAportacionPK id;
 
-    @ManyToOne(
-        fetch = FetchType.EAGER
-    )
+    @ManyToOne
+    @JoinColumn(name = "detalle_aportacion", foreignKey = @ForeignKey(name = "PK_DETALLE_APORTACION"))
     @MapsId("aportacionId")
     private Aportacion aportacion;
 
