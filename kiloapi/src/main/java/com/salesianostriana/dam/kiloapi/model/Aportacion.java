@@ -28,7 +28,6 @@ public class Aportacion {
             orphanRemoval = true,
             cascade = CascadeType.ALL
     )
-    @JoinColumn(name="aportacion_id")
     private List<DetalleAportacion> detalles = new ArrayList<>();
 
     ///////////////////////////////////////
