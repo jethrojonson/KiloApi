@@ -8,5 +8,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TipoAlimentoService {
 
-    private final TipoAlimentoRepository tipoAlimentoRepository;
+    private final TipoAlimentoRepository repo;
+    
 }
