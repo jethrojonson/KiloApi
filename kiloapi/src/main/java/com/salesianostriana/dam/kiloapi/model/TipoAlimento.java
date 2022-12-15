@@ -24,8 +24,7 @@ public class TipoAlimento {
     @Builder.Default
     private List<DetalleAportacion> detalleAportaciones = new ArrayList<>();
 
-    @OneToMany(mappedBy = "tipoAlimento", fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<KilosDisponibles> kilosDisponiblesList = new ArrayList<>();
+    @OneToOne(mappedBy = "tipoAlimento", fetch = FetchType.EAGER)
+    private KilosDisponibles kilosDisponibles;
 
 }
