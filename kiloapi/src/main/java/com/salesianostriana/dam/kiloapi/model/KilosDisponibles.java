@@ -8,13 +8,13 @@ import javax.persistence.*;
 
 @Entity
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
 public class KilosDisponibles {
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "tipo_alimento", foreignKey = @ForeignKey(name = "FK_KILOSDISP_TIPOALIMENTO"))
     @MapsId("tipo_alimento_id")
     private TipoAlimento tipoAlimento;
@@ -23,15 +23,5 @@ public class KilosDisponibles {
     private Long id;
 
     private double catidadDisponible;
-
-    public void addToTipoAlimento(TipoAlimento t){
-        tipoAlimento = t;
-        t.getKilosDisponiblesList().add(this);
-    }
-
-    public void deleteFromTipoAlimento(TipoAlimento t){
-        tipoAlimento = null;
-        t.getKilosDisponiblesList().remove(this);
-    }
 
 }

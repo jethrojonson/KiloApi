@@ -18,7 +18,7 @@ public class TipoAlimentoService {
 
     public Optional<TipoAlimento> findById(Long id) { return repo.findById(id); }
 
-    public TipoAlimento save(TipoAlimento t) { return repo.save(t); }
+    public void save(TipoAlimento t) { repo.save(t); }
 
     public void deleteById (Long id) { repo.deleteById(id); }
 
