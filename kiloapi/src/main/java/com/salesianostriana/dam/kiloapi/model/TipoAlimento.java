@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Builder
@@ -17,11 +17,11 @@ public class TipoAlimento {
     @Id
     @GeneratedValue
     private Long id;
-
+    
     private String nombre;
 
     @OneToMany(mappedBy = "tipoAlimento", fetch = FetchType.EAGER)
     @Builder.Default
-    private List<KilosDisponibles> kilosDisponiblesList = new ArrayList<>();
+    private List<DetalleAportacion> detalleAportaciones = new ArrayList<>();
 
 }

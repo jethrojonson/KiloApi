@@ -1,13 +1,12 @@
 package com.salesianostriana.dam.kiloapi.service;
 
-import com.salesianostriana.dam.kiloapi.repos.TipoAlimentoRepository;
+import com.salesianostriana.dam.kiloapi.repos.CajaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class TipoAlimentoService {
+public class CajaService {
 
-    private final TipoAlimentoRepository repo;
-    
+    private final CajaRepository cajaRepository;
 }
