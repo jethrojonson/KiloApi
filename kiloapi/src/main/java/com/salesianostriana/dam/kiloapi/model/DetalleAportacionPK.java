@@ -1,7 +1,6 @@
 package com.salesianostriana.dam.kiloapi.model;
 
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 import javax.persistence.GeneratedValue;
@@ -11,10 +10,10 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Embeddable
-@NoArgsConstructor
-@EqualsAndHashCode
+@NoArgsConstructor @AllArgsConstructor
+@Getter @Setter
 public class DetalleAportacionPK implements Serializable {
 
-    private Long aportacionId;
+    private Long aportacion_id;
     private Long numLinea;
 }

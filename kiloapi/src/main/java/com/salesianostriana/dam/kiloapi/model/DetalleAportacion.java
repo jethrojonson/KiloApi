@@ -16,21 +16,32 @@ import javax.persistence.ManyToOne;
 @Builder
 public class DetalleAportacion {
 
-
     @EmbeddedId
     private DetalleAportacionPK id;
 
-    @ManyToOne(
-        fetch = FetchType.EAGER
-    )
-    @MapsId("aportacionId")
-    private Aportacion aportacion;
-
     private double cantidadKilos;
 
+    @ManyToOne
+    @MapsId("aportacion_id")
+    @JoinColumn(name = "aportacion_id", foreignKey = @ForeignKey(name = "FK_DETALLEAPORTACION_APORTACION"))
+    private Aportacion aportacion;
 
     @ManyToOne
-    @JoinColumn(name = "tipo_alimento_id", foreignKey = @ForeignKey(name = "FK_DETALLE_TIPOALIMENTO"))
+    @JoinColumn(name = "tipo_alimento_id", foreignKey = @ForeignKey(name = "FK_DETALLEAPORTACION_TIPOALIMENTO"))
     private TipoAlimento tipoAlimento;
+
+    ////////////////////////////////////////////
+    /* HELPERS de la asociación con Aportación*/
+    ////////////////////////////////////////////
+
+    public void addToAportacion(Aportacion a) {
+        this.aportacion = a;
+        a.getDetalles().add(this);
+    }
+
+    public void removeFromAportacion(Aportacion a) {
+        this.aportacion = null;
+        a.getDetalles().remove(this);
+    }
 
 }

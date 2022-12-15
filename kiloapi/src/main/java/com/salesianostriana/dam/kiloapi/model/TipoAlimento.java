@@ -20,11 +20,26 @@ public class TipoAlimento {
     
     private String nombre;
 
-    @OneToMany(mappedBy = "tipoAlimento", fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<DetalleAportacion> detalleAportaciones = new ArrayList<>();
-
     @OneToOne(mappedBy = "tipoAlimento", fetch = FetchType.EAGER)
     private KilosDisponibles kilosDisponibles;
+
+    @OneToMany(mappedBy = "tipoAlimento", fetch = FetchType.EAGER)
+    @Builder.Default
+    private List<Tiene> tieneList = new ArrayList<>();
+
+    //////////////////////////////////////////////////
+    /* HELPERS de la asociación con KilosDisponibles*/
+    //////////////////////////////////////////////////
+
+    public void addToKilosDisponibles(KilosDisponibles kd) {
+        this.kilosDisponibles = kd;
+        kd.setTipoAlimento(this);
+    }
+
+    public void removeFromKilosDisponible(KilosDisponibles kd) {
+        this.kilosDisponibles = null;
+        kd.setTipoAlimento(null);
+    }
+
 
 }
