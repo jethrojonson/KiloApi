@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor @AllArgsConstructor
@@ -19,6 +21,15 @@ public class Aportacion {
     @ManyToOne
     @JoinColumn(name = "clase_id", foreignKey = @ForeignKey(name = "FK_APORTACION_CLASE"))
     private Clase clase;
+
+    @Builder.Default
+    @OneToMany(
+            mappedBy = "aportacion",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    @JoinColumn(name="aportacion_id")
+    private List<DetalleAportacion> detalles = new ArrayList<>();
 
     ///////////////////////////////////////
     /* HELPERS de la asociación con Clase*/
