@@ -13,16 +13,4 @@ public class ClaseService {
 
     private final ClaseRepository claseRepository;
 
-    public Optional<Clase> findById(Long id) {
-        return claseRepository.findById(id);
-    }
-
-    public void delete(Clase clase) {
-        claseRepository.delete(clase);
-    }
-
-    public void deleteById(Long id) {
-        claseRepository.deleteById(id);
-    }
-
 }
