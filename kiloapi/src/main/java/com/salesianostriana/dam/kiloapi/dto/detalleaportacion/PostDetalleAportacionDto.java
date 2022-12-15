@@ -1,9 +1,10 @@
 package com.salesianostriana.dam.kiloapi.dto.detalleaportacion;
 
+import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +14,7 @@ import java.util.HashMap;
 public class PostDetalleAportacionDto {
 
     private Long id;
-    private HashMap<String, Double> tipoAlimentoYPeso;
-    private LocalDate fecha;
+    private Map<Long, Double> tipoAlimento = new HashMap<>();
+    private Map<Long, Long> numLinea;
 
 }
