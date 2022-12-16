@@ -1,7 +1,10 @@
 package com.salesianostriana.dam.kiloapi.dto.aportacion;
 
+import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.DetalleDtoConverter;
+import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.PostDetalleAportacionDto;
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
+import com.salesianostriana.dam.kiloapi.service.AportacionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +13,9 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class AportacionDtoConverter {
+
+    private final DetalleDtoConverter detalleDtoConverter;
+    private final AportacionService aportacionService;
 
     public GetAportacionDto getAportacionDto(Aportacion ap){
 
@@ -37,5 +43,18 @@ public class AportacionDtoConverter {
                 .aportaciones(auxList)
                 .build();
     }
+
+
+
+    public GetNewAportacionDto newAportacionDto(PostDetalleAportacionDto dto){
+        Aportacion a = aportacionService.findLastOneCreated();
+
+        return GetNewAportacionDto.builder()
+                .id(a.getId())
+                .fechaAportacion(a.getFecha())
+                .listadoDetalles(detalleDtoConverter.generatelistaDetallesDto(a))
+                .build();
+    }
+
 
 }

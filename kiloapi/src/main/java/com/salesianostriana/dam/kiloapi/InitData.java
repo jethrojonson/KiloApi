@@ -37,23 +37,6 @@ public class InitData {
 
         claseRepository.saveAll(List.of(cl1, cl2));
 
-        Aportacion a1 = Aportacion.builder()
-                .fecha(LocalDate.of(2022, 12, 11))
-                .clase(cl1)
-                .build();
-
-        Aportacion a2 = Aportacion.builder()
-                .fecha(LocalDate.of(2022, 12, 13))
-                .clase(cl1)
-                .build();
-
-        Aportacion a3 = Aportacion.builder()
-                .fecha(LocalDate.of(2022, 12, 14))
-                .clase(cl2)
-                .build();
-
-        aportacionRepository.saveAll(List.of(a1, a2, a3));
-
         TipoAlimento ta1 = TipoAlimento.builder()
                 .nombre("Garbanzos")
                 .build();
@@ -93,39 +76,6 @@ public class InitData {
         tipoAlimentoRepo.saveAll(List.of(ta1, ta2, ta3));
         kilosDisponiblesRepository.saveAll(List.of(kd1, kd2, kd3));
 
-        
-        DetalleAportacion da1 = DetalleAportacion.builder()
-                .id(new DetalleAportacionPK(a1.getId(), 1L))
-                .cantidadKilos(13.5)
-                .aportacion(a1)
-                .tipoAlimento(ta1)
-                .build();
-
-        DetalleAportacion da2 = DetalleAportacion.builder()
-                .id(new DetalleAportacionPK(a2.getId(), 2L))
-                .id(new DetalleAportacionPK(a1.getId(), 2L))
-                .cantidadKilos(13.5)
-                .aportacion(a1)
-                .tipoAlimento(ta1)
-                .build();
-
-        DetalleAportacion da3 = DetalleAportacion.builder()
-                .id(new DetalleAportacionPK(a2.getId(), 1L))
-                .cantidadKilos(13.5)
-                .aportacion(a2)
-                .tipoAlimento(ta1)
-                .build();
-
-         detalleAportacionRepository.saveAll(List.of(da1, da2));
-         
-        DetalleAportacion da4 = DetalleAportacion.builder()
-                .id(new DetalleAportacionPK(a3.getId(), 1L))
-                .cantidadKilos(13.5)
-                .aportacion(a3)
-                .tipoAlimento(ta1)
-                .build();
-
-        detalleAportacionRepository.saveAll(List.of(da1, da2, da3, da4));
 
         Destinatario d1 = Destinatario.builder()
                 .nombre("Asociación Don Bosco")
