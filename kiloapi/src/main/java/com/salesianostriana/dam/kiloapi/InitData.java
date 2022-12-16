@@ -93,7 +93,7 @@ public class InitData {
         tipoAlimentoRepo.saveAll(List.of(ta1, ta2, ta3));
         kilosDisponiblesRepository.saveAll(List.of(kd1, kd2, kd3));
 
-        /*
+        
         DetalleAportacion da1 = DetalleAportacion.builder()
                 .id(new DetalleAportacionPK(a1.getId(), 1L))
                 .cantidadKilos(13.5)
@@ -103,13 +103,29 @@ public class InitData {
 
         DetalleAportacion da2 = DetalleAportacion.builder()
                 .id(new DetalleAportacionPK(a2.getId(), 2L))
+                .id(new DetalleAportacionPK(a1.getId(), 2L))
+                .cantidadKilos(13.5)
+                .aportacion(a1)
+                .tipoAlimento(ta1)
+                .build();
+
+        DetalleAportacion da3 = DetalleAportacion.builder()
+                .id(new DetalleAportacionPK(a2.getId(), 1L))
                 .cantidadKilos(13.5)
                 .aportacion(a2)
                 .tipoAlimento(ta1)
                 .build();
 
          detalleAportacionRepository.saveAll(List.of(da1, da2));
-         */
+         
+        DetalleAportacion da4 = DetalleAportacion.builder()
+                .id(new DetalleAportacionPK(a3.getId(), 1L))
+                .cantidadKilos(13.5)
+                .aportacion(a3)
+                .tipoAlimento(ta1)
+                .build();
+
+        detalleAportacionRepository.saveAll(List.of(da1, da2, da3, da4));
 
         Destinatario d1 = Destinatario.builder()
                 .nombre("Asociación Don Bosco")
