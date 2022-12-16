@@ -1,6 +1,5 @@
-package com.salesianostriana.dam.kiloapi.dto.detalleaportacion.converter;
+package com.salesianostriana.dam.kiloapi.dto.detalleaportacion;
 
-import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.PostDetalleAportacionDto;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import com.salesianostriana.dam.kiloapi.service.AportacionService;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
@@ -30,7 +29,5 @@ public class DetalleDtoConverter {
             auxIt.add(nuevo);
         });
     }
-
-
 
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component
+@Component("AportacionDtoConverter")
 @RequiredArgsConstructor
 public class AportacionDtoConverter {
 
