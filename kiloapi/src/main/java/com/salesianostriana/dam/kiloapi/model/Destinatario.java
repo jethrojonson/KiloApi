@@ -17,9 +17,8 @@ public class Destinatario {
     @Id
     @GeneratedValue
     private Long id;
-    private String qr;
-    private int numCaja;
-    private double kilosTotales;
+
+    private String nombre, direccion, personaContacto, telefono;
 
     @OneToMany(mappedBy = "destinatario", fetch = FetchType.EAGER)
     @Builder.Default
