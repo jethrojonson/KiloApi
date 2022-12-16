@@ -93,6 +93,7 @@ public class InitData {
         tipoAlimentoRepo.saveAll(List.of(ta1, ta2, ta3));
         kilosDisponiblesRepository.saveAll(List.of(kd1, kd2, kd3));
 
+        
         DetalleAportacion da1 = DetalleAportacion.builder()
                 .id(new DetalleAportacionPK(a1.getId(), 1L))
                 .cantidadKilos(13.5)
@@ -101,6 +102,7 @@ public class InitData {
                 .build();
 
         DetalleAportacion da2 = DetalleAportacion.builder()
+                .id(new DetalleAportacionPK(a2.getId(), 2L))
                 .id(new DetalleAportacionPK(a1.getId(), 2L))
                 .cantidadKilos(13.5)
                 .aportacion(a1)
@@ -114,6 +116,8 @@ public class InitData {
                 .tipoAlimento(ta1)
                 .build();
 
+         detalleAportacionRepository.saveAll(List.of(da1, da2));
+         
         DetalleAportacion da4 = DetalleAportacion.builder()
                 .id(new DetalleAportacionPK(a3.getId(), 1L))
                 .cantidadKilos(13.5)
