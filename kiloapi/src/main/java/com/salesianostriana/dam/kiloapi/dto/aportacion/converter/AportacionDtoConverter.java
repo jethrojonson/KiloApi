@@ -6,12 +6,11 @@ import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
 import java.util.*;
 
 @Component
 @RequiredArgsConstructor
-public class DtoConverter {
+public class AportacionDtoConverter {
 
     public GetAportacionDto getAportacionDto(Aportacion ap){
 

@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.kiloapi.service;
 
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
+import com.salesianostriana.dam.kiloapi.model.DetalleAportacionPK;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
 import com.salesianostriana.dam.kiloapi.repos.AportacionRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,12 @@ public class AportacionService {
     public void deleteById (Long id) { repo.deleteById(id); }
 
     public boolean existById (Long id) { return repo.existsById(id); }
+
+    public DetalleAportacionPK generateNumLinea (Long idA, Long idD){
+        return DetalleAportacionPK.builder()
+                .aportacion_id(idA)
+                .numLinea(idD)
+                .build();
+    }
 
 }
