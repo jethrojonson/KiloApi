@@ -14,7 +14,7 @@ import java.util.Map;
 public class PostDetalleAportacionDto {
 
     private Long id;
-    private Map<Long, Double> tipoAlimento = new HashMap<>();
-    private Map<Long, Long> numLinea;
+    private HashMap<Long, Double> tipoAlimento = new HashMap<>();
+    private Long numLinea;
 
 }

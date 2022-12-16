@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.kiloapi.model;
 
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
