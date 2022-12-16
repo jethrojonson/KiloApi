@@ -11,6 +11,9 @@ public interface ClaseRepository extends JpaRepository<Clase, Long> {
             "(da.id.aportacion_id = a.id) WHERE a.clase.id = ?1")
     Double getCantidadKilos(Long idClase);
 
-
+    @Query("SELECT new com.salesianostriana.dam.kiloapi.dto.clase.GetOneClaseDtoJ" +
+            "(c.id, c.nombre, c.tutor, CAST(count(da.id.aportacion_id)AS int), sum(da.cantidadKilos)) FROM DetalleAportacion da JOIN Aportacion" +
+            " a ON (da.id.aportacion_id = a.id) JOIN Clase c ON (a.id = c.id) WHERE c.id = ?1 GROUP BY c.id")
+    GetOneClaseDtoJ getCntKilos(Long idClase);
 
 }
