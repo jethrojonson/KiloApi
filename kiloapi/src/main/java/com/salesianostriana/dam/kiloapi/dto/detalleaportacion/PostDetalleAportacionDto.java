@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.kiloapi.dto.detalleaportacion;
 
+import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
 import lombok.*;
 
@@ -13,8 +14,6 @@ import java.util.Map;
 @Builder
 public class PostDetalleAportacionDto {
 
-    private Long id;
-    private HashMap<Long, Double> tipoAlimento = new HashMap<>();
-    private Long numLinea;
+    private Map<Long, Double> tipoAlimento;
 
 }

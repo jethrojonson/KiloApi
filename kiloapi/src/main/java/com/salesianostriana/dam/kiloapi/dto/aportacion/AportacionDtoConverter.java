@@ -1,6 +1,5 @@
-package com.salesianostriana.dam.kiloapi.dto.aportacion.converter;
+package com.salesianostriana.dam.kiloapi.dto.aportacion;
 
-import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionDto;
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-@Component("AportacionDtoConverter")
+@Component
 @RequiredArgsConstructor
 public class AportacionDtoConverter {
 
