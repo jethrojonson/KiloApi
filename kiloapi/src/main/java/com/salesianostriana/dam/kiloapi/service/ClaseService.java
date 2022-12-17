@@ -18,6 +18,8 @@ public class ClaseService {
         return claseRepository.findById(id);
     }
 
+    public void save(Clase c) { claseRepository.save(c); }
+
     public void delete(Clase clase) {
         claseRepository.delete(clase);
     }
@@ -32,6 +34,10 @@ public class ClaseService {
 
     public GetOneClaseDtoJ getCntKgs(Long id) {
         return claseRepository.getCntKilos(id);
+    }
+
+    public boolean existById(Long id){
+        return claseRepository.existsById(id);
     }
 
 }

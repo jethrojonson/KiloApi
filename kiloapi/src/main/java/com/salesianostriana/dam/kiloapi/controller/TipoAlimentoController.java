@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/tipoAlimento")
 @RequiredArgsConstructor
+@Tag(name = "Tipo de Alimento", description = "Controller de tipo de alimento")
 public class TipoAlimentoController {
 
     private final TipoAlimentoService tipoAlimentoService;

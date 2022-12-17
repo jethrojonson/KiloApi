@@ -3,6 +3,7 @@ package com.salesianostriana.dam.kiloapi.dto.aportacion;
 import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.DetalleDtoConverter;
 import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.PostDetalleAportacionDto;
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
+import com.salesianostriana.dam.kiloapi.model.Clase;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import com.salesianostriana.dam.kiloapi.service.AportacionService;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +55,21 @@ public class AportacionDtoConverter {
                 .fechaAportacion(a.getFecha())
                 .listadoDetalles(detalleDtoConverter.generatelistaDetallesDto(a))
                 .build();
+    }
+
+    public List<GetNewAportacionDto> generateListGetAportaciones(Clase c){
+
+        List<GetNewAportacionDto> aux = new ArrayList<>();
+
+        c.getAportaciones().forEach(a -> {
+            aux.add(GetNewAportacionDto.builder()
+                    .id(a.getId())
+                    .fechaAportacion(a.getFecha())
+                    .listadoDetalles(detalleDtoConverter.generatelistaDetallesDto(a))
+                    .build());
+        });
+
+        return aux;
     }
 
 

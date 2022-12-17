@@ -4,6 +4,7 @@ import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import com.salesianostriana.dam.kiloapi.repos.DetalleAportacionRepository;
 import com.salesianostriana.dam.kiloapi.service.AportacionService;
+import com.salesianostriana.dam.kiloapi.service.ClaseService;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
