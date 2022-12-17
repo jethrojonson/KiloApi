@@ -14,6 +14,7 @@ import java.util.Map;
 @Builder
 public class PostDetalleAportacionDto {
 
+    private Long claseId;
     private Map<Long, Double> tipoAlimento;
 
 }
