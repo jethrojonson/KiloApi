@@ -4,6 +4,7 @@ import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
 import com.salesianostriana.dam.kiloapi.repos.KilosDisponiblesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class KilosDisponiblesService {
 
     private final KilosDisponiblesRepository kilosDisponiblesRepository;
+    private final TipoAlimentoService tipoAlimentoService;
 
     public List<KilosDisponibles> findAll(){
         return kilosDisponiblesRepository.findAll();
@@ -22,24 +24,31 @@ public class KilosDisponiblesService {
 
     public void sumAportacionesToKilosDisponibles(Aportacion a){
 
+        List<KilosDisponibles> lista = findAll();
+
         a.getDetalles().forEach(d -> {
-            kilosDisponiblesRepository.findAll().forEach(k -> {
-                if (!Objects.equals(d.getTipoAlimento().getId(), k.getId())){
-                    KilosDisponibles kd = KilosDisponibles.builder()
-                            .id(d.getTipoAlimento().getId())
-                            .cantidadDisponible(d.getCantidadKilos())
-                            .build();
-                    d.getTipoAlimento().addToKilosDisponibles(kd);
-                    save(kd);
-                }else{
-                    KilosDisponibles kd = findById(d.getTipoAlimento().getId()).get();
-                    kd.setCantidadDisponible(k.getCantidadDisponible()+d.getCantidadKilos());
-                    save(kd);
-                }
-            });
+            if(d.getTipoAlimento().getKilosDisponibles() == null){
+                KilosDisponibles kd = KilosDisponibles.builder()
+                        .cantidadDisponible(d.getCantidadKilos())
+                        .build();
+                d.getTipoAlimento().addToKilosDisponibles(kd);
+                save(kd);
+                tipoAlimentoService.save(d.getTipoAlimento());
+            }else {
+
+                ResponseEntity.of(
+                        findById(d.getTipoAlimento().getId())
+                                .map(old -> {
+                                    old.setId(d.getTipoAlimento().getId());
+                                    old.setTipoAlimento(d.getTipoAlimento());
+                                    old.setCantidadDisponible(d.getCantidadKilos()+old.getCantidadDisponible());
+                                    save(old);
+                                    return Optional.of(old);
+                                })
+                                .orElse(Optional.empty())
+                );
+            }
         });
-
-
 
     }
 
