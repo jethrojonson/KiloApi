@@ -1,9 +1,6 @@
 package com.salesianostriana.dam.kiloapi.service;
 
-import com.salesianostriana.dam.kiloapi.model.Aportacion;
-import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
-import com.salesianostriana.dam.kiloapi.model.DetalleAportacionPK;
-import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
+import com.salesianostriana.dam.kiloapi.model.*;
 import com.salesianostriana.dam.kiloapi.repos.AportacionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,6 +33,11 @@ public class AportacionService {
 
     public void addListDetallesToAportacion(Aportacion a, List<DetalleAportacion> d){
         a.getDetalles().addAll(d);
+        save(a);
+    }
+
+    public void addAportacionToClase(Aportacion a, Clase c){
+        a.addToClase(c);
         save(a);
     }
 

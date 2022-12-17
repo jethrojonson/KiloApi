@@ -11,7 +11,9 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -19,6 +21,8 @@ public class DetalleDtoConverter {
 
     private final TipoAlimentoService tipoAlimentoService;
     private final AportacionService aportacionService;
+
+    private final ClaseService claseService;
 
     public Aportacion getPostDtoToCreateDetalle(PostDetalleAportacionDto dto){
 
@@ -40,6 +44,8 @@ public class DetalleDtoConverter {
         aportacionService.addListDetallesToAportacion(ap, auxIt);
         aportacionService.save(ap);
 
+        //aportacionService.addAportacionToClase(ap, claseService.findById(1L).get());
+
         return ap;
 
     }
@@ -47,13 +53,15 @@ public class DetalleDtoConverter {
     public List<GetDetallesDto> generatelistaDetallesDto(Aportacion a){
 
         List<GetDetallesDto> aux = new ArrayList<>();
+        Map<String, Double> mapAux = new HashMap<>();
 
         a.getDetalles().forEach(d -> {
-            GetDetallesDto nuevo = GetDetallesDto.builder()
-                    .nombreAlimento(d.getTipoAlimento().getNombre())
-                    .cantidadAlimento(d.getCantidadKilos())
-                    .numLinea(d.getId().getNumLinea())
-                    .build();
+            mapAux.put(d.getTipoAlimento().getNombre(), d.getCantidadKilos());
+            GetDetallesDto nuevo = new GetDetallesDto();
+            nuevo.setNumLinea(d.getId().getNumLinea());
+            mapAux.forEach((nombre, kilos)->{
+                nuevo.setNombreYCantidadAlimento(Map.of(nombre, kilos));
+            });
             aux.add(nuevo);
         });
 
