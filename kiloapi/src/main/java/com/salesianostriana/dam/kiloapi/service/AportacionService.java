@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.kiloapi.service;
 
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
+import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacionPK;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
 import com.salesianostriana.dam.kiloapi.repos.AportacionRepository;
@@ -32,5 +33,17 @@ public class AportacionService {
                 .numLinea(idD)
                 .build();
     }
+
+    public void addListDetallesToAportacion(Aportacion a, List<DetalleAportacion> d){
+        a.getDetalles().addAll(d);
+        save(a);
+    }
+
+
+    public Aportacion findLastOneCreated(){
+        return repo.findFirstByOrderByIdDesc();
+    }
+
+
 
 }
