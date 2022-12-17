@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.kiloapi.service;
 
+import com.salesianostriana.dam.kiloapi.dto.clase.GetOneClaseDtoJ;
 import com.salesianostriana.dam.kiloapi.model.Clase;
 import com.salesianostriana.dam.kiloapi.repos.ClaseRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,5 +13,31 @@ import java.util.Optional;
 public class ClaseService {
 
     private final ClaseRepository claseRepository;
+
+    public Optional<Clase> findById(Long id) {
+        return claseRepository.findById(id);
+    }
+
+    public void save(Clase c) { claseRepository.save(c); }
+
+    public void delete(Clase clase) {
+        claseRepository.delete(clase);
+    }
+
+    public void deleteById(Long id) {
+        claseRepository.deleteById(id);
+    }
+
+    public Double getCantidadKilos(Long id) {
+        return claseRepository.getCantidadKilos(id);
+    }
+
+    public GetOneClaseDtoJ getCntKgs(Long id) {
+        return claseRepository.getCntKilos(id);
+    }
+
+    public boolean existById(Long id){
+        return claseRepository.existsById(id);
+    }
 
 }
