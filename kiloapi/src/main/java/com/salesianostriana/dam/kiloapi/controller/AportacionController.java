@@ -139,4 +139,19 @@ public class AportacionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(aportacionDtoConverter.newAportacionDto(dto));
     }
 
+    @Operation(summary = "Elimina una aportación a partir de un id dado",
+            description = "Al borrar una aportación, se borran sus DetalleAportación asociados y se actualizan los KilosDisponibles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha eliminado correctamente la aportación",
+                    content = @Content)
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAportacion(@PathVariable Long id) {
+        if(aportacionService.findById(id).isPresent())
+            claseService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
