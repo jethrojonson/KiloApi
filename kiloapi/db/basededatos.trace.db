@@ -2129,3 +2129,11 @@ SELECT * FROM APORTACION ORDER BY DESC LIMIT 1 [42122-214]
 	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-12-17 22:53:51 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM APORTACION WHERE ID [*]CLASE = 1"
+Syntax error in SQL statement "SELECT * FROM APORTACION WHERE ID [*]CLASE = 1"; SQL statement:
+SELECT * FROM APORTACION WHERE ID CLASE = 1 [42000-214]
+2022-12-17 22:54:20 jdbc[24]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Error de Sintaxis en sentencia SQL "SELECT * FROM APORTACION WHERE CLASE [*]ID = 1"
+Syntax error in SQL statement "SELECT * FROM APORTACION WHERE CLASE [*]ID = 1"; SQL statement:
+SELECT * FROM APORTACION WHERE CLASE ID = 1 [42000-214]

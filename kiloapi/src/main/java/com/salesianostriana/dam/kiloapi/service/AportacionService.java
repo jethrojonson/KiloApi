@@ -1,12 +1,14 @@
 package com.salesianostriana.dam.kiloapi.service;
 
+import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionByIdDto;
+import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionClaseDto;
+import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionQueryDto;
 import com.salesianostriana.dam.kiloapi.model.*;
 import com.salesianostriana.dam.kiloapi.repos.AportacionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +48,17 @@ public class AportacionService {
         return repo.findFirstByOrderByIdDesc();
     }
 
+    public Map<String, Double> queryToGetACDto (Clase c){
 
+        List<GetAportacionQueryDto> auxList = repo.getListOfNamesAmount(c.getId());
+        Map<String, Double> auxMap = new HashMap<>();
+
+
+        auxList.forEach(a -> {
+            auxMap.put(a.getNombre(), a.getCantidad());
+        });
+
+        return auxMap;
+    }
 
 }
