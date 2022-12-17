@@ -48,10 +48,11 @@ public class AportacionDtoConverter {
 
 
     public GetNewAportacionDto newAportacionDto(PostDetalleAportacionDto dto){
-        Aportacion a = aportacionService.findLastOneCreated();
+        Aportacion a = detalleDtoConverter.getPostDtoToCreateDetalle(dto);
 
         return GetNewAportacionDto.builder()
                 .id(a.getId())
+                .clase(a.getClase().getNombre())
                 .fechaAportacion(a.getFecha())
                 .listadoDetalles(detalleDtoConverter.generatelistaDetallesDto(a))
                 .build();
@@ -64,6 +65,7 @@ public class AportacionDtoConverter {
         c.getAportaciones().forEach(a -> {
             aux.add(GetNewAportacionDto.builder()
                     .id(a.getId())
+                    .clase(a.getClase().getNombre())
                     .fechaAportacion(a.getFecha())
                     .listadoDetalles(detalleDtoConverter.generatelistaDetallesDto(a))
                     .build());

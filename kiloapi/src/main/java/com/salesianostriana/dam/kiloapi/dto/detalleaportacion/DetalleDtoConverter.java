@@ -1,10 +1,12 @@
 package com.salesianostriana.dam.kiloapi.dto.detalleaportacion;
 
+import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.KilosDisponiblesDtoConverter;
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import com.salesianostriana.dam.kiloapi.repos.DetalleAportacionRepository;
 import com.salesianostriana.dam.kiloapi.service.AportacionService;
 import com.salesianostriana.dam.kiloapi.service.ClaseService;
+import com.salesianostriana.dam.kiloapi.service.KilosDisponiblesService;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -21,6 +23,7 @@ public class DetalleDtoConverter {
 
     private final TipoAlimentoService tipoAlimentoService;
     private final AportacionService aportacionService;
+    private final KilosDisponiblesService kilosDisponiblesService;
 
     private final ClaseService claseService;
 
@@ -43,8 +46,9 @@ public class DetalleDtoConverter {
         });
         aportacionService.addListDetallesToAportacion(ap, auxIt);
         aportacionService.save(ap);
+        kilosDisponiblesService.sumAportacionesToKilosDisponibles(ap);
 
-        //aportacionService.addAportacionToClase(ap, claseService.findById(1L).get());
+        aportacionService.addAportacionToClase(ap, claseService.findById(dto.getClaseId()).get());
 
         return ap;
 
@@ -53,16 +57,14 @@ public class DetalleDtoConverter {
     public List<GetDetallesDto> generatelistaDetallesDto(Aportacion a){
 
         List<GetDetallesDto> aux = new ArrayList<>();
-        Map<String, Double> mapAux = new HashMap<>();
 
         a.getDetalles().forEach(d -> {
-            mapAux.put(d.getTipoAlimento().getNombre(), d.getCantidadKilos());
-            GetDetallesDto nuevo = new GetDetallesDto();
-            nuevo.setNumLinea(d.getId().getNumLinea());
-            mapAux.forEach((nombre, kilos)->{
-                nuevo.setNombreYCantidadAlimento(Map.of(nombre, kilos));
-            });
-            aux.add(nuevo);
+            aux.add(
+                    GetDetallesDto.builder()
+                            .numLinea(d.getId().getNumLinea())
+                            .nombreYCantidadAlimento(Map.of(d.getTipoAlimento().getNombre(), d.getCantidadKilos()))
+                            .build()
+            );
         });
 
         return aux;

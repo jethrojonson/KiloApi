@@ -87,7 +87,7 @@ public class AportacionController {
                     description = "No se ha podido obtener la clase",
                     content = @Content),
     })
-    @GetMapping("/{id}")
+    @GetMapping("clase/{id}")
     public ResponseEntity<GetAportacionByIdDto> findAportacionesDeUnaClase(@Parameter(description = "Id de la clase") @PathVariable Long id){
 
         if(!claseService.existById(id))
@@ -110,17 +110,26 @@ public class AportacionController {
                             value = """
                                     {
                                         "id": 10,
-                                        "fechaAportacion": "2022-12-16",
+                                        "clase": "2ª DAM",
+                                        "fechaAportacion": "2022-12-17",
                                         "listadoDetalles": [
                                             {
                                                 "numLinea": 1,
-                                                "nombreAlimento": "Garbanzos",
-                                                "cantidadAlimento": 4.5
+                                                "nombreYCantidadAlimento": {
+                                                    "Garbanzos": 20.0
+                                                }
                                             },
                                             {
                                                 "numLinea": 2,
-                                                "nombreAlimento": "Dodotis",
-                                                "cantidadAlimento": 6.7
+                                                "nombreYCantidadAlimento": {
+                                                    "Dodotis": 5.7
+                                                }
+                                            },
+                                            {
+                                                "numLinea": 3,
+                                                "nombreYCantidadAlimento": {
+                                                    "Dodotis": 5.7
+                                                }
                                             }
                                         ]
                                     }
@@ -135,7 +144,6 @@ public class AportacionController {
         if(dto.getTipoAlimento() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        detalleDtoConverter.getPostDtoToCreateDetalle(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(aportacionDtoConverter.newAportacionDto(dto));
     }
 
