@@ -6,6 +6,7 @@ import com.salesianostriana.dam.kiloapi.repos.ClaseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,7 +19,7 @@ public class ClaseService {
         return claseRepository.findById(id);
     }
 
-    public void save(Clase c) { claseRepository.save(c); }
+    public Clase save(Clase c) { return claseRepository.save(c); }
 
     public void delete(Clase clase) {
         claseRepository.delete(clase);
@@ -39,5 +40,8 @@ public class ClaseService {
     public boolean existById(Long id){
         return claseRepository.existsById(id);
     }
+
+    //JERO
+    public List<Clase> getAll(){ return claseRepository.findAll(); }
 
 }
