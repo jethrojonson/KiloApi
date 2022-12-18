@@ -21,4 +21,20 @@ public class ClaseDtoConverterJ {
                 .build();
     }
 
+    //JERO
+    public ClaseDTOM claseToClaseDTOM(Clase c) {
+        return ClaseDTOM.builder()
+                .id(c.getId())
+                .nombre(c.getNombre())
+                .tutor(c.getTutor())
+                .build();
+    }
+
+    public Clase newClaseToClase(NewClaseDTOM c) {
+        return Clase.builder()
+                .nombre(c.getNombre())
+                .tutor(c.getTutor())
+                .build();
+    }
+
 }
