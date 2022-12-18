@@ -168,7 +168,13 @@ public class TipoAlimentoController {
         return ResponseEntity.badRequest().build();
     }
 
-
+    @Operation(summary = "Elimina un tipo de alimento a partir de un id dado",
+            description = "Al borrar  (poner política")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha eliminado correctamente el tipo de alimento",
+                    content = @Content)
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTipoAlimento(@PathVariable Long id) {
         if(tipoAlimentoService.findById(id).isPresent())
