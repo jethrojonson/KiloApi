@@ -18,7 +18,7 @@ public class ClaseService {
         return claseRepository.findById(id);
     }
 
-    public void save(Clase c) { claseRepository.save(c); }
+    public Clase save(Clase c) { return claseRepository.save(c); }
 
     public void delete(Clase clase) {
         claseRepository.delete(clase);
