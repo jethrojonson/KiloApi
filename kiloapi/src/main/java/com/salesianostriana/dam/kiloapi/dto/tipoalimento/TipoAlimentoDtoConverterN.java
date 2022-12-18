@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TipoAlimentoDtoConverter {
+public class TipoAlimentoDtoConverterN {
 
     private final TipoAlimentoService tipoAlimentoService;
 

@@ -3,7 +3,7 @@ package com.salesianostriana.dam.kiloapi.controller;
 import com.salesianostriana.dam.kiloapi.dto.aportacion.*;
 import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.DetalleDtoConverter;
 import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.PostDetalleAportacionDto;
-import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
+import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.service.AportacionService;
 import com.salesianostriana.dam.kiloapi.service.ClaseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,8 +19,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/aportacion")
@@ -141,6 +141,8 @@ public class AportacionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(aportacionDtoConverter.newAportacionDto(dto));
     }
 
+
+
     @Operation(summary = "Elimina una aportación a partir de un id dado",
             description = "Al borrar una aportación, se borran sus DetalleAportación asociados y se actualizan los KilosDisponibles")
     @ApiResponses(value = {
@@ -153,6 +155,32 @@ public class AportacionController {
         if(aportacionService.findById(id).isPresent())
             claseService.deleteById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Obtiene todas las aportaciones")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha obtenido el listado de aportaciones",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AportacionDtoN.class)
+                            ,examples = @ExampleObject(
+                            value = """
+                                    {//poner ejemplo
+                                    }
+                                    """
+                    ))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se han podido obtener las aportaciones",
+                    content = @Content),
+    })
+    @GetMapping("/")
+    public ResponseEntity<List<AportacionDtoN>> getAll(){
+        List<Aportacion> result = aportacionService.findAll();
+        if (result.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(result.stream().map(AportacionDtoN::of).collect(Collectors.toList()));
+        }
     }
 
 

@@ -2,7 +2,7 @@ package com.salesianostriana.dam.kiloapi.controller;
 
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
-import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoConverter;
+import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoConverterN;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,7 +28,7 @@ import java.util.Optional;
 public class TipoAlimentoController {
 
     private final TipoAlimentoService tipoAlimentoService;
-    private final TipoAlimentoDtoConverter tipoAlimentoDtoConverter;
+    private final TipoAlimentoDtoConverterN tipoAlimentoDtoConverter;
 
 
     @Operation(summary = "Edita un tipo de alimento específico")
