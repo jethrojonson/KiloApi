@@ -21,6 +21,7 @@ public class AportacionService {
     private final AportacionRepository repo;
     private final ClaseRepository claseRepo;
     private final TipoAlimentoRepository tipoRepo;
+    private final KilosDisponiblesService kilosDisponiblesService;
 
     public List<Aportacion> findAll(){ return repo.findAll(); }
 
@@ -87,7 +88,7 @@ public class AportacionService {
             ap.addDetalleAportacion(da);
             aux.add(da);
         });
-
+        kilosDisponiblesService.sumAportacionesToKilosDisponibles(ap);
         save(ap);
         return ap;
     }
