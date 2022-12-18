@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @Builder
-public class TipoAlimentoDtoBasic {
+public class TipoAlimentoDtoBasicN {
 
     private Long id;
     private String nombre;
