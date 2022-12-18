@@ -173,3 +173,6 @@ buildNumber.properties
 
 *.mv.db
 *.trace.db
+
+# ignorar databases
+db/
