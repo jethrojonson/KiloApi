@@ -14,6 +14,7 @@ import java.util.List;
 public class GetNewAportacionDto {
 
     private Long id;
+    private String clase;
     private LocalDate fechaAportacion;
     private List<GetDetallesDto> listadoDetalles;
 

@@ -48,28 +48,31 @@ public class AportacionDtoConverter {
 
 
     public GetNewAportacionDto newAportacionDto(PostDetalleAportacionDto dto){
-        Aportacion a = aportacionService.findLastOneCreated();
+        Aportacion a = detalleDtoConverter.getPostDtoToCreateDetalle(dto);
 
         return GetNewAportacionDto.builder()
                 .id(a.getId())
+                .clase(a.getClase().getNombre())
                 .fechaAportacion(a.getFecha())
                 .listadoDetalles(detalleDtoConverter.generatelistaDetallesDto(a))
                 .build();
     }
 
-    public List<GetNewAportacionDto> generateListGetAportaciones(Clase c){
+    public List<GetAportacionClaseDto> sudapolla(Clase c){
 
-        List<GetNewAportacionDto> aux = new ArrayList<>();
+        List<GetAportacionClaseDto> aux = new ArrayList<>();
 
         c.getAportaciones().forEach(a -> {
-            aux.add(GetNewAportacionDto.builder()
-                    .id(a.getId())
-                    .fechaAportacion(a.getFecha())
-                    .listadoDetalles(detalleDtoConverter.generatelistaDetallesDto(a))
-                    .build());
+            aux.add(
+                    GetAportacionClaseDto.builder()
+                            .fecha(a.getFecha())
+                            .aportaciones(aportacionService.queryToGetACDto(c))
+                            .build()
+            );
         });
 
         return aux;
+
     }
 
 

@@ -1,9 +1,6 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
-import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionByIdDto;
-import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionDto;
-import com.salesianostriana.dam.kiloapi.dto.aportacion.AportacionDtoConverter;
-import com.salesianostriana.dam.kiloapi.dto.aportacion.GetNewAportacionDto;
+import com.salesianostriana.dam.kiloapi.dto.aportacion.*;
 import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.DetalleDtoConverter;
 import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.PostDetalleAportacionDto;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
@@ -87,16 +84,13 @@ public class AportacionController {
                     description = "No se ha podido obtener la clase",
                     content = @Content),
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<GetAportacionByIdDto> findAportacionesDeUnaClase(@Parameter(description = "Id de la clase") @PathVariable Long id){
+    @GetMapping("/clase/{id}")
+    public ResponseEntity<List<GetAportacionClaseDto>> findAportacionesDeUnaClase(@Parameter(description = "Id de la clase") @PathVariable Long id){
 
         if(!claseService.existById(id))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        return ResponseEntity.ok(GetAportacionByIdDto.builder()
-                .idClase(id)
-                .listadoAportaciones(aportacionDtoConverter.generateListGetAportaciones(claseService.findById(id).get()))
-                .build());
+        return ResponseEntity.ok(aportacionDtoConverter.sudapolla(claseService.findById(id).get()));
     }
 
 
@@ -110,17 +104,26 @@ public class AportacionController {
                             value = """
                                     {
                                         "id": 10,
-                                        "fechaAportacion": "2022-12-16",
+                                        "clase": "2ª DAM",
+                                        "fechaAportacion": "2022-12-17",
                                         "listadoDetalles": [
                                             {
                                                 "numLinea": 1,
-                                                "nombreAlimento": "Garbanzos",
-                                                "cantidadAlimento": 4.5
+                                                "nombreYCantidadAlimento": {
+                                                    "Garbanzos": 20.0
+                                                }
                                             },
                                             {
                                                 "numLinea": 2,
-                                                "nombreAlimento": "Dodotis",
-                                                "cantidadAlimento": 6.7
+                                                "nombreYCantidadAlimento": {
+                                                    "Dodotis": 5.7
+                                                }
+                                            },
+                                            {
+                                                "numLinea": 3,
+                                                "nombreYCantidadAlimento": {
+                                                    "Dodotis": 5.7
+                                                }
                                             }
                                         ]
                                     }
@@ -135,7 +138,6 @@ public class AportacionController {
         if(dto.getTipoAlimento() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        detalleDtoConverter.getPostDtoToCreateDetalle(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(aportacionDtoConverter.newAportacionDto(dto));
     }
 
