@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.kiloapi.dto.detalleaportacion;
+package com.salesianostriana.dam.kiloapi.dto.aportacion;
 
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;

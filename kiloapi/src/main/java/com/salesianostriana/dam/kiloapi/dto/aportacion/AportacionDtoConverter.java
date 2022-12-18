@@ -1,7 +1,5 @@
 package com.salesianostriana.dam.kiloapi.dto.aportacion;
 
-import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.DetalleDtoConverter;
-import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.PostDetalleAportacionDto;
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.Clase;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
@@ -14,51 +12,32 @@ import java.util.*;
 @Component
 @RequiredArgsConstructor
 public class AportacionDtoConverter {
-
-    private final DetalleDtoConverter detalleDtoConverter;
     private final AportacionService aportacionService;
 
-    public GetAportacionDto getAportacionDto(Aportacion ap){
 
-        List<DetalleAportacion> auxDetalle = ap.getDetalles();
-        Map<String, Double> auxList = new HashMap<String, Double>();
+    public GetNewAportacionDto newAportacionDto(Aportacion a){
 
-        /*
-        auxDetalle.forEach(d -> {
-            auxList.stream()
-                    .map(a -> {
-                        a.setCantKg(d.getCantidadKilos());
-                        a.setNombreTipoAlimento(d.getTipoAlimento().getNombre());
-                        return auxList.add(a);
-                    });
+        List<GetDetallesDto> aux = new ArrayList<>();
+
+        a.getDetalles().forEach(d -> {
+            aux.add(
+                    GetDetallesDto.builder()
+                            .numLinea(d.getId().getNumLinea())
+                            .alimento(d.getTipoAlimento().getNombre())
+                            .kilos(d.getCantidadKilos())
+                            .build()
+            );
         });
-         */
-
-        auxDetalle.forEach(d -> {
-            auxList.put(d.getTipoAlimento().getNombre() ,d.getCantidadKilos());
-        });
-
-        return GetAportacionDto.builder()
-                .id(ap.getId())
-                .fecha(ap.getFecha())
-                .aportaciones(auxList)
-                .build();
-    }
-
-
-
-    public GetNewAportacionDto newAportacionDto(PostDetalleAportacionDto dto){
-        Aportacion a = detalleDtoConverter.getPostDtoToCreateDetalle(dto);
 
         return GetNewAportacionDto.builder()
                 .id(a.getId())
                 .clase(a.getClase().getNombre())
                 .fechaAportacion(a.getFecha())
-                .listadoDetalles(detalleDtoConverter.generatelistaDetallesDto(a))
+                .listadoDetalles(aux)
                 .build();
     }
 
-    public List<GetAportacionClaseDto> sudapolla(Clase c){
+    public List<GetAportacionClaseDto> findAportacionesClase(Clase c){
 
         List<GetAportacionClaseDto> aux = new ArrayList<>();
 

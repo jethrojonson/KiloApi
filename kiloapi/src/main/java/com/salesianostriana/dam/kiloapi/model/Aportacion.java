@@ -44,4 +44,9 @@ public class Aportacion {
         c.getAportaciones().remove(this);
     }
 
+    public void addDetalleAportacion(DetalleAportacion d) {
+        d.setAportacion(this);
+        this.detalles.add(d);
+    }
+
 }
