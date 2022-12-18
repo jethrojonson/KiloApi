@@ -1,9 +1,8 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
 import com.salesianostriana.dam.kiloapi.dto.aportacion.*;
-import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.DetalleDtoConverter;
-import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.PostDetalleAportacionDto;
-import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
+import com.salesianostriana.dam.kiloapi.dto.aportacion.PostDetalleAportacionDto;
+import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.service.AportacionService;
 import com.salesianostriana.dam.kiloapi.service.ClaseService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -31,7 +29,6 @@ public class AportacionController {
     private final AportacionService aportacionService;
     private final ClaseService claseService;
     private final AportacionDtoConverter aportacionDtoConverter;
-    private final DetalleDtoConverter detalleDtoConverter;
 
     @Operation(summary = "Obtiene las aportaciones de una clase")
     @ApiResponses(value = {
@@ -87,10 +84,10 @@ public class AportacionController {
     @GetMapping("/clase/{id}")
     public ResponseEntity<List<GetAportacionClaseDto>> findAportacionesDeUnaClase(@Parameter(description = "Id de la clase") @PathVariable Long id){
 
-        if(!claseService.existById(id))
+        if(!claseService.existById(id) || aportacionService.findAll().isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        return ResponseEntity.ok(aportacionDtoConverter.sudapolla(claseService.findById(id).get()));
+        return ResponseEntity.ok(aportacionDtoConverter.findAportacionesClase(claseService.findById(id).get()));
     }
 
 
@@ -135,10 +132,11 @@ public class AportacionController {
     })
     @PostMapping("/")
     public ResponseEntity<GetNewAportacionDto> create(@RequestBody PostDetalleAportacionDto dto){
-        if(dto.getTipoAlimento() == null)
+        if(dto.getTipoAlimento() == null || dto.getClaseId() == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(aportacionDtoConverter.newAportacionDto(dto));
+        Aportacion nueva = aportacionService.createAportacion(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(aportacionDtoConverter.newAportacionDto(nueva));
     }
 
 }

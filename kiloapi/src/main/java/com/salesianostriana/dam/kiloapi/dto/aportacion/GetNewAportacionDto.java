@@ -1,6 +1,5 @@
 package com.salesianostriana.dam.kiloapi.dto.aportacion;
 
-import com.salesianostriana.dam.kiloapi.dto.detalleaportacion.GetDetallesDto;
 import lombok.*;
 
 import java.time.LocalDate;
