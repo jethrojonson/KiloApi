@@ -53,28 +53,7 @@ public class InitData {
 
 
 
-        KilosDisponibles kd1 = KilosDisponibles.builder()
-                .id(ta1.getId())
-                .cantidadDisponible(13.5)
-                .build();
 
-        KilosDisponibles kd2 = KilosDisponibles.builder()
-                .id(ta2.getId())
-                .cantidadDisponible(4)
-                .build();
-
-        KilosDisponibles kd3 = KilosDisponibles.builder()
-                .id(ta3.getId())
-                .cantidadDisponible(6.8)
-                .build();
-
-
-        ta1.addToKilosDisponibles(kd1);
-        ta2.addToKilosDisponibles(kd2);
-        ta3.addToKilosDisponibles(kd3);
-
-        tipoAlimentoRepo.saveAll(List.of(ta1, ta2, ta3));
-        kilosDisponiblesRepository.saveAll(List.of(kd1, kd2, kd3));
 
 
         Destinatario d1 = Destinatario.builder()

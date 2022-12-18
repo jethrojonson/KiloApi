@@ -2,10 +2,12 @@ package com.salesianostriana.dam.kiloapi.service;
 
 import com.salesianostriana.dam.kiloapi.dto.clase.GetOneClaseDtoJ;
 import com.salesianostriana.dam.kiloapi.model.Clase;
+import com.salesianostriana.dam.kiloapi.ranking.GetRankingQueryDto;
 import com.salesianostriana.dam.kiloapi.repos.ClaseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -39,5 +41,7 @@ public class ClaseService {
     public boolean existById(Long id){
         return claseRepository.existsById(id);
     }
+
+    public List<GetRankingQueryDto> ranking() { return claseRepository.getRankingQueryDto(); }
 
 }

@@ -26,34 +26,29 @@ public class KilosDisponiblesService {
 
         List<KilosDisponibles> lista = findAll();
 
-        a.getDetalles().forEach(d -> {
-            if(d.getTipoAlimento().getKilosDisponibles() == null){
-                KilosDisponibles kd = KilosDisponibles.builder()
+        if (lista.isEmpty()){
+            a.getDetalles().forEach(d -> {
+                KilosDisponibles kn = KilosDisponibles.builder()
+                        .id(d.getTipoAlimento().getId())
                         .cantidadDisponible(d.getCantidadKilos())
                         .build();
-                d.getTipoAlimento().addToKilosDisponibles(kd);
-                save(kd);
-                tipoAlimentoService.save(d.getTipoAlimento());
-            }else {
-
-                ResponseEntity.of(
-                        findById(d.getTipoAlimento().getId())
-                                .map(old -> {
-                                    old.setId(d.getTipoAlimento().getId());
-                                    old.setTipoAlimento(d.getTipoAlimento());
-                                    old.setCantidadDisponible(d.getCantidadKilos()+old.getCantidadDisponible());
-                                    save(old);
-                                    return Optional.of(old);
-                                })
-                                .orElse(Optional.empty())
-                );
-            }
-        });
-
+                d.getTipoAlimento().addToKilosDisponibles(kn);
+                kilosDisponiblesRepository.save(kn);
+            });
+        }else{
+            lista.forEach(l -> {
+                a.getDetalles().forEach(d -> {
+                    if (d.getTipoAlimento() == l.getTipoAlimento()){
+                        l.setCantidadDisponible(l.getCantidadDisponible()+d.getCantidadKilos());
+                        kilosDisponiblesRepository.save(l);
+                    }
+                });
+            });
+        }
     }
 
-    public void save(KilosDisponibles k){
-        kilosDisponiblesRepository.save(k);
+    public KilosDisponibles save(KilosDisponibles k){
+        return kilosDisponiblesRepository.save(k);
     }
 
     public void saveAll(List<KilosDisponibles> list){
