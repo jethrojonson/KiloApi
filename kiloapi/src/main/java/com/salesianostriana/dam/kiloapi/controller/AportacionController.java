@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/aportacion")
@@ -138,5 +139,48 @@ public class AportacionController {
         Aportacion nueva = aportacionService.createAportacion(dto);
         return ResponseEntity.status(HttpStatus.CREATED).body(aportacionDtoConverter.newAportacionDto(nueva));
     }
+
+
+
+    @Operation(summary = "Elimina una aportación a partir de un id dado",
+            description = "Al borrar una aportación, se borran sus DetalleAportación asociados y se actualizan los KilosDisponibles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha eliminado correctamente la aportación",
+                    content = @Content)
+    })
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAportacion(@PathVariable Long id) {
+        if(aportacionService.findById(id).isPresent())
+            claseService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Obtiene todas las aportaciones")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha obtenido el listado de aportaciones",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AportacionDtoN.class)
+                            ,examples = @ExampleObject(
+                            value = """
+                                    {//poner ejemplo
+                                    }
+                                    """
+                    ))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se han podido obtener las aportaciones",
+                    content = @Content),
+    })
+    @GetMapping("/")
+    public ResponseEntity<List<AportacionDtoN>> getAll(){
+        List<Aportacion> result = aportacionService.findAll();
+        if (result.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }else{
+            return ResponseEntity.ok(result.stream().map(AportacionDtoN::of).collect(Collectors.toList()));
+        }
+    }
+
 
 }

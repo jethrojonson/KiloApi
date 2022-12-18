@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -116,6 +115,21 @@ public class InitData {
                 .build();
 
         tieneRepository.save(t1);
+
+
+        //nico //intentando crear una aportacion
+//        Aportacion a = Aportacion.builder()
+//                .fecha(LocalDate.of(2022,8,12))
+//                .clase(cl1)
+//                .detalles(
+//                        List.of(
+//                                DetalleAportacion.builder()
+//                                        .aportacion(this)
+//                                        .build()
+//                        )
+//                )
+//                .build();
+
 
     }
 
