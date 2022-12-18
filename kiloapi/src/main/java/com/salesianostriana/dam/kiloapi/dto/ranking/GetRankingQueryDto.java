@@ -1,4 +1,4 @@
-package com.salesianostriana.dam.kiloapi.ranking;
+package com.salesianostriana.dam.kiloapi.dto.ranking;
 
 import lombok.*;
 

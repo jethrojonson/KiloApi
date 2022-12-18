@@ -1,11 +1,10 @@
-package com.salesianostriana.dam.kiloapi.ranking;
+package com.salesianostriana.dam.kiloapi.dto.ranking;
 
 import com.salesianostriana.dam.kiloapi.model.Clase;
 import com.salesianostriana.dam.kiloapi.service.ClaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

@@ -2,7 +2,7 @@ package com.salesianostriana.dam.kiloapi.repos;
 
 import com.salesianostriana.dam.kiloapi.dto.clase.GetOneClaseDtoJ;
 import com.salesianostriana.dam.kiloapi.model.Clase;
-import com.salesianostriana.dam.kiloapi.ranking.GetRankingQueryDto;
+import com.salesianostriana.dam.kiloapi.dto.ranking.GetRankingQueryDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -26,7 +26,7 @@ public interface ClaseRepository extends JpaRepository<Clase, Long> {
     ORDER BY COUNT(C.ID) DESC
      */
     @Query("""
-            SELECT DISTINCT NEW com.salesianostriana.dam.kiloapi.ranking.GetRankingQueryDto(c.id, c.nombre, COUNT(c.id))
+            SELECT DISTINCT NEW com.salesianostriana.dam.kiloapi.dto.ranking.GetRankingQueryDto(c.id, c.nombre, COUNT(c.id))
             FROM Clase c JOIN Aportacion a ON c.id = a.clase.id
             GROUP BY c.id
             ORDER BY COUNT(c.id) DESC

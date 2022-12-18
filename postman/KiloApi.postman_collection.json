@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "34acf5b8-2023-457a-9729-aa3e16c53ed9",
+		"_postman_id": "98069fdf-964b-4428-824e-139c2125d3b8",
 		"name": "KiloApi",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23783446"
@@ -13,7 +13,10 @@
 					"name": "Obtener Tipos Alimentos",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -21,7 +24,10 @@
 					"name": "Obtener Tipo Alimento",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -29,7 +35,10 @@
 					"name": "Nuevo Tipo Alimento",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -37,7 +46,10 @@
 					"name": "Editar Tipo Alimento",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -45,7 +57,10 @@
 					"name": "Eliminar Tipo Alimento",
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -60,7 +75,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/clase/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"clase",
+								""
+							]
 						}
 					},
 					"response": []
@@ -69,7 +91,23 @@
 					"name": "Obtener Una Clase",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/clase/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"clase",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -77,7 +115,26 @@
 					"name": "Nueva Clase",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\" : \"1º Panadería\",\r\n    \"tutor\" : \"Padre Damián\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/clase/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"clase",
+								""
+							]
+						}
 					},
 					"response": []
 				},
@@ -85,7 +142,32 @@
 					"name": "Editar Clase",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\" : \"1º FPBASIC\",\r\n    \"tutor\" : \"Omar montes\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASE_URL}}/clase/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"clase",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -93,7 +175,23 @@
 					"name": "Eliminar Clase",
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/clase/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"clase",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
 					},
 					"response": []
 				}
@@ -106,7 +204,10 @@
 					"name": "Obtener Aportaciones",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -114,7 +215,10 @@
 					"name": "Obtener Una Aportacion",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -122,7 +226,10 @@
 					"name": "Nueva Aportacion",
 					"request": {
 						"method": "POST",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -130,7 +237,10 @@
 					"name": "Editar Aportacion",
 					"request": {
 						"method": "PUT",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -138,7 +248,10 @@
 					"name": "Eliminar Aportacion",
 					"request": {
 						"method": "DELETE",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -151,7 +264,10 @@
 					"name": "Obtener Kilos Disponibles",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				},
@@ -159,7 +275,10 @@
 					"name": "Kilos De un Tipo Alimento",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
@@ -172,11 +291,41 @@
 					"name": "Obtener Ranking",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [],
+						"url": {
+							"raw": ""
+						}
 					},
 					"response": []
 				}
 			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:8080",
+			"type": "string"
 		}
 	]
 }

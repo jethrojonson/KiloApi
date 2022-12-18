@@ -1,9 +1,8 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
-import com.salesianostriana.dam.kiloapi.ranking.GetRankingQueryDto;
-import com.salesianostriana.dam.kiloapi.ranking.RankingDtoConverter;
-import com.salesianostriana.dam.kiloapi.ranking.ReturnRankingDto;
-import com.salesianostriana.dam.kiloapi.repos.ClaseRepository;
+import com.salesianostriana.dam.kiloapi.dto.ranking.GetRankingQueryDto;
+import com.salesianostriana.dam.kiloapi.dto.ranking.RankingDtoConverter;
+import com.salesianostriana.dam.kiloapi.dto.ranking.ReturnRankingDto;
 import com.salesianostriana.dam.kiloapi.service.ClaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
