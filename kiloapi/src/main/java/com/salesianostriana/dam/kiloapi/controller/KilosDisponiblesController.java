@@ -3,6 +3,7 @@ package com.salesianostriana.dam.kiloapi.controller;
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetKilosDisponiblesDto;
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetOneKilosDisponiblesDto;
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.KilosDisponiblesDtoConverter;
+import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
 import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
 import com.salesianostriana.dam.kiloapi.service.KilosDisponiblesService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,6 +34,32 @@ public class KilosDisponiblesController {
     private final KilosDisponiblesService kilosDisponiblesService;
     private final KilosDisponiblesDtoConverter kilosDisponiblesDtoConverter;
 
+    @Operation(summary = "Obtiene todos los kilos disponibles de todos los alimentos aportados")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han obtenido todos kilos disponibles de los alimentos aportados",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetKilosDisponiblesDto.class)
+                            , examples = @ExampleObject(
+                            value = """
+                                    [
+                                      {
+                                        "idAlimento": 3,
+                                        "nombreAlimento": "Legumbres",
+                                        "kilosDisponibles": 84.32
+                                      },
+                                      {
+                                        "idAlimento": 4,
+                                        "nombreAlimento": "Frutos secos",
+                                        "kilosDisponibles": 33.6
+                                      }
+                                    ]
+                                    """
+                    ))}),
+            @ApiResponse(responseCode = "404",
+                    description = "No hay existencias de kilos disponibles",
+                    content = @Content),
+    })
     @GetMapping("/")
     public ResponseEntity<List<GetKilosDisponiblesDto>> findAll(){
 

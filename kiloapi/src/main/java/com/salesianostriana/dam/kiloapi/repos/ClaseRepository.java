@@ -20,17 +20,41 @@ public interface ClaseRepository extends JpaRepository<Clase, Long> {
     GetOneClaseDtoJ getCntKilos(Long idClase);
 
     /*
-    SELECT DISTINCT C.ID, C.NOMBRE, COUNT(C.ID)
-    FROM CLASE C JOIN APORTACION A ON C.ID = A.CLASE_ID
+    SELECT C.ID, C.NOMBRE, SUM(DA.CANTIDAD_KILOS)
+    FROM CLASE C JOIN APORTACION A ON C.ID = A.CLASE_ID JOIN DETALLE_APORTACION DA ON A.ID = DA.APORTACION_ID
     GROUP BY C.ID
-    ORDER BY COUNT(C.ID) DESC
+    ORDER BY SUM(DA.CANTIDAD_KILOS) DESC;
      */
     @Query("""
-            SELECT DISTINCT NEW com.salesianostriana.dam.kiloapi.dto.ranking.GetRankingQueryDto(c.id, c.nombre, COUNT(c.id))
-            FROM Clase c JOIN Aportacion a ON c.id = a.clase.id
+            SELECT DISTINCT NEW com.salesianostriana.dam.kiloapi.dto.ranking.GetRankingQueryDto(c.id, c.nombre, SUM(da.cantidadKilos))
+            FROM Clase c JOIN Aportacion a ON c.id = a.clase.id JOIN DetalleAportacion da ON a.id = da.aportacion.id
             GROUP BY c.id
-            ORDER BY COUNT(c.id) DESC
+            ORDER BY SUM(da.cantidadKilos) DESC
             """)
     List<GetRankingQueryDto> getRankingQueryDto();
+
+    /*
+    SELECT C.ID, C.NOMBRE, COUNT(DA.APORTACION_ID), SUM(DA.CANTIDAD_KILOS),  AVG(
+    SELECT DISTINCT SUM(DA2.CANTIDAD_KILOS)
+    FROM APORTACION A2 JOIN DETALLE_APORTACION DA2 ON A2.ID = DA2.APORTACION_ID
+    GROUP BY DA2.APORTACION_ID
+    ) AS "MEDIA"
+    FROM CLASE C JOIN APORTACION A ON C.ID = A.CLASE_ID JOIN DETALLE_APORTACION DA ON A.ID = DA.APORTACION_ID
+    GROUP BY C.ID
+    ORDER BY SUM(DA.CANTIDAD_KILOS) DESC;
+
+    @Query("""
+            SELECT DISTINCT NEW com.salesianostriana.dam.kiloapi.dto.ranking.GetRankingQueryDto(c.id, c.nombre, COUNT(da.aportacion.id), sum(da.cantidadKilos), avg(
+                SELECT DISTINCT sum(da2.cantidadKilos)
+                FROM Aportacion a2 JOIN DestalleAportacion da2 ON a2.id = da2.aportacion.id
+                GROUP BY da2.aportacion.id
+            ))
+            FROM Clase c JOIN Aportacion a ON c.id = a.clase.id JOIN DetalleAportacion da ON a.id = da.aportacion.id
+            GROUP BY c.id
+            ORDER BY sum(da.cantidadKilos) DESC;
+            """)
+
+
+     */
 
 }
