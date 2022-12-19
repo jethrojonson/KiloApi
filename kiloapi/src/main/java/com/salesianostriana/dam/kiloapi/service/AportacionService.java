@@ -93,4 +93,8 @@ public class AportacionService {
         return ap;
     }
 
+    public DetalleAportacion findOneDetalleAportacion(Long idAportacion, Long numLinea) {
+        return repo.findOneDetalleAportacion(idAportacion, numLinea);
+    }
+
 }
