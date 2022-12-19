@@ -4,8 +4,10 @@ import com.salesianostriana.dam.kiloapi.dto.caja.*;
 import com.salesianostriana.dam.kiloapi.dto.clase.GetOneClaseDtoJ;
 import com.salesianostriana.dam.kiloapi.model.Caja;
 import com.salesianostriana.dam.kiloapi.model.Clase;
+import com.salesianostriana.dam.kiloapi.model.Destinatario;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
 import com.salesianostriana.dam.kiloapi.service.CajaService;
+import com.salesianostriana.dam.kiloapi.service.DestinatarioService;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -29,7 +31,7 @@ import java.util.Optional;
 public class CajaController {
 
     private final CajaService cajaService;
-    private final TipoAlimentoService tipoAlimentoService;
+    private final DestinatarioService destinatarioService;
     private final CajaDtoConverterN cajaDtoConverter;
 
 
@@ -138,6 +140,19 @@ public class CajaController {
             cajaService.deleteById(cajaService.preRemoveAlimentos(id));
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+
+    @PostMapping("/caja/{idC}/destinatario/{idD}")
+    public ResponseEntity<CajaDtoPut> asignarDestinatario(@PathVariable Long idC, @PathVariable Long idD){
+        if(idC == null || idD == null)
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        Optional<Caja> caja = cajaService.findById(idC);
+
+        caja.get().setDestinatario(destinatarioService.findById(idD).get());
+
+        return ResponseEntity.ok(cajaDtoConverter.createDtoPut(caja.get()));
     }
 
 }
