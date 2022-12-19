@@ -3,6 +3,7 @@ package com.salesianostriana.dam.kiloapi.repos;
 import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionQueryDto;
 import com.salesianostriana.dam.kiloapi.dto.aportacion.GetNewAportacionDto;
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
+import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +28,18 @@ public interface AportacionRepository extends JpaRepository<Aportacion, Long> {
             """)
     List<GetAportacionQueryDto> getListOfNamesAmount(Long id);
 
+    @Query("""
+            SELECT da
+            FROM DetalleAportacion da
+            WHERE da.aportacion.id = ?1
+            AND da.id.numLinea = ?2
+            """)
+    DetalleAportacion findOneDetalleAportacion(Long idAportacion, Long numLinea);
+
+    @Query("""
+            SELECT SUM(da.cantidadKilos)
+            FROM DetalleAportacion da
+            WHERE da.tipoAlimento.id = ?1
+            """)
+    Double findAllKilosOfATipoAlimento(Long idTipoAlimento);
 }
