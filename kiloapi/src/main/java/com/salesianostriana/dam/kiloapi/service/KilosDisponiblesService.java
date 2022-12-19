@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.kiloapi.service;
 
+import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetDetallesKilosDisponiblesDto;
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
@@ -84,6 +85,10 @@ public class KilosDisponiblesService {
                 }
             });
         });
+    }
+
+    public List<GetDetallesKilosDisponiblesDto> findDetallesOfKiloDisponible(Long idTipoAlimento) {
+        return kilosDisponiblesRepository.findDetallesOfKiloDisponible(idTipoAlimento);
     }
 
 }
