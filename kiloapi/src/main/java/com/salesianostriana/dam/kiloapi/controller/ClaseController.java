@@ -72,7 +72,7 @@ public class ClaseController {
         Optional<Clase> clase = claseService.findById(id);
         if (clase.isEmpty())
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(claseService.getCntKgs(id));
+        return ResponseEntity.ok(claseDtoConverter.claseToGetOneClaseDto(clase.get()));
     }
 
     //JERO PART
