@@ -35,6 +35,7 @@ public class AportacionDtoConverter {
                 .fechaAportacion(a.getFecha())
                 .listadoDetalles(aux)
                 .build();
+
     }
 
     public List<GetAportacionClaseDto> findAportacionesClase(Clase c){

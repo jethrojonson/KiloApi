@@ -42,8 +42,18 @@ public class CajaDtoConverterN {
             auxList.add(dto);
         });
 
+        /*
+        private Long id;
+    private String qr;
+    private int numCaja;
+    private double kilosTotales;
+         */
+
         return CajaDtoPut.builder()
-                .caja(caja)
+                .id(caja.getId())
+                .qr(caja.getQr())
+                .numCaja(caja.getNumCaja())
+                .kilosTotales(caja.getKilosTotales())
                 .listaAlimentos(auxList)
                 .build();
 

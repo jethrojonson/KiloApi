@@ -127,11 +127,17 @@ public class CajaController {
         if(idC == null || idA == null || kgs == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
-        Optional<Caja> c = cajaService.findById(idC);
-        Optional<TipoAlimento> ta = tipoAlimentoService.findById(idA);
+        return ResponseEntity.ok(cajaDtoConverter.createDtoPut(cajaService.changeTipoAlimentoAmount(idC, idA, kgs)));
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Caja> delete (@PathVariable Long id){
+
+        if(cajaService.existById(id))
+            cajaService.deleteById(cajaService.preRemoveAlimentos(id));
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

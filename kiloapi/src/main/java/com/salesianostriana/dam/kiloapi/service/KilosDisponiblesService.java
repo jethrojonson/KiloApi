@@ -1,9 +1,7 @@
 package com.salesianostriana.dam.kiloapi.service;
 
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetDetallesKilosDisponiblesDto;
-import com.salesianostriana.dam.kiloapi.model.Aportacion;
-import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
-import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
+import com.salesianostriana.dam.kiloapi.model.*;
 import com.salesianostriana.dam.kiloapi.repos.AportacionRepository;
 import com.salesianostriana.dam.kiloapi.repos.KilosDisponiblesRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +15,6 @@ import java.util.Optional;
 public class KilosDisponiblesService {
 
     private final KilosDisponiblesRepository kilosDisponiblesRepository;
-    private final TipoAlimentoService tipoAlimentoService;
     private final AportacionRepository aportacionRepository;
 
     public List<KilosDisponibles> findAll() {

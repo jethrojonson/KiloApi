@@ -12,7 +12,9 @@ import java.util.List;
 @Builder
 public class CajaDtoPut {
 
-    private Caja caja;
+    private Long id;
+    private String qr;
+    private int numCaja;
+    private double kilosTotales;
     private List<CajaTipoAlimentoDto> listaAlimentos;
-
 }

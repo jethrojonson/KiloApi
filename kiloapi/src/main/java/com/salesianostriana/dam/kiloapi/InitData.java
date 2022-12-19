@@ -50,10 +50,13 @@ public class InitData {
 
         tipoAlimentoRepo.saveAll(List.of(ta1, ta2, ta3));
 
+        KilosDisponibles kd = KilosDisponibles.builder()
+                .id(ta1.getId())
+                .tipoAlimento(ta1)
+                .cantidadDisponible(10)
+                .build();
 
-
-
-
+        kilosDisponiblesRepository.save(kd);
 
         Destinatario d1 = Destinatario.builder()
                 .nombre("Asociación Don Bosco")
