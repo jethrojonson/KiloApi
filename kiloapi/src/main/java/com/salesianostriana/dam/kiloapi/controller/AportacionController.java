@@ -146,7 +146,7 @@ public class AportacionController {
 
 
     @Operation(summary = "Elimina una aportación a partir de un id dado",
-            description = "Al borrar una aportación, se borran sus DetalleAportación asociados y se actualizan los KilosDisponibles")
+            description = "Al borrar una aportación, se actualizan los KilosDisponibles")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",
                     description = "Se ha eliminado correctamente la aportación",
@@ -154,8 +154,11 @@ public class AportacionController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAportacion(@PathVariable Long id) {
-        if(aportacionService.findById(id).isPresent())
-            claseService.deleteById(id);
+        Optional<Aportacion> aportacion = aportacionService.findById(id);
+        if(aportacion.isPresent()){
+            kilosDisponiblesService.removeKilosDisponiblesOfAnAportacion(aportacion.get());
+            aportacionService.deleteById(id);
+        }
         return ResponseEntity.noContent().build();
     }
 
