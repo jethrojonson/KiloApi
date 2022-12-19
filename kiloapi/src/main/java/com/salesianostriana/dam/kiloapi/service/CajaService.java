@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,5 +31,18 @@ public class CajaService {
     public void deleteById (Long id) { repo.deleteById(id); }
 
     public boolean existById (Long id) { return repo.existsById(id); }
+
+    public Caja changeTipoAlimentoAmount (Caja c, TipoAlimento ta, Double kgs){
+
+        c.getTieneList().forEach(t -> {
+            if(Objects.equals(t.getTipoAlimento().getId(), ta.getId())){
+                t.setCantidadKgs(kgs);
+                repo.save(c);
+            }
+        });
+
+        return c;
+
+    }
 
 }
