@@ -1,13 +1,12 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
-import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoBasicN;
-import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoConverterN;
-import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoN;
-import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoOfN;
+import com.salesianostriana.dam.kiloapi.dto.caja.*;
 import com.salesianostriana.dam.kiloapi.dto.clase.GetOneClaseDtoJ;
 import com.salesianostriana.dam.kiloapi.model.Caja;
 import com.salesianostriana.dam.kiloapi.model.Clase;
+import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
 import com.salesianostriana.dam.kiloapi.service.CajaService;
+import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -30,6 +29,7 @@ import java.util.Optional;
 public class CajaController {
 
     private final CajaService cajaService;
+    private final TipoAlimentoService tipoAlimentoService;
     private final CajaDtoConverterN cajaDtoConverter;
 
 
@@ -121,10 +121,17 @@ public class CajaController {
     }
 
 
+    @PutMapping("/{idC}/tipo/{idA}/kg/{kgs}")
+    public ResponseEntity<CajaDtoPut> editarKilosCaja (@PathVariable Long idC, @PathVariable Long idA, @PathVariable Double kgs){
 
+        if(idC == null || idA == null || kgs == null)
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
+        Optional<Caja> c = cajaService.findById(idC);
+        Optional<TipoAlimento> ta = tipoAlimentoService.findById(idA);
 
+        return ResponseEntity.status(HttpStatus.CREATED).build();
 
-
+    }
 
 }
