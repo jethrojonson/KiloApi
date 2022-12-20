@@ -89,17 +89,18 @@ public class CajaController {
                     content = @Content),
     })
     @PostMapping("/")
-    public ResponseEntity<Caja> nuevaCaja(@RequestBody CajaDtoBasicN nuevo) {
+    public ResponseEntity<CajaDtoN> nuevaCaja(@RequestBody CajaDtoBasicN nuevo) {
         if (nuevo.getQr() == "") {
             return ResponseEntity.badRequest().build();
         }
-        Caja saved = cajaDtoConverter.CajaDtoBasicNtoCaja(nuevo);
-        cajaService.save(saved);
+        CajaDtoN saved = cajaDtoConverter.CajaDtoBasicNtoCajaDtoN(nuevo);//doble converter??
+        Caja cajita = cajaDtoConverter.CajaDtoToCaja(saved);
+        cajaService.save(cajita);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
 
-    @Operation(summary = "Obtiene una caja a partir de un id dado")
+    @Operation(summary = "Obtiene una caja a partir de un id dado, incluye una lista con los alimentos que contiene: id tipo alimento, nombre tipo, cantidad kilos; y los datos del destinatario: id, nombre")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha encontrado con éxito la clase indicada",
@@ -109,8 +110,7 @@ public class CajaController {
                                     value = """
                                             {
                                                "numCaja" : 3,
-                                                "qr":"puntitos bonitos"
-                                                y mas
+                                               "qr":"puntitos bonitos"
                                             }
                                             """
                             )})}),
@@ -120,11 +120,9 @@ public class CajaController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<CajaDtoOfN> getOneCaja(@PathVariable Long id) {
-        ResponseEntity<CajaDtoOfN> CajaDtoOfN = null;
-        return CajaDtoOfN;
-       // return ResponseEntity.of(cajaService.findById(id).map(CajaDtoOfN::of)); esto es lo que quiero que ponga lo otro es provisional hasta que funcione el OF
+        return ResponseEntity.of(cajaService.findById(id).map(CajaDtoOfN::of));
     }
-
+//los kilos totales asegurar que sean dinámicos con las cajas, por ahora se quedan en 23 porque está instanciado así en el main
 
     @PutMapping("/{idC}/tipo/{idA}/kg/{kgs}")
     public ResponseEntity<CajaDtoPut> editarKilosCaja (@PathVariable Long idC, @PathVariable Long idA, @PathVariable Double kgs){

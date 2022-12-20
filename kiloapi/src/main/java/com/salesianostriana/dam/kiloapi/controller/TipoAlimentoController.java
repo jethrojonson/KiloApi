@@ -134,6 +134,8 @@ public class TipoAlimentoController {
     @GetMapping("/")
     public ResponseEntity<List<TipoAlimentoDtoBasicN>> getAll() {
 
+        //guardar la lista de findall en vez de llamarla dos veces
+
         if (!tipoAlimentoService.findAll().isEmpty()) {
             return ResponseEntity.ok(
                     tipoAlimentoService.findAll()
