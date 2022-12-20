@@ -33,4 +33,13 @@ public class KilosDisponiblesDtoConverter {
         return aux;
     }
 
+    public GetOneKilosDisponiblesDto kilosDisponiblesToGetOneKilosDisponibles(KilosDisponibles kilosDisponibles) {
+        return GetOneKilosDisponiblesDto.builder()
+                .idAlimento(kilosDisponibles.getId())
+                .nombreAlimento(kilosDisponibles.getTipoAlimento().getNombre())
+                .kilosDisponibles(kilosDisponibles.getCantidadDisponible())
+                .aportaciones(kilosDisponiblesService.findDetallesOfKiloDisponible(kilosDisponibles.getId()))
+                .build();
+    }
+
 }

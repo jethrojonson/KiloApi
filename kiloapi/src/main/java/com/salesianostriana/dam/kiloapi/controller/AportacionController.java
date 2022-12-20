@@ -35,51 +35,33 @@ public class AportacionController {
     private final AportacionDtoConverter aportacionDtoConverter;
     private final KilosDisponiblesService kilosDisponiblesService;
 
+
     @Operation(summary = "Obtiene las aportaciones de una clase")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha obtenido el listado de aportaciones de la clase",
-                    content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetAportacionByIdDto.class)
-                            , examples = @ExampleObject(
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetAportacionClaseDto.class)
+                            ,examples = @ExampleObject(
                             value = """
-                                    {
-                                      "idClase": 1,
-                                      "listadoAportaciones": [
-                                        {
-                                          "id": 10,
-                                          "fechaAportacion": "2022-12-17",
-                                          "listadoDetalles": [
-                                            {
-                                              "numLinea": 1,
-                                              "nombreAlimento": "Legumbres",
-                                              "cantidadAlimento": 7.5
-                                            },
-                                            {
-                                              "numLinea": 2,
-                                              "nombreAlimento": "Pasta",
-                                              "cantidadAlimento": 4.9
-                                            }
-                                          ]
-                                        },
-                                        {
-                                          "id": 11,
-                                          "fechaAportacion": "2022-12-18",
-                                          "listadoDetalles": [
-                                            {
-                                              "numLinea": 1,
-                                              "nombreAlimento": "Frutas",
-                                              "cantidadAlimento": 24.8
-                                            },
-                                            {
-                                              "numLinea": 2,
-                                              "nombreAlimento": "Verduras",
-                                              "cantidadAlimento": 3.3
-                                            }
-                                          ]
+                                    [
+                                      {
+                                        "fecha": "2022-12-19",
+                                        "aportaciones": {
+                                          "Legumbres": 63.8,
+                                          "Verduras": 41.2,
+                                          "Frutos secos": 17.8
                                         }
-                                      ]
-                                    }
+                                      },
+                                      {
+                                        "fecha": "2022-12-12",
+                                        "aportaciones": {
+                                          "Legumbres": 28.8,
+                                          "Verduras": 13.2,
+                                          "Frutos secos": 19.3
+                                        }
+                                      }
+                                    ]
                                     """
                     ))}),
             @ApiResponse(responseCode = "404",
@@ -97,6 +79,19 @@ public class AportacionController {
 
 
     @Operation(summary = "Crea una aportacion")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = PostDetalleAportacionDto.class),
+                examples = @ExampleObject(value = """
+                        {
+                          "claseId": 1,
+                          "tipoAlimento": {
+                            "3": 12.3,
+                            "4": 4.8,
+                            "5": 7.9
+                          }
+                        }
+                        """)))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
                     description = "Se ha creado la aportación",
@@ -234,7 +229,7 @@ public class AportacionController {
         Optional<Aportacion> aportacion = aportacionService.findById(id);
         DetalleAportacion edit = aportacionService.findOneDetalleAportacion(id, num);
 
-        if (aportacion.isEmpty() || edit == null || numKg == null)
+        if (aportacion.isEmpty() || edit == null || numKg == null || numKg < 0)
             return ResponseEntity.badRequest().build();
 
         edit.setCantidadKilos(numKg);
@@ -284,9 +279,9 @@ public class AportacionController {
         if(aportacion.isEmpty() || delete == null)
             return ResponseEntity.notFound().build();
 
+        kilosDisponiblesService.removeKilosDisponiblesOfADetalleAportacion(delete);
         aportacion.get().removeFromAportacion(delete);
         aportacionService.save(aportacion.get());
-        kilosDisponiblesService.removeKilosDisponiblesOfADetalleAportacion(delete);
         return ResponseEntity.ok(aportacionDtoConverter.aportacionToGetNewAportacionDto(aportacion.get()));
     }
 

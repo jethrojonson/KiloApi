@@ -1,8 +1,7 @@
 package com.salesianostriana.dam.kiloapi.service;
 
-import com.salesianostriana.dam.kiloapi.model.Aportacion;
-import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
-import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
+import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetDetallesKilosDisponiblesDto;
+import com.salesianostriana.dam.kiloapi.model.*;
 import com.salesianostriana.dam.kiloapi.repos.AportacionRepository;
 import com.salesianostriana.dam.kiloapi.repos.KilosDisponiblesRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import java.util.Optional;
 public class KilosDisponiblesService {
 
     private final KilosDisponiblesRepository kilosDisponiblesRepository;
-    private final TipoAlimentoService tipoAlimentoService;
     private final AportacionRepository aportacionRepository;
 
     public List<KilosDisponibles> findAll() {
@@ -69,7 +67,8 @@ public class KilosDisponiblesService {
 
     public void removeKilosDisponiblesOfADetalleAportacion(DetalleAportacion da) {
         Optional<KilosDisponibles> delete = kilosDisponiblesRepository.findById(da.getTipoAlimento().getId());
-        delete.get().setCantidadDisponible(aportacionRepository.findAllKilosOfATipoAlimento(da.getTipoAlimento().getId()));
+        delete.get().setCantidadDisponible(delete.get().getCantidadDisponible() < da.getCantidadKilos()
+                ? 0 : delete.get().getCantidadDisponible() - da.getCantidadKilos());
         kilosDisponiblesRepository.save(delete.get());
     }
 
@@ -84,6 +83,10 @@ public class KilosDisponiblesService {
                 }
             });
         });
+    }
+
+    public List<GetDetallesKilosDisponiblesDto> findDetallesOfKiloDisponible(Long idTipoAlimento) {
+        return kilosDisponiblesRepository.findDetallesOfKiloDisponible(idTipoAlimento);
     }
 
 }

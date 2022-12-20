@@ -11,6 +11,6 @@ public class GetRankingQueryDto {
 
     private Long id;
     private String nombreClase;
-    private Long cantidadDeAportaciones;
+    private Double sumKgAportaciones;
 
 }

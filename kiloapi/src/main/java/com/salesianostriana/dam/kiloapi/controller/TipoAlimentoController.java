@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
+import com.salesianostriana.dam.kiloapi.dto.aportacion.PostDetalleAportacionDto;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoConverterN;
@@ -32,6 +33,14 @@ public class TipoAlimentoController {
 
 
     @Operation(summary = "Edita un tipo de alimento específico")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = TipoAlimentoDto.class),
+                    examples = @ExampleObject(value = """
+                                {
+                                  "nombre": "Frutas"
+                                }
+                            """)))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha editado el tipo de alimento",
