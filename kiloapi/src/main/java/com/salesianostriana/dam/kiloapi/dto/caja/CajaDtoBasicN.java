@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.kiloapi.dto.caja;
 
+import com.salesianostriana.dam.kiloapi.model.Caja;
 import lombok.*;
 
 @AllArgsConstructor
@@ -10,6 +11,13 @@ import lombok.*;
 public class CajaDtoBasicN {
 
     private String qr;
-    private int numCaja;
+    private Integer numCaja;
+
+    public static Caja of(CajaDtoBasicN createCajaDto) {
+        return Caja.builder()
+                .qr(createCajaDto.getQr())
+                .numCaja(createCajaDto.getNumCaja())
+                .build();
+    }
 
 }

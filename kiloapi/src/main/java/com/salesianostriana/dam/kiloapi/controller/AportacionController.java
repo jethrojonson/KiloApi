@@ -226,7 +226,7 @@ public class AportacionController {
         Optional<Aportacion> aportacion = aportacionService.findById(id);
         DetalleAportacion edit = aportacionService.findOneDetalleAportacion(id, num);
 
-        if (aportacion.isEmpty() || edit == null || numKg == null)
+        if (aportacion.isEmpty() || edit == null || numKg == null || numKg < 0)
             return ResponseEntity.badRequest().build();
 
         edit.setCantidadKilos(numKg);
@@ -276,9 +276,9 @@ public class AportacionController {
         if(aportacion.isEmpty() || delete == null)
             return ResponseEntity.notFound().build();
 
+        kilosDisponiblesService.removeKilosDisponiblesOfADetalleAportacion(delete);
         aportacion.get().removeFromAportacion(delete);
         aportacionService.save(aportacion.get());
-        kilosDisponiblesService.removeKilosDisponiblesOfADetalleAportacion(delete);
         return ResponseEntity.ok(aportacionDtoConverter.aportacionToGetNewAportacionDto(aportacion.get()));
     }
 

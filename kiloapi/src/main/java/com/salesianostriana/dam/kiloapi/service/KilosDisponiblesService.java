@@ -67,7 +67,8 @@ public class KilosDisponiblesService {
 
     public void removeKilosDisponiblesOfADetalleAportacion(DetalleAportacion da) {
         Optional<KilosDisponibles> delete = kilosDisponiblesRepository.findById(da.getTipoAlimento().getId());
-        delete.get().setCantidadDisponible(aportacionRepository.findAllKilosOfATipoAlimento(da.getTipoAlimento().getId()));
+        delete.get().setCantidadDisponible(delete.get().getCantidadDisponible() < da.getCantidadKilos()
+                ? 0 : delete.get().getCantidadDisponible() - da.getCantidadKilos());
         kilosDisponiblesRepository.save(delete.get());
     }
 

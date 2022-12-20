@@ -10,6 +10,7 @@ import com.salesianostriana.dam.kiloapi.service.CajaService;
 import com.salesianostriana.dam.kiloapi.service.DestinatarioService;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -33,6 +34,8 @@ public class CajaController {
     private final CajaService cajaService;
     private final DestinatarioService destinatarioService;
     private final CajaDtoConverterN cajaDtoConverter;
+
+    private final TipoAlimentoService tipoAlimentoService;
 
 
     @Operation(summary = "Obtiene todas las cajas")
@@ -153,6 +156,134 @@ public class CajaController {
         caja.get().setDestinatario(destinatarioService.findById(idD).get());
 
         return ResponseEntity.ok(cajaDtoConverter.createDtoPut(caja.get()));
+    }
+
+    @Operation(summary = "Añadir la cantidad de kilos de un tipo de alimento a una caja")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha añadido correctamente los kilos indicados del tipo alimento a la caja correspondiente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CajaDtoPut.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "id": 9,
+                                                "qr": "No existe",
+                                                "numCaja": 1,
+                                                "kilosTotales": 11.3,
+                                                "alimentos": [
+                                                    {
+                                                        "id": 4,
+                                                        "nombre": "Garbanzos",
+                                                        "kgs": 6.9
+                                                    },
+                                                    {
+                                                        "id": 5,
+                                                        "nombre": "Dodotis",
+                                                        "kgs": 3.1
+                                                    },
+                                                    {
+                                                        "id": 6,
+                                                        "nombre": "Lentejas",
+                                                        "kgs": 1.3
+                                                    }
+                                                ]
+                                            }
+                                            """
+                            )})
+                    }),
+            @ApiResponse(responseCode = "400",
+                    description = "No se han añadido los kgs del tipo de alimento a la caja ya que los datos son erróneos",
+                    content = {@Content})
+    })
+    @PostMapping("/{id}/tipo/{idTipoAlimento}/kg/{cantidad}")
+    public ResponseEntity<CajaDtoPut> addTipoAlimentoToCaja(@Parameter(description = "Identificador de la caja")
+                                                            @PathVariable Long id,
+                                                            @Parameter(description = "Identificador del tipo alimento que se quiere añadir")
+                                                            @PathVariable Long idTipoAlimento,
+                                                            @Parameter(description = "Cantidad de kilos que se quieren aññadir del tipo de alimento")
+                                                            @PathVariable Double cantidad) {
+        Optional<Caja> caja = cajaService.findById(id);
+        Optional<TipoAlimento> tipoAlimento = tipoAlimentoService.findById(idTipoAlimento);
+
+        if(caja.isEmpty() || tipoAlimento.isEmpty() || cantidad == null ||
+                tipoAlimento.get().getKilosDisponibles().getCantidadDisponible() < cantidad) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            cajaService.addTipoAlimentoToCaja(caja.get(), tipoAlimento.get(), cantidad);
+            return ResponseEntity.ok(cajaDtoConverter.cajaToGetCajaDtoPut(caja.get()));
+        }
+    }
+
+    @Operation(summary = "Edición de una caja")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = CajaDtoBasicN.class),
+                    examples = @ExampleObject(value = """
+                            {
+                                "qr": "No existe",
+                                "numCaja": 1
+                            }
+                            """)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha editado correctamente la caja",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CajaDtoPut.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "id": 9,
+                                                "qr": "No existe",
+                                                "numCaja": 1,
+                                                "kilosTotales": 7.4,
+                                                "alimentos": [
+                                                    {
+                                                        "id": 4,
+                                                        "nombre": "Garbanzos",
+                                                        "kgs": 3.0
+                                                    },
+                                                    {
+                                                        "id": 5,
+                                                        "nombre": "Dodotis",
+                                                        "kgs": 3.1
+                                                    },
+                                                    {
+                                                        "id": 6,
+                                                        "nombre": "Lentejas",
+                                                        "kgs": 1.3
+                                                    }
+                                                ]
+                                            }
+                                            """
+                            )})
+                    }),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha editado correctamente la caja",
+                    content = {@Content}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la clase a editar",
+                    content = {@Content})
+    })
+    @PutMapping("/{id}")
+    public ResponseEntity<CajaDtoPut> edit(@RequestBody CajaDtoBasicN createCajaDto,
+                                           @Parameter(description = "Identificador de la clase a editar")
+                                           @PathVariable Long id) {
+        Optional<Caja> caja = cajaService.findById(id);
+        if(caja.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else if(createCajaDto.getQr() == null || createCajaDto.getNumCaja() == null || createCajaDto.getNumCaja() < 0) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Caja edit = createCajaDto.of(createCajaDto);
+            return ResponseEntity.of(
+                    caja.map(old -> {
+                        old.setQr(edit.getQr());
+                        old.setNumCaja(edit.getNumCaja());
+                        return Optional.of(cajaDtoConverter.cajaToGetCajaDtoPut(old));
+                    }).orElse(Optional.empty())
+            );
+        }
     }
 
 }
