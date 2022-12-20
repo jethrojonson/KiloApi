@@ -1,13 +1,10 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
 import com.salesianostriana.dam.kiloapi.dto.caja.*;
-import com.salesianostriana.dam.kiloapi.dto.clase.GetOneClaseDtoJ;
-import com.salesianostriana.dam.kiloapi.model.Caja;
-import com.salesianostriana.dam.kiloapi.model.Clase;
-import com.salesianostriana.dam.kiloapi.model.Destinatario;
-import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
+import com.salesianostriana.dam.kiloapi.model.*;
 import com.salesianostriana.dam.kiloapi.service.CajaService;
 import com.salesianostriana.dam.kiloapi.service.DestinatarioService;
+import com.salesianostriana.dam.kiloapi.service.KilosDisponiblesService;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 @RequestMapping("/caja")
@@ -31,6 +29,7 @@ import java.util.Optional;
 public class CajaController {
 
     private final CajaService cajaService;
+    private final KilosDisponiblesService kilosDisponiblesService;
     private final DestinatarioService destinatarioService;
     private final CajaDtoConverterN cajaDtoConverter;
 
@@ -122,17 +121,52 @@ public class CajaController {
        // return ResponseEntity.of(cajaService.findById(id).map(CajaDtoOfN::of)); esto es lo que quiero que ponga lo otro es provisional hasta que funcione el OF
     }
 
-
+    @Operation(summary = "Edita un tipo de alimento específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha editado el alimento de la caja",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CajaDtoPut.class)
+                            , examples = @ExampleObject(
+                            value = """
+                                    {
+                                      "id": 0,
+                                      "qr": "string",
+                                      "numCaja": 0,
+                                      "kilosTotales": 0,
+                                      "listaAlimentos": [
+                                        {
+                                          "id": 0,
+                                          "nombre": "string",
+                                          "cantidadKgs": 0
+                                        }
+                                      ]
+                                    }
+                                    """
+                    ))}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha podido editar los kilos de la caja",
+                    content = @Content),
+    })
     @PutMapping("/{idC}/tipo/{idA}/kg/{kgs}")
     public ResponseEntity<CajaDtoPut> editarKilosCaja (@PathVariable Long idC, @PathVariable Long idA, @PathVariable Double kgs){
 
-        if(idC == null || idA == null || kgs == null)
+        double cantDisp = kilosDisponiblesService.findById(idA).get().getCantidadDisponible();
+
+        if(idC == null || idA == null || kgs == null || cantDisp < kgs)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-
-        return ResponseEntity.ok(cajaDtoConverter.createDtoPut(cajaService.changeTipoAlimentoAmount(idC, idA, kgs)));
-
+        else if (kgs == 0)
+            return ResponseEntity.ok(cajaDtoConverter.createDtoPut(cajaService.findById(idC).get()));
+        else
+            return ResponseEntity.ok(cajaDtoConverter.createDtoPut(cajaService.changeTipoAlimentoAmount(idC, idA, kgs)));
     }
 
+    @Operation(summary = "Elimina una caja específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Se ha eliminado la caja",
+                    content = @Content)
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Caja> delete (@PathVariable Long id){
 
@@ -143,13 +177,39 @@ public class CajaController {
     }
 
 
-    @PostMapping("/caja/{idC}/destinatario/{idD}")
+    @Operation(summary = "Edita un tipo de alimento específico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Se ha asignado la caja al destinatario",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CajaDtoPut.class)
+                            , examples = @ExampleObject(
+                            value = """
+                                    {
+                                      "id": 1,
+                                      "qr": "https://example.com",
+                                      "numCaja": 2,
+                                      "kilosTotales": 23.4,
+                                      "listaAlimentos": [
+                                        {
+                                          "id": 3,
+                                          "nombre": "Pasta",
+                                          "cantidadKgs": 12.3
+                                        }
+                                      ]
+                                    }
+                                    """
+                    ))}),
+            @ApiResponse(responseCode = "400",
+                    description = "No se la podido asignar una caja al destinatario",
+                    content = @Content),
+    })
+    @PostMapping("/{idC}/destinatario/{idD}")
     public ResponseEntity<CajaDtoPut> asignarDestinatario(@PathVariable Long idC, @PathVariable Long idD){
         if(idC == null || idD == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         Optional<Caja> caja = cajaService.findById(idC);
-
         caja.get().setDestinatario(destinatarioService.findById(idD).get());
 
         return ResponseEntity.ok(cajaDtoConverter.createDtoPut(caja.get()));
