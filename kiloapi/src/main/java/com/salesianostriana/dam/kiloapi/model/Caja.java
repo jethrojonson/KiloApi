@@ -26,7 +26,7 @@ public class Caja {
     @JoinColumn(name = "destinatario_id", foreignKey = @ForeignKey(name = "FK_CAJA_DESTINATARIO"))
     private Destinatario destinatario;
 
-    @OneToMany(mappedBy = "caja", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "caja", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Builder.Default
     private List<Tiene> tieneList = new ArrayList<>();
 

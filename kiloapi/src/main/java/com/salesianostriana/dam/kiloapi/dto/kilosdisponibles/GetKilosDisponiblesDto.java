@@ -1,12 +1,13 @@
 package com.salesianostriana.dam.kiloapi.dto.kilosdisponibles;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class GetKilosDisponiblesDto {
 
     private Long idAlimento;

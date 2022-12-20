@@ -44,9 +44,18 @@ public class Aportacion {
         c.getAportaciones().remove(this);
     }
 
+    ////////////////////////////////////////////
+    /* HELPERS de la asociación con Aportación*/
+    ////////////////////////////////////////////
+
     public void addDetalleAportacion(DetalleAportacion d) {
         d.setAportacion(this);
         this.detalles.add(d);
     }
+    public void removeFromAportacion(DetalleAportacion da) {
+        this.detalles.remove(da);
+        da.setAportacion(null);
+    }
+
 
 }

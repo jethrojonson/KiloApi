@@ -1,14 +1,13 @@
 package com.salesianostriana.dam.kiloapi.service;
 
-import com.salesianostriana.dam.kiloapi.model.Aportacion;
-import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
+import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetDetallesKilosDisponiblesDto;
+import com.salesianostriana.dam.kiloapi.model.*;
+import com.salesianostriana.dam.kiloapi.repos.AportacionRepository;
 import com.salesianostriana.dam.kiloapi.repos.KilosDisponiblesRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -16,52 +15,77 @@ import java.util.Optional;
 public class KilosDisponiblesService {
 
     private final KilosDisponiblesRepository kilosDisponiblesRepository;
-    private final TipoAlimentoService tipoAlimentoService;
+    private final AportacionRepository aportacionRepository;
 
-    public List<KilosDisponibles> findAll(){
+    public List<KilosDisponibles> findAll() {
         return kilosDisponiblesRepository.findAll();
     }
 
-    public void sumAportacionesToKilosDisponibles(Aportacion a){
+    public void sumAportacionesToKilosDisponibles(Aportacion a) {
 
         List<KilosDisponibles> lista = findAll();
 
-        a.getDetalles().forEach(d -> {
-            if(d.getTipoAlimento().getKilosDisponibles() == null){
-                KilosDisponibles kd = KilosDisponibles.builder()
+        if (lista.isEmpty()) {
+            a.getDetalles().forEach(d -> {
+                KilosDisponibles kn = KilosDisponibles.builder()
+                        .id(d.getTipoAlimento().getId())
                         .cantidadDisponible(d.getCantidadKilos())
                         .build();
-                d.getTipoAlimento().addToKilosDisponibles(kd);
-                save(kd);
-                tipoAlimentoService.save(d.getTipoAlimento());
-            }else {
-
-                ResponseEntity.of(
-                        findById(d.getTipoAlimento().getId())
-                                .map(old -> {
-                                    old.setId(d.getTipoAlimento().getId());
-                                    old.setTipoAlimento(d.getTipoAlimento());
-                                    old.setCantidadDisponible(d.getCantidadKilos()+old.getCantidadDisponible());
-                                    save(old);
-                                    return Optional.of(old);
-                                })
-                                .orElse(Optional.empty())
-                );
-            }
-        });
-
+                d.getTipoAlimento().addToKilosDisponibles(kn);
+                kilosDisponiblesRepository.save(kn);
+            });
+        } else {
+            lista.forEach(l -> {
+                a.getDetalles().forEach(d -> {
+                    if (d.getTipoAlimento() == l.getTipoAlimento()) {
+                        l.setCantidadDisponible(l.getCantidadDisponible() + d.getCantidadKilos());
+                        kilosDisponiblesRepository.save(l);
+                    }
+                });
+            });
+        }
     }
 
-    public void save(KilosDisponibles k){
-        kilosDisponiblesRepository.save(k);
+    public KilosDisponibles save(KilosDisponibles k) {
+        return kilosDisponiblesRepository.save(k);
     }
 
-    public void saveAll(List<KilosDisponibles> list){
+    public void saveAll(List<KilosDisponibles> list) {
         kilosDisponiblesRepository.saveAll(list);
     }
 
-    public Optional<KilosDisponibles> findById(Long id){
+    public Optional<KilosDisponibles> findById(Long id) {
         return kilosDisponiblesRepository.findById(id);
+    }
+
+    public void editOneKiloDisponible(DetalleAportacion da) {
+        Optional<KilosDisponibles> edit = kilosDisponiblesRepository.findById(da.getTipoAlimento().getId());
+        aportacionRepository.save(da.getAportacion());
+        edit.get().setCantidadDisponible(aportacionRepository.findAllKilosOfATipoAlimento(da.getTipoAlimento().getId()));
+        kilosDisponiblesRepository.save(edit.get());
+    }
+
+    public void removeKilosDisponiblesOfADetalleAportacion(DetalleAportacion da) {
+        Optional<KilosDisponibles> delete = kilosDisponiblesRepository.findById(da.getTipoAlimento().getId());
+        delete.get().setCantidadDisponible(aportacionRepository.findAllKilosOfATipoAlimento(da.getTipoAlimento().getId()));
+        kilosDisponiblesRepository.save(delete.get());
+    }
+
+    public void removeKilosDisponiblesOfAnAportacion(Aportacion a) {
+        List<KilosDisponibles> lista = kilosDisponiblesRepository.findAll();
+
+        lista.forEach(kilosDisponibles -> {
+            a.getDetalles().forEach(detalleAportacion -> {
+                if (detalleAportacion.getTipoAlimento() == kilosDisponibles.getTipoAlimento()) {
+                    kilosDisponibles.setCantidadDisponible(kilosDisponibles.getCantidadDisponible() - detalleAportacion.getCantidadKilos());
+                    kilosDisponiblesRepository.save(kilosDisponibles);
+                }
+            });
+        });
+    }
+
+    public List<GetDetallesKilosDisponiblesDto> findDetallesOfKiloDisponible(Long idTipoAlimento) {
+        return kilosDisponiblesRepository.findDetallesOfKiloDisponible(idTipoAlimento);
     }
 
 }

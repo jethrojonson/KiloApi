@@ -7,6 +7,7 @@ import com.salesianostriana.dam.kiloapi.dto.clase.NewClaseDTOM;
 import com.salesianostriana.dam.kiloapi.model.Clase;
 import com.salesianostriana.dam.kiloapi.service.ClaseService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
@@ -68,11 +69,12 @@ public class ClaseController {
                     content = @Content)
     })
     @GetMapping("/{id}")
-    public ResponseEntity<GetOneClaseDtoJ> getOneClass(@PathVariable Long id) {
+    public ResponseEntity<GetOneClaseDtoJ> getOneClass(@Parameter(description = "Identificador de la clase a buscar")
+                                                           @PathVariable Long id) {
         Optional<Clase> clase = claseService.findById(id);
         if (clase.isEmpty())
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(claseService.getCntKgs(id));
+        return ResponseEntity.ok(claseDtoConverter.claseToGetOneClaseDto(clase.get()));
     }
 
     //JERO PART

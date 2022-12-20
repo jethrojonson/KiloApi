@@ -35,6 +35,7 @@ public class AportacionDtoConverter {
                 .fechaAportacion(a.getFecha())
                 .listadoDetalles(aux)
                 .build();
+
     }
 
     public List<GetAportacionClaseDto> findAportacionesClase(Clase c){
@@ -54,5 +55,26 @@ public class AportacionDtoConverter {
 
     }
 
+    public GetNewAportacionDto aportacionToGetNewAportacionDto(Aportacion aportacion) {
+
+        List<GetDetallesDto> aux = new ArrayList<>();
+
+        aportacion.getDetalles().forEach(detalleAportacion -> {
+            aux.add(
+                    GetDetallesDto.builder()
+                            .numLinea(detalleAportacion.getId().getNumLinea())
+                            .alimento(detalleAportacion.getTipoAlimento().getNombre())
+                            .kilos(detalleAportacion.getCantidadKilos())
+                            .build()
+            );
+        });
+
+        return GetNewAportacionDto.builder()
+                .id(aportacion.getId())
+                .clase(aportacion.getClase().getNombre())
+                .fechaAportacion(aportacion.getFecha())
+                .listadoDetalles(aux)
+                .build();
+    }
 
 }

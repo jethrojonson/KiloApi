@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -51,31 +50,13 @@ public class InitData {
 
         tipoAlimentoRepo.saveAll(List.of(ta1, ta2, ta3));
 
-
-
-        KilosDisponibles kd1 = KilosDisponibles.builder()
+        KilosDisponibles kd = KilosDisponibles.builder()
                 .id(ta1.getId())
-                .cantidadDisponible(13.5)
+                .tipoAlimento(ta1)
+                .cantidadDisponible(10)
                 .build();
 
-        KilosDisponibles kd2 = KilosDisponibles.builder()
-                .id(ta2.getId())
-                .cantidadDisponible(4)
-                .build();
-
-        KilosDisponibles kd3 = KilosDisponibles.builder()
-                .id(ta3.getId())
-                .cantidadDisponible(6.8)
-                .build();
-
-
-        ta1.addToKilosDisponibles(kd1);
-        ta2.addToKilosDisponibles(kd2);
-        ta3.addToKilosDisponibles(kd3);
-
-        tipoAlimentoRepo.saveAll(List.of(ta1, ta2, ta3));
-        kilosDisponiblesRepository.saveAll(List.of(kd1, kd2, kd3));
-
+        kilosDisponiblesRepository.save(kd);
 
         Destinatario d1 = Destinatario.builder()
                 .nombre("Asociación Don Bosco")
@@ -116,6 +97,21 @@ public class InitData {
                 .build();
 
         tieneRepository.save(t1);
+
+
+        //nico //intentando crear una aportacion
+//        Aportacion a = Aportacion.builder()
+//                .fecha(LocalDate.of(2022,8,12))
+//                .clase(cl1)
+//                .detalles(
+//                        List.of(
+//                                DetalleAportacion.builder()
+//                                        .aportacion(this)
+//                                        .build()
+//                        )
+//                )
+//                .build();
+
 
     }
 
