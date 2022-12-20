@@ -58,6 +58,16 @@ public class CajaDtoConverterN {
                 .build();
 
     }
+
+    public CajaDtoPut cajaToGetCajaDtoPut(Caja caja) {
+        return CajaDtoPut.builder()
+                .id(caja.getId())
+                .qr(caja.getQr())
+                .numCaja(caja.getNumCaja())
+                .kilosTotales(caja.getKilosTotales())
+                .listaAlimentos(cajaService.findAlimentosOfACaja(caja.getId()))
+                .build();
+    }
 }
 
 
