@@ -7,6 +7,7 @@ import com.salesianostriana.dam.kiloapi.repos.KilosDisponiblesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,11 @@ public class KilosDisponiblesService {
     public void sumAportacionesToKilosDisponibles(Aportacion a) {
 
         List<KilosDisponibles> lista = findAll();
+        List<Long> auxLong = new ArrayList<>();
+
+        lista.forEach(l-> {
+            auxLong.add(l.getTipoAlimento().getId());
+        });
 
         if (lista.isEmpty()) {
             a.getDetalles().forEach(d -> {
@@ -37,7 +43,14 @@ public class KilosDisponiblesService {
         } else {
             lista.forEach(l -> {
                 a.getDetalles().forEach(d -> {
-                    if (d.getTipoAlimento() == l.getTipoAlimento()) {
+                    if (!auxLong.contains(d.getTipoAlimento().getId())){
+                        KilosDisponibles kn = KilosDisponibles.builder()
+                                .id(d.getTipoAlimento().getId())
+                                .cantidadDisponible(d.getCantidadKilos())
+                                .build();
+                        d.getTipoAlimento().addToKilosDisponibles(kn);
+                        kilosDisponiblesRepository.save(kn);
+                    }else if (d.getTipoAlimento() == l.getTipoAlimento()) {
                         l.setCantidadDisponible(l.getCantidadDisponible() + d.getCantidadKilos());
                         kilosDisponiblesRepository.save(l);
                     }

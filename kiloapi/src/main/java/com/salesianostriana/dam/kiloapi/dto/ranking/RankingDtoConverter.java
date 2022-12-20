@@ -24,24 +24,29 @@ public class RankingDtoConverter {
             Optional<Clase> c = claseService.findById(r.getId());
 
             final double[] sumaKg = {0};
-            final int[] cantDe = {0};
             c.get().getAportaciones().forEach(a -> {
                 a.getDetalles().forEach(d -> {
                     sumaKg[0] += d.getCantidadKilos();
                 });
-                cantDe[0] = a.getDetalles().size();
             });
 
             ReturnRankingDto rdto = ReturnRankingDto.builder()
                     .posicion(aux.size()+1)
                     .clase(r.getNombreClase())
                     .numeroDeAportaciones(c.get().getAportaciones().size())
-                    .mediaDeKgPorAportacion(Math.round(((sumaKg[0] / cantDe[0]) / c.get().getAportaciones().size())*100.0)/100.0)
+                    .mediaDeKgPorAportacion(Math.round((sumaKg[0] / c.get().getAportaciones().size())*100.0)/100.0)
                     .kgTotalesAportados(r.getSumKgAportaciones())
                     .build();
-
             aux.add(rdto);
         });
+
+        for (int i = 0; i < aux.size(); i++){
+            if (aux.get(i).getKgTotalesAportados() == aux.get(0).getKgTotalesAportados()){
+                aux.get(i).setPosicion(1);
+            }else if (aux.get(i).getKgTotalesAportados() == aux.get(i-1).getKgTotalesAportados()){
+                aux.get(i).setPosicion(aux.get(i-1).getPosicion());
+            }
+        }
 
         return aux;
     }
