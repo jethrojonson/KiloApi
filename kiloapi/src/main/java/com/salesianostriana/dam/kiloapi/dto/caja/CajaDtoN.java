@@ -12,6 +12,7 @@ import lombok.*;
 @Builder
 public class CajaDtoN {
 
+    private Long id;
     private String qr;
     private int numCaja;
     private double kilosTotales;

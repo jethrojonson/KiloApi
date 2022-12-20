@@ -141,7 +141,7 @@ public class AportacionController {
 
 
     @Operation(summary = "Elimina una aportación a partir de un id dado",
-            description = "Al borrar una aportación, se borran sus DetalleAportación asociados y se actualizan los KilosDisponibles")
+            description = "Al borrar una aportación, se actualizan los KilosDisponibles")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",
                     description = "Se ha eliminado correctamente la aportación",
@@ -149,8 +149,11 @@ public class AportacionController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAportacion(@PathVariable Long id) {
-        if(aportacionService.findById(id).isPresent())
-            claseService.deleteById(id);
+        Optional<Aportacion> aportacion = aportacionService.findById(id);
+        if(aportacion.isPresent()){
+            kilosDisponiblesService.removeKilosDisponiblesOfAnAportacion(aportacion.get());
+            aportacionService.deleteById(id);
+        }
         return ResponseEntity.noContent().build();
     }
 
@@ -178,7 +181,7 @@ public class AportacionController {
         } else {
             return ResponseEntity.ok(result.stream().map(AportacionDtoN::of).collect(Collectors.toList()));
         }
-    }
+    }//tb deberia darte el id y kilos de aportacion sumar para tener los kilos total de la aportacion
 
     @Operation(summary = "Edición de una aportación")
     @ApiResponses(value = {
@@ -226,7 +229,7 @@ public class AportacionController {
         Optional<Aportacion> aportacion = aportacionService.findById(id);
         DetalleAportacion edit = aportacionService.findOneDetalleAportacion(id, num);
 
-        if (aportacion.isEmpty() || edit == null || numKg == null)
+        if (aportacion.isEmpty() || edit == null || numKg == null || numKg < 0)
             return ResponseEntity.badRequest().build();
 
         edit.setCantidadKilos(numKg);
@@ -276,9 +279,9 @@ public class AportacionController {
         if(aportacion.isEmpty() || delete == null)
             return ResponseEntity.notFound().build();
 
+        kilosDisponiblesService.removeKilosDisponiblesOfADetalleAportacion(delete);
         aportacion.get().removeFromAportacion(delete);
         aportacionService.save(aportacion.get());
-        kilosDisponiblesService.removeKilosDisponiblesOfADetalleAportacion(delete);
         return ResponseEntity.ok(aportacionDtoConverter.aportacionToGetNewAportacionDto(aportacion.get()));
     }
 
