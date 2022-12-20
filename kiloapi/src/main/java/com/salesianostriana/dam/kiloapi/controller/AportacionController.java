@@ -186,7 +186,7 @@ public class AportacionController {
         } else {
             return ResponseEntity.ok(result.stream().map(AportacionDtoN::of).collect(Collectors.toList()));
         }
-    }
+    }//tb deberia darte el id y kilos de aportacion sumar para tener los kilos total de la aportacion
 
     @Operation(summary = "Edición de una aportación")
     @ApiResponses(value = {

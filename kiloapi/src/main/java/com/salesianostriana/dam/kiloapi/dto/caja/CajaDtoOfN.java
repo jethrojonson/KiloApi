@@ -3,6 +3,8 @@ package com.salesianostriana.dam.kiloapi.dto.caja;
 import com.salesianostriana.dam.kiloapi.model.Caja;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -10,17 +12,23 @@ import lombok.*;
 @Builder
 public class CajaDtoOfN {
 
-    //datos que deben ir en la respuesta de pedir una caja
-    private List<TieneDTO> alimentos
-    private double cantidadKilos;
+    private Long id;
+    private String qr;
+    private int numCaja;
+    private double kilosTotales;
+    private List<TieneDtoN> alimentos;
     private Long idDestinatario;
     private String nombreDestinatario;
 
    public static CajaDtoOfN of(Caja caja){
         return CajaDtoOfN.builder()
-                .idTipoAlimento(caja.getTieneList().) //for each
-               .nombreTipoAlimento(caja.)
+                .id(caja.getId())
+                .qr(caja.getQr())
+                .numCaja(caja.getNumCaja())
+                .kilosTotales(caja.getKilosTotales())
+                .alimentos(caja.getTieneList().stream().map(TieneDtoN::of).toList())
                 .idDestinatario(caja.getDestinatario().getId())
+                .nombreDestinatario(caja.getDestinatario().getNombre())
                 .build();
     }
 }

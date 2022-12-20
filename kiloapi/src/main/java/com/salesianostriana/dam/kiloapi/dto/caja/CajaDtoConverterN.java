@@ -13,16 +13,26 @@ public class CajaDtoConverterN {
 
     public CajaDtoN CajaToCajaDto(Caja caja){
         return CajaDtoN.builder()
+                .id(caja.getId())
                 .qr(caja.getQr())
                 .numCaja(caja.getNumCaja())
                 .kilosTotales(caja.getKilosTotales())
                 .build();
     }
 
-    public Caja CajaDtoBasicNtoCaja (CajaDtoBasicN cajaDtoBasicN){
-        return Caja.builder()
+    public CajaDtoN CajaDtoBasicNtoCajaDtoN (CajaDtoBasicN cajaDtoBasicN){
+        return CajaDtoN.builder()
                 .qr(cajaDtoBasicN.getQr())
                 .numCaja(cajaDtoBasicN.getNumCaja())
+                .build();
+    }
+
+    public Caja CajaDtoToCaja(CajaDtoN cajaDtoN){
+        return Caja.builder()
+                .id(cajaDtoN.getId())
+                .qr(cajaDtoN.getQr())
+                .numCaja(cajaDtoN.getNumCaja())
+                .kilosTotales(cajaDtoN.getKilosTotales())
                 .build();
     }
 }
