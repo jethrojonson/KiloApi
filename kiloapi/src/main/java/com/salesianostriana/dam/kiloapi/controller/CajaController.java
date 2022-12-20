@@ -84,7 +84,7 @@ public class CajaController {
                     content = @Content),
     })
     @PostMapping("/")
-    public ResponseEntity<Caja> nuevaCaja(@RequestBody CajaDtoBasicN nuevo) {
+    public ResponseEntity<Caja> nuevaCaja(@RequestBody CajaDtoBasicN nuevo) { //es malo devolver una caja? tengo q usar CajaResponse?
         if (nuevo.getQr() == "") {
             return ResponseEntity.badRequest().build();
         }
