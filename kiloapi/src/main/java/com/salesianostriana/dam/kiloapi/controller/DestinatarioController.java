@@ -217,10 +217,9 @@ public class DestinatarioController {
     @Operation(summary = "Edita a un destinatario")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = GetDestinatarioDto.class),
+                    schema = @Schema(implementation = CreateDestinatarioDto.class),
                     examples = @ExampleObject(value = """
                             {   
-                                "id":4,
                                 "nombre": "Miguel",
                                 "direccion": "Calle sin nombre, número",
                                 "personaContacto": "Ángel",
