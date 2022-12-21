@@ -176,8 +176,9 @@ public class CajaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Caja> delete(@PathVariable Long id) {
 
-        if (cajaService.existById(id))
-            cajaService.deleteById(cajaService.preRemoveAlimentos(id));
+        Optional<Caja> caja = cajaService.findById(id);
+
+        caja.ifPresent(cajaService::preRemoveAlimentos);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

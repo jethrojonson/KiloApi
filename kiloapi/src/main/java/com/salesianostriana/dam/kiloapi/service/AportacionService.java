@@ -76,7 +76,7 @@ public class AportacionService {
         List<DetalleAportacion> aux = new ArrayList<>();
 
         dto.getTipoAlimento().forEach((aLong, aDouble) -> {
-            if (tipoRepo.existsById(aLong)){
+            if (tipoRepo.existsById(aLong) && aDouble >= 0){
                 DetalleAportacion da = DetalleAportacion.builder()
                         .id(generateNumLinea(ap.getId(), (long) aux.size()+1))
                         .cantidadKilos(aDouble)

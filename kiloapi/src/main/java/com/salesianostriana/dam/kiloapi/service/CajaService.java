@@ -70,20 +70,25 @@ public class CajaService {
         return tieneRepository.findById(pk).get();
     }
 
-    public Long preRemoveAlimentos (Long id) {
+    public void preRemoveAlimentos (Caja c) {
 
-        Caja caja = cajaRepository.findById(id).get();
+        List<Tiene> tieneList = c.getTieneList();
 
-        caja.getTieneList().forEach(tiene -> {
+        tieneList.forEach(tiene -> {
             kilosDisponiblesRepository.findAll().forEach(k -> {
-                if(tiene.getTipoAlimento().equals(k.getTipoAlimento())){
+                if (tiene.getTipoAlimento().equals(k.getTipoAlimento())){
                     k.setCantidadDisponible(k.getCantidadDisponible()+tiene.getCantidadKgs());
                     kilosDisponiblesRepository.save(k);
                 }
             });
         });
 
-        return caja.getId();
+        tieneList.forEach(tiene -> {
+            tiene.setCaja(null);
+        });
+
+        cajaRepository.delete(c);
+
     }
 
     public List<CajaTipoAlimentoDto> findAlimentosOfACaja(Long idCaja) {

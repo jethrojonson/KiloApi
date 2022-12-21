@@ -3,12 +3,25 @@ package com.salesianostriana.dam.kiloapi.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
 @Builder
 public class Tiene {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tiene tiene = (Tiene) o;
+        return id.equals(tiene.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 
     @EmbeddedId
     @Builder.Default
@@ -53,7 +66,7 @@ public class Tiene {
         tipoAlimento = null;
         t.getTieneList().remove(this);
     }
-
+/*
     @PreRemove
     public void setNull(){
         removeFromCaja(caja);
@@ -61,6 +74,6 @@ public class Tiene {
 
 
     }
-
+*/
 
 }
