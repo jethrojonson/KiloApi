@@ -1,11 +1,13 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetKilosDisponiblesDto;
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetOneKilosDisponiblesDto;
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.KilosDisponiblesDtoConverter;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
 import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
 import com.salesianostriana.dam.kiloapi.service.KilosDisponiblesService;
+import com.salesianostriana.dam.kiloapi.views.KilosDisponiblesViews;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -61,6 +63,7 @@ public class KilosDisponiblesController {
                     content = @Content),
     })
     @GetMapping("/")
+    @JsonView(KilosDisponiblesViews.Master.class)
     public ResponseEntity<List<GetKilosDisponiblesDto>> findAll(){
 
         if(kilosDisponiblesService.findAll().isEmpty())
