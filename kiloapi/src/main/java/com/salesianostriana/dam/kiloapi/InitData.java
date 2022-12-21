@@ -41,12 +41,12 @@ public class InitData {
 
         Clase cl4 = Clase.builder()
                 .nombre("2ºAYF")
-                .tutor("Juanito")
+                .tutor("Juan")
                 .build();
 
         Clase cl5 = Clase.builder()
-                .nombre("1ºFPB")
-                .tutor("Bin Laden")
+                .nombre("2ºGestión")
+                .tutor("Juanito")
                 .build();
 
         claseRepository.saveAll(List.of(cl1, cl2, cl3, cl4, cl5));
