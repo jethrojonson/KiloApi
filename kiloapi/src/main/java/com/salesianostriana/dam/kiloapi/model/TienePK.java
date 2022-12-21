@@ -1,9 +1,6 @@
 package com.salesianostriana.dam.kiloapi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;
@@ -11,6 +8,7 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor @AllArgsConstructor
 @Getter @Setter
+@Builder
 public class TienePK implements Serializable {
 
     private Long tipo_alimento_id;

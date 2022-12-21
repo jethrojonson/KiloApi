@@ -1,11 +1,11 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetKilosDisponiblesDto;
-import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.GetOneKilosDisponiblesDto;
 import com.salesianostriana.dam.kiloapi.dto.kilosdisponibles.KilosDisponiblesDtoConverter;
-import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
 import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
 import com.salesianostriana.dam.kiloapi.service.KilosDisponiblesService;
+import com.salesianostriana.dam.kiloapi.views.KilosDisponiblesViews;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -61,6 +61,7 @@ public class KilosDisponiblesController {
                     content = @Content),
     })
     @GetMapping("/")
+    @JsonView(KilosDisponiblesViews.Master.class)
     public ResponseEntity<List<GetKilosDisponiblesDto>> findAll(){
 
         if(kilosDisponiblesService.findAll().isEmpty())
@@ -76,7 +77,7 @@ public class KilosDisponiblesController {
             @ApiResponse(responseCode = "200",
                     description = "Se ha encontrado con éxito los Kilos Disponibles del tipo de alimento pasado",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GetOneKilosDisponiblesDto.class),
+                            schema = @Schema(implementation = GetKilosDisponiblesDto.class),
                             examples = {@ExampleObject(
                                     value = """
                                             {
@@ -103,7 +104,8 @@ public class KilosDisponiblesController {
                     content = @Content)
     })
     @GetMapping("/{idTipoAlimento}")
-    public ResponseEntity<GetOneKilosDisponiblesDto> getOneKilosDisponibles(@Parameter(description = "Identificador del tipo de alimento para buscar sus kilos disponibles")
+    @JsonView(KilosDisponiblesViews.Details.class)
+    public ResponseEntity<GetKilosDisponiblesDto> getOneKilosDisponibles(@Parameter(description = "Identificador del tipo de alimento para buscar sus kilos disponibles")
                                                                                 @PathVariable Long idTipoAlimento) {
         Optional<KilosDisponibles> kilosDisponibles = kilosDisponiblesService.findById(idTipoAlimento);
         if(kilosDisponibles.isEmpty())

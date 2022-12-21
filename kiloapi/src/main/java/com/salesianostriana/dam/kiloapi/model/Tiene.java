@@ -40,5 +40,27 @@ public class Tiene {
         c.getTieneList().remove(this);
     }
 
+    //////////////////////////////////////////////
+    /* HELPERS de la asociación con TipoAlimento*/
+    //////////////////////////////////////////////
+
+    public void addToTipoAlimento(TipoAlimento t){
+        tipoAlimento = t;
+        t.getTieneList().add(this);
+    }
+
+    public void removeFromTipoAlimento(TipoAlimento t){
+        tipoAlimento = null;
+        t.getTieneList().remove(this);
+    }
+
+    @PreRemove
+    public void setNull(){
+        removeFromCaja(caja);
+        removeFromTipoAlimento(tipoAlimento);
+
+
+    }
+
 
 }

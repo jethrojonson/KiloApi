@@ -34,7 +34,22 @@ public class InitData {
                 .tutor("Eduardo")
                 .build();
 
-        claseRepository.saveAll(List.of(cl1, cl2));
+        Clase cl3 = Clase.builder()
+                .nombre("1ºAYF")
+                .tutor("Mónica")
+                .build();
+
+        Clase cl4 = Clase.builder()
+                .nombre("2ºAYF")
+                .tutor("Juan")
+                .build();
+
+        Clase cl5 = Clase.builder()
+                .nombre("2ºGestión")
+                .tutor("Juanito")
+                .build();
+
+        claseRepository.saveAll(List.of(cl1, cl2, cl3, cl4, cl5));
 
         TipoAlimento ta1 = TipoAlimento.builder()
                 .nombre("Garbanzos")
@@ -147,7 +162,6 @@ public class InitData {
                 .build();
 
         tieneRepository.saveAll(List.of(t1, t2, t3));
-
     }
 
 }

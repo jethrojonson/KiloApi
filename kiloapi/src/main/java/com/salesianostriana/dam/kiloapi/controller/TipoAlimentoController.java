@@ -1,6 +1,5 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
-import com.salesianostriana.dam.kiloapi.dto.aportacion.PostDetalleAportacionDto;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoConverterN;
@@ -35,12 +34,9 @@ public class TipoAlimentoController {
     @Operation(summary = "Edita un tipo de alimento específico")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = TipoAlimentoDto.class),
+                    schema = @Schema(implementation = String.class),
                     examples = @ExampleObject(value = """
-                                {
-                                  "nombre": "Frutas"
-                                }
-                            """)))
+                            nombre : Frutas""")))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha editado el tipo de alimento",
@@ -59,9 +55,9 @@ public class TipoAlimentoController {
                     content = @Content),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<TipoAlimentoDto> update(@RequestBody TipoAlimentoDto t, @Parameter(description = "Id del tipo de alimento") @PathVariable Long id) {
+    public ResponseEntity<TipoAlimentoDtoBasicN> update(@RequestBody TipoAlimento t, @Parameter(description = "Id del tipo de alimento") @PathVariable Long id) {
 
-        if (t.getNombre().isEmpty() || t.getNombre() == null)
+        if (t.getNombre().isEmpty() || t.getNombre() == null || !tipoAlimentoService.existById(id))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         return ResponseEntity.of(
@@ -69,7 +65,7 @@ public class TipoAlimentoController {
                         .map(old -> {
                             old.setNombre(t.getNombre());
                             tipoAlimentoService.save(old);
-                            return Optional.of(TipoAlimentoDto.builder().nombre(old.getNombre()).build());
+                            return Optional.of(tipoAlimentoDtoConverter.tipoAlimentoToTipoAlimentoDtoBasicN(tipoAlimentoService.findById(id).get()));
                         })
                         .orElse(Optional.empty())
         );
@@ -95,12 +91,12 @@ public class TipoAlimentoController {
                     content = @Content),
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TipoAlimento> getOne(@Parameter(description = "Id del tipo de alimento") @PathVariable Long id) {
+    public ResponseEntity<TipoAlimentoDtoBasicN> getOne(@Parameter(description = "Id del tipo de alimento") @PathVariable Long id) {
 
         if (!tipoAlimentoService.existById(id))
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        return ResponseEntity.of(tipoAlimentoService.findById(id));
+        return ResponseEntity.ok(tipoAlimentoDtoConverter.tipoAlimentoToTipoAlimentoDtoBasicN(tipoAlimentoService.findById(id).get()));
     }
 
     @Operation(summary = "Obtiene todos los tipos de alimentos")
