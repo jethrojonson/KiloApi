@@ -2,11 +2,7 @@ package com.salesianostriana.dam.kiloapi.controller;
 
 import com.salesianostriana.dam.kiloapi.dto.caja.*;
 import com.salesianostriana.dam.kiloapi.model.*;
-import com.salesianostriana.dam.kiloapi.service.CajaService;
-import com.salesianostriana.dam.kiloapi.service.DestinatarioService;
-import com.salesianostriana.dam.kiloapi.service.TieneService;
-import com.salesianostriana.dam.kiloapi.service.KilosDisponiblesService;
-import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
+import com.salesianostriana.dam.kiloapi.service.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -157,7 +153,8 @@ public class CajaController {
 
         double cantDisp = kilosDisponiblesService.findById(idA).get().getCantidadDisponible();
 
-        if(idC == null || idA == null || kgs == null || cantDisp < kgs)
+        if(idC == null || idA == null || kgs == null || cantDisp < kgs
+        || !cajaService.existById(idC) || !tipoAlimentoService.existById(idA))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         else if (kgs == 0)
             return ResponseEntity.ok(cajaDtoConverter.createDtoPut(cajaService.findById(idC).get()));
