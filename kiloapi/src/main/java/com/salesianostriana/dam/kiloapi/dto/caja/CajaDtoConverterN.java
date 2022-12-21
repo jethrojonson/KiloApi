@@ -20,6 +20,7 @@ public class CajaDtoConverterN {
                 .qr(caja.getQr())
                 .numCaja(caja.getNumCaja())
                 .kilosTotales(caja.getKilosTotales())
+                .tiene(caja.getTieneList())
                 .build();
     }
 

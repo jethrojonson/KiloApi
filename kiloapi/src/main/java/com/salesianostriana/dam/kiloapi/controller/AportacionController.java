@@ -9,6 +9,7 @@ import com.salesianostriana.dam.kiloapi.service.ClaseService;
 import com.salesianostriana.dam.kiloapi.service.KilosDisponiblesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -283,6 +284,52 @@ public class AportacionController {
         aportacion.get().removeFromAportacion(delete);
         aportacionService.save(aportacion.get());
         return ResponseEntity.ok(aportacionDtoConverter.aportacionToGetNewAportacionDto(aportacion.get()));
+    }
+
+    //JERO
+    @Operation(summary = "Este endpoint obtiene una aportacion por su id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado aportaciones",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetNewAportacionDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                 "id": 10,
+                                                 "clase": "2ª DAM",
+                                                 "fechaAportacion": "2022-10-24",
+                                                 "listadoDetalles": [
+                                                     {
+                                                         "numLinea": 1,
+                                                         "alimento": "Garbanzos",
+                                                         "kilos": 15.0
+                                                     },
+                                                     {
+                                                         "numLinea": 2,
+                                                         "alimento": "Dodotis",
+                                                         "kilos": 5.0
+                                                     }
+                                                 ]
+                                             }
+                                            """
+                            )}
+                    )
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "No se han encontrado aportaciones",
+                    content = @Content
+            )
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<GetNewAportacionDto> getOneAportacion(@PathVariable Long id){
+        Optional <Aportacion> result = aportacionService.findById(id);
+        if (result.isPresent())
+            return ResponseEntity.ok(
+                    aportacionDtoConverter.newAportacionDto(result.get())
+            );
+        else
+            return ResponseEntity.notFound().build();
     }
 
 }

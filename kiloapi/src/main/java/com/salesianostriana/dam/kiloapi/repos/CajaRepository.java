@@ -4,7 +4,6 @@ import com.salesianostriana.dam.kiloapi.dto.caja.CajaTipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.model.Caja;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-
 import java.util.List;
 
 public interface CajaRepository extends JpaRepository<Caja,Long> {

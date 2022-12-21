@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "98069fdf-964b-4428-824e-139c2125d3b8",
+		"_postman_id": "65c1cc54-485e-45fa-ba45-587c8827de6d",
 		"name": "KiloApi",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "23783446"
@@ -15,7 +15,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/tipoAlimento/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tipoAlimento",
+								""
+							]
 						}
 					},
 					"response": []
@@ -26,7 +33,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/tipoAlimento/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tipoAlimento",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
 						}
 					},
 					"response": []
@@ -36,8 +56,24 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\" : \"Golosinas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/tipoAlimento/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tipoAlimento",
+								""
+							]
 						}
 					},
 					"response": []
@@ -48,7 +84,20 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/destinatario/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"destinatario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
 						}
 					},
 					"response": []
@@ -59,7 +108,20 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/tipoAlimento/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"tipoAlimento",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "12"
+								}
+							]
 						}
 					},
 					"response": []
@@ -206,7 +268,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/aportacion/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"aportacion",
+								""
+							]
 						}
 					},
 					"response": []
@@ -217,7 +286,45 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/aportacion/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"aportacion",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Aportaciones Clase",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/aportacion/clase/:idClase",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"aportacion",
+								"clase",
+								":idClase"
+							],
+							"variable": [
+								{
+									"key": "idClase",
+									"value": null
+								}
+							]
 						}
 					},
 					"response": []
@@ -227,8 +334,24 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"claseId\": 2,\r\n  \"tipoAlimento\": {\r\n    \"3\": 10,\r\n    \"4\": 5,\r\n    \"5\": 1\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/aportacion/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"aportacion",
+								""
+							]
 						}
 					},
 					"response": []
@@ -239,7 +362,32 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/aportacion/:id/linea/:numLinea/kg/:numKg",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"aportacion",
+								":id",
+								"linea",
+								":numLinea",
+								"kg",
+								":numKg"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								},
+								{
+									"key": "numLinea",
+									"value": null
+								},
+								{
+									"key": "numKg",
+									"value": null
+								}
+							]
 						}
 					},
 					"response": []
@@ -250,7 +398,50 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/aportacion/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"aportacion",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Detalle de Aportacion",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/aportacion/:id/linea/:numLinea",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"aportacion",
+								":id",
+								"linea",
+								":numLinea"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								},
+								{
+									"key": "numLinea",
+									"value": null
+								}
+							]
 						}
 					},
 					"response": []
@@ -266,7 +457,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/kilosDisponibles/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"kilosDisponibles",
+								""
+							]
 						}
 					},
 					"response": []
@@ -277,7 +475,20 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/kilosDisponibles/:idTipoAlimento",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"kilosDisponibles",
+								":idTipoAlimento"
+							],
+							"variable": [
+								{
+									"key": "idTipoAlimento",
+									"value": null
+								}
+							]
 						}
 					},
 					"response": []
@@ -293,7 +504,340 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": ""
+							"raw": "{{BASE_URL}}/ranking",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"ranking"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cajas",
+			"item": [
+				{
+					"name": "Obtener Cajas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Una Caja",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "9"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Nueva Caja",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Caja",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Caja",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Añadir TipoAlimento A Caja",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Edita La Cantidad De TipoAlimento",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Elimina TipoAlimento De Caja",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/:id/tipo/:idTipoAlim",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								":id",
+								"tipo",
+								":idTipoAlim"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								},
+								{
+									"key": "idTipoAlim",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Añade Caja A Destinatario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/:id/destinatario/:idDestinatario",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								":id",
+								"destinatario",
+								":idDestinatario"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								},
+								{
+									"key": "idDestinatario",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Destinatarios",
+			"item": [
+				{
+					"name": "Obtener destinatarios",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/destinatario/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"destinatario",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Un Destinatario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/destinatario/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"destinatario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Nuevo Destinatario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/destinatario/",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"destinatario",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Editar Destinatario",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/destinatario/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"destinatario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar Destinatario",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/destinatario/:id",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"destinatario",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Obtener Detalles Destinatario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/destinatario/:id/detalle",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"destinatario",
+								":id",
+								"detalle"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								}
+							]
 						}
 					},
 					"response": []

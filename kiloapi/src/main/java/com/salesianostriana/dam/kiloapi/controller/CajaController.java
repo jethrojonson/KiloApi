@@ -30,6 +30,9 @@ public class CajaController {
     private final DestinatarioService destinatarioService;
     private final CajaDtoConverterN cajaDtoConverter;
 
+    private final TipoAlimentoService tipoService;
+
+    private final TieneService tieneService;
     private final TipoAlimentoService tipoAlimentoService;
 
 
@@ -146,7 +149,7 @@ public class CajaController {
                     content = @Content),
     })
     @PutMapping("/{idC}/tipo/{idA}/kg/{kgs}")
-    public ResponseEntity<CajaDtoPut> editarKilosCaja (@PathVariable Long idC, @PathVariable Long idA, @PathVariable Double kgs){
+    public ResponseEntity<CajaDtoPut> editarKilosCaja(@PathVariable Long idC, @PathVariable Long idA, @PathVariable Double kgs) {
 
         double cantDisp = kilosDisponiblesService.findById(idA).get().getCantidadDisponible();
 
@@ -166,9 +169,9 @@ public class CajaController {
                     content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Caja> delete (@PathVariable Long id){
+    public ResponseEntity<Caja> delete(@PathVariable Long id) {
 
-        if(cajaService.existById(id))
+        if (cajaService.existById(id))
             cajaService.deleteById(cajaService.preRemoveAlimentos(id));
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -213,6 +216,17 @@ public class CajaController {
         return ResponseEntity.ok(cajaDtoConverter.createDtoPut(caja.get()));
     }
 
+    @DeleteMapping("/{id}/tipo/{idTipoAlim}")
+    public ResponseEntity<Caja> deleteTipoAlimentoFromCaja(@PathVariable Long id, @PathVariable Long idTipoAlim){
+        Optional <Caja> cajaResult = cajaService.findById(id);
+        Optional <TipoAlimento> tipoResult = tipoService.findById(id);
+        if(cajaResult==null||tipoResult==null)
+            return ResponseEntity.noContent().build();
+        else{
+            tieneService.remove(tieneService.findById(id,idTipoAlim));
+            return ResponseEntity.ok(cajaResult.get());
+        }
+    }
     @Operation(summary = "Añadir la cantidad de kilos de un tipo de alimento a una caja")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201",
