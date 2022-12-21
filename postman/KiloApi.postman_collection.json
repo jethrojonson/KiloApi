@@ -15,13 +15,19 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASE_URL}}/tipoAlimento/",
+							"raw": "{{BASE_URL}}/tipoAlimento/?=",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
 								"tipoAlimento",
 								""
+							],
+							"query": [
+								{
+									"key": null,
+									"value": ""
+								}
 							]
 						}
 					},
@@ -44,7 +50,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": null
+									"value": "6"
 								}
 							]
 						}
@@ -58,7 +64,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\" : \"Golosinas\"\r\n}",
+							"raw": "{\r\n    \"nombre\" : \"Eliminame\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -83,19 +89,28 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Conservas\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{BASE_URL}}/destinatario/:id",
+							"raw": "{{BASE_URL}}/tipoAlimento/:id",
 							"host": [
 								"{{BASE_URL}}"
 							],
 							"path": [
-								"destinatario",
+								"tipoAlimento",
 								":id"
 							],
 							"variable": [
 								{
 									"key": "id",
-									"value": null
+									"value": "12"
 								}
 							]
 						}
@@ -119,7 +134,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "12"
+									"value": "14"
 								}
 							]
 						}
@@ -180,7 +195,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\" : \"1º Panadería\",\r\n    \"tutor\" : \"Padre Damián\"\r\n}",
+							"raw": "{\r\n    \"nombre\" : \"1º BACH\",\r\n    \"tutor\" : \"Gracián Ojeda\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -207,7 +222,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\" : \"1º FPBASIC\",\r\n    \"tutor\" : \"Omar montes\"\r\n}",
+							"raw": "{\r\n    \"nombre\" : \"1º ESO\",\r\n    \"tutor\" : \"Omar Montes\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -250,7 +265,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "1"
+									"value": "5"
 								}
 							]
 						}
@@ -297,7 +312,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": "10"
+									"value": "15"
 								}
 							]
 						}
@@ -322,7 +337,7 @@
 							"variable": [
 								{
 									"key": "idClase",
-									"value": null
+									"value": "1"
 								}
 							]
 						}
@@ -336,7 +351,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"claseId\": 2,\r\n  \"tipoAlimento\": {\r\n    \"3\": 10,\r\n    \"4\": 5,\r\n    \"5\": 1\r\n  }\r\n}",
+							"raw": "{\r\n  \"claseId\": 1,\r\n  \"tipoAlimento\": {\r\n    \"8\": 3,\r\n    \"12\": 2\r\n  }\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -377,15 +392,15 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": null
+									"value": "17"
 								},
 								{
 									"key": "numLinea",
-									"value": null
+									"value": "1"
 								},
 								{
 									"key": "numKg",
-									"value": null
+									"value": "1"
 								}
 							]
 						}
@@ -409,7 +424,7 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": null
+									"value": "17"
 								}
 							]
 						}
@@ -435,11 +450,11 @@
 							"variable": [
 								{
 									"key": "id",
-									"value": null
+									"value": "15"
 								},
 								{
 									"key": "numLinea",
-									"value": null
+									"value": "1"
 								}
 							]
 						}
@@ -486,7 +501,7 @@
 							"variable": [
 								{
 									"key": "idTipoAlimento",
-									"value": null
+									"value": "10"
 								}
 							]
 						}
@@ -631,16 +646,72 @@
 				{
 					"name": "Añadir TipoAlimento A Caja",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/:id/tipo/:idTipoAlimento/kg/:cantidad",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								":id",
+								"tipo",
+								":idTipoAlimento",
+								"kg",
+								":cantidad"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								},
+								{
+									"key": "idTipoAlimento",
+									"value": null
+								},
+								{
+									"key": "cantidad",
+									"value": null
+								}
+							]
+						}
 					},
 					"response": []
 				},
 				{
 					"name": "Edita La Cantidad De TipoAlimento",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASE_URL}}/caja/:id/tipo/:idTipo/kg/:cantidad",
+							"host": [
+								"{{BASE_URL}}"
+							],
+							"path": [
+								"caja",
+								":id",
+								"tipo",
+								":idTipo",
+								"kg",
+								":cantidad"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": null
+								},
+								{
+									"key": "idTipo",
+									"value": null
+								},
+								{
+									"key": "cantidad",
+									"value": null
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -756,6 +827,15 @@
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\" : \"Jerónimo M. Pérez\",\r\n    \"direccion\" : \"c/Doctor Ordoñez de la Barrera,4\",\r\n    \"personaContacto\" : \"José Luis Gil Martín\",\r\n    \"telefono\" : \"950 11 22 33\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "{{BASE_URL}}/destinatario/",
 							"host": [

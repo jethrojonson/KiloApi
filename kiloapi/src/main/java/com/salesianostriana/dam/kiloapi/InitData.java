@@ -24,201 +24,201 @@ public class InitData {
     @PostConstruct
     public void run() {
 
-        Clase cl1 = Clase.builder()
-                .nombre("2ª DAM")
-                .tutor("Luismi")
-                .build();
-
-        Clase cl2 = Clase.builder()
-                .nombre("1ºDAM")
-                .tutor("Eduardo")
-                .build();
-
-        Clase cl3 = Clase.builder()
-                .nombre("1ºAYF")
-                .tutor("Mónica")
-                .build();
-
-        Clase cl4 = Clase.builder()
-                .nombre("2ºAYF")
-                .tutor("Juan")
-                .build();
-
-        Clase cl5 = Clase.builder()
-                .nombre("2ºGestión")
-                .tutor("Juanito")
-                .build();
-
-        claseRepository.saveAll(List.of(cl1, cl2, cl3, cl4, cl5));
-
-        TipoAlimento ta1 = TipoAlimento.builder()
-                .nombre("Garbanzos")
-                .build();
-
-        TipoAlimento ta2 = TipoAlimento.builder()
-                .nombre("Dodotis")
-                .build();
-
-        TipoAlimento ta3 = TipoAlimento.builder()
-                .nombre("Lentejas")
-                .build();
-
-        tipoAlimentoRepository.saveAll(List.of(ta1, ta2, ta3));
-
-        KilosDisponibles kd1 = KilosDisponibles.builder()
-                .id(ta1.getId())
-                .cantidadDisponible(5.9)
-                .build();
-
-        KilosDisponibles kd2 = KilosDisponibles.builder()
-                .id(ta2.getId())
-                .cantidadDisponible(2.9)
-                .build();
-
-        KilosDisponibles kd3 = KilosDisponibles.builder()
-                .id(ta3.getId())
-                .cantidadDisponible(1.9)
-                .build();
-
-
-        ta1.addToKilosDisponibles(kd1);
-        ta2.addToKilosDisponibles(kd2);
-        ta3.addToKilosDisponibles(kd3);
-
-        tipoAlimentoRepository.saveAll(List.of(ta1, ta2, ta3));
-        kilosDisponiblesRepository.saveAll(List.of(kd1, kd2, kd3));
-
-        Aportacion a1 = Aportacion.builder()
-                .fecha(LocalDate.of(2022, 12, 11))
-                .clase(cl1)
-                .build();
-
-        DetalleAportacion da1 = DetalleAportacion.builder()
-                .id(new DetalleAportacionPK(a1.getId(), 1L))
-                .cantidadKilos(8.9)
-                .aportacion(a1)
-                .tipoAlimento(ta1)
-                .build();
-
-        DetalleAportacion da2 = DetalleAportacion.builder()
-                .id(new DetalleAportacionPK(a1.getId(), 2L))
-                .cantidadKilos(6)
-                .aportacion(a1)
-                .tipoAlimento(ta2)
-                .build();
-
-        DetalleAportacion da3 = DetalleAportacion.builder()
-                .id(new DetalleAportacionPK(a1.getId(), 3L))
-                .cantidadKilos(3.2)
-                .aportacion(a1)
-                .tipoAlimento(ta3)
-                .build();
-
-        a1.addDetalleAportacion(da1);
-        a1.addDetalleAportacion(da2);
-        a1.addDetalleAportacion(da3);
-
-        aportacionRepository.save(a1);
-
-        Destinatario d1 = Destinatario.builder()
-                .nombre("Asociación Don Bosco")
-                .direccion("Calle Juan Bosco")
-                .personaContacto("Bosco")
-                .telefono("678543234")
-                .build();
-
-        Destinatario d2 = Destinatario.builder()
-                .nombre("Asociación MAría Auxiliadora")
-                .direccion("Calle María Auxiliadora")
-                .personaContacto("María")
-                .telefono("675221094")
-                .build();
-
-        destinatarioRepository.saveAll(List.of(d1, d2));
-
-        Caja c1 = Caja.builder()
-                .qr("No existe")
-                .numCaja(1)
-                .kilosTotales(7.4)
-                .destinatario(d1)
-                .build();
-
-        Caja c2 = Caja.builder()
-                .qr("https://stackoverflow.com/questions/35982162/json-output-of-entity-with-onetoone-relationship")
-                .numCaja(2)
-                .kilosTotales(15.6)
-                .destinatario(d2)
-                .build();
-
-        Caja c3 = Caja.builder()
-                .qr("https://stackoverflow.com/questions/35982162/json-output-of-entity-with-onetoone-relationship")
-                .numCaja(3)
-                .kilosTotales(100)
-                .destinatario(d1)
-                .build();
-
-        cajaRepository.saveAll(List.of(c1, c2, c3));
-
-        Tiene t1 = Tiene.builder()
-                .caja(c1)
-                .tipoAlimento(ta1)
-                .cantidadKgs(3)
-                .build();
-        Tiene t2 = Tiene.builder()
-                .caja(c1)
-                .tipoAlimento(ta2)
-                .cantidadKgs(3.1)
-                .build();
-        Tiene t3 = Tiene.builder()
-                .caja(c1)
-                .tipoAlimento(ta3)
-                .cantidadKgs(1.3)
-                .build();
-
-        tieneRepository.saveAll(List.of(t1, t2, t3));
-
-        Aportacion ap1 = Aportacion.builder()
-                .clase(cl1)
-                .fecha(LocalDate.of(2022,10,24))
-                .build();
-
-        Aportacion ap2 = Aportacion.builder()
-                .clase(cl2)
-                .fecha(LocalDate.of(2021,12,29))
-                .build();
-
-        DetalleAportacion det1 = DetalleAportacion.builder()
-                .aportacion(ap1)
-                .tipoAlimento(ta1)
-                .cantidadKilos(15)
-                .id(new DetalleAportacionPK(ap1.getId(), 1L))
-                .build();
-
-        DetalleAportacion det2 = DetalleAportacion.builder()
-                .aportacion(ap1)
-                .tipoAlimento(ta2)
-                .cantidadKilos(5)
-                .id(new DetalleAportacionPK(ap1.getId(), 2L))
-                .build();
-
-        DetalleAportacion det3 = DetalleAportacion.builder()
-                .aportacion(ap2)
-                .tipoAlimento(ta3)
-                .cantidadKilos(3.2)
-                .id(new DetalleAportacionPK(ap1.getId(), 1L))
-                .build();
-
-        DetalleAportacion det4 = DetalleAportacion.builder()
-                .aportacion(ap2)
-                .tipoAlimento(ta2)
-                .cantidadKilos(8.90)
-                .id(new DetalleAportacionPK(ap1.getId(), 2L))
-                .build();
-
-        ap1.getDetalles().addAll(List.of(det1,det2,det3,det4));
-
-        aportacionRepository.saveAll(List.of(ap1,ap2));
-
+//        Clase cl1 = Clase.builder()
+//                .nombre("2ª DAM")
+//                .tutor("Luismi")
+//                .build();
+//
+//        Clase cl2 = Clase.builder()
+//                .nombre("1ºDAM")
+//                .tutor("Eduardo")
+//                .build();
+//
+//        Clase cl3 = Clase.builder()
+//                .nombre("1ºAYF")
+//                .tutor("Mónica")
+//                .build();
+//
+//        Clase cl4 = Clase.builder()
+//                .nombre("2ºAYF")
+//                .tutor("Juan")
+//                .build();
+//
+//        Clase cl5 = Clase.builder()
+//                .nombre("2ºGestión")
+//                .tutor("Juanito")
+//                .build();
+//
+//        claseRepository.saveAll(List.of(cl1, cl2, cl3, cl4, cl5));
+//
+//        TipoAlimento ta1 = TipoAlimento.builder()
+//                .nombre("Garbanzos")
+//                .build();
+//
+//        TipoAlimento ta2 = TipoAlimento.builder()
+//                .nombre("Dodotis")
+//                .build();
+//
+//        TipoAlimento ta3 = TipoAlimento.builder()
+//                .nombre("Lentejas")
+//                .build();
+//
+//        tipoAlimentoRepository.saveAll(List.of(ta1, ta2, ta3));
+//
+//        KilosDisponibles kd1 = KilosDisponibles.builder()
+//                .id(ta1.getId())
+//                .cantidadDisponible(5.9)
+//                .build();
+//
+//        KilosDisponibles kd2 = KilosDisponibles.builder()
+//                .id(ta2.getId())
+//                .cantidadDisponible(2.9)
+//                .build();
+//
+//        KilosDisponibles kd3 = KilosDisponibles.builder()
+//                .id(ta3.getId())
+//                .cantidadDisponible(1.9)
+//                .build();
+//
+//
+//        ta1.addToKilosDisponibles(kd1);
+//        ta2.addToKilosDisponibles(kd2);
+//        ta3.addToKilosDisponibles(kd3);
+//
+//        tipoAlimentoRepository.saveAll(List.of(ta1, ta2, ta3));
+//        kilosDisponiblesRepository.saveAll(List.of(kd1, kd2, kd3));
+//
+//        Aportacion a1 = Aportacion.builder()
+//                .fecha(LocalDate.of(2022, 12, 11))
+//                .clase(cl1)
+//                .build();
+//
+//        DetalleAportacion da1 = DetalleAportacion.builder()
+//                .id(new DetalleAportacionPK(a1.getId(), 1L))
+//                .cantidadKilos(8.9)
+//                .aportacion(a1)
+//                .tipoAlimento(ta1)
+//                .build();
+//
+//        DetalleAportacion da2 = DetalleAportacion.builder()
+//                .id(new DetalleAportacionPK(a1.getId(), 2L))
+//                .cantidadKilos(6)
+//                .aportacion(a1)
+//                .tipoAlimento(ta2)
+//                .build();
+//
+//        DetalleAportacion da3 = DetalleAportacion.builder()
+//                .id(new DetalleAportacionPK(a1.getId(), 3L))
+//                .cantidadKilos(3.2)
+//                .aportacion(a1)
+//                .tipoAlimento(ta3)
+//                .build();
+//
+//        a1.addDetalleAportacion(da1);
+//        a1.addDetalleAportacion(da2);
+//        a1.addDetalleAportacion(da3);
+//
+//        aportacionRepository.save(a1);
+//
+//        Destinatario d1 = Destinatario.builder()
+//                .nombre("Asociación Don Bosco")
+//                .direccion("Calle Juan Bosco")
+//                .personaContacto("Bosco")
+//                .telefono("678543234")
+//                .build();
+//
+//        Destinatario d2 = Destinatario.builder()
+//                .nombre("Asociación MAría Auxiliadora")
+//                .direccion("Calle María Auxiliadora")
+//                .personaContacto("María")
+//                .telefono("675221094")
+//                .build();
+//
+//        destinatarioRepository.saveAll(List.of(d1, d2));
+//
+//        Caja c1 = Caja.builder()
+//                .qr("No existe")
+//                .numCaja(1)
+//                .kilosTotales(7.4)
+//                .destinatario(d1)
+//                .build();
+//
+//        Caja c2 = Caja.builder()
+//                .qr("https://stackoverflow.com/questions/35982162/json-output-of-entity-with-onetoone-relationship")
+//                .numCaja(2)
+//                .kilosTotales(15.6)
+//                .destinatario(d2)
+//                .build();
+//
+//        Caja c3 = Caja.builder()
+//                .qr("https://stackoverflow.com/questions/35982162/json-output-of-entity-with-onetoone-relationship")
+//                .numCaja(3)
+//                .kilosTotales(100)
+//                .destinatario(d1)
+//                .build();
+//
+//        cajaRepository.saveAll(List.of(c1, c2, c3));
+//
+//        Tiene t1 = Tiene.builder()
+//                .caja(c1)
+//                .tipoAlimento(ta1)
+//                .cantidadKgs(3)
+//                .build();
+//        Tiene t2 = Tiene.builder()
+//                .caja(c1)
+//                .tipoAlimento(ta2)
+//                .cantidadKgs(3.1)
+//                .build();
+//        Tiene t3 = Tiene.builder()
+//                .caja(c1)
+//                .tipoAlimento(ta3)
+//                .cantidadKgs(1.3)
+//                .build();
+//
+//        tieneRepository.saveAll(List.of(t1, t2, t3));
+//
+//        Aportacion ap1 = Aportacion.builder()
+//                .clase(cl1)
+//                .fecha(LocalDate.of(2022,10,24))
+//                .build();
+//
+//        Aportacion ap2 = Aportacion.builder()
+//                .clase(cl2)
+//                .fecha(LocalDate.of(2021,12,29))
+//                .build();
+//
+//        DetalleAportacion det1 = DetalleAportacion.builder()
+//                .aportacion(ap1)
+//                .tipoAlimento(ta1)
+//                .cantidadKilos(15)
+//                .id(new DetalleAportacionPK(ap1.getId(), 1L))
+//                .build();
+//
+//        DetalleAportacion det2 = DetalleAportacion.builder()
+//                .aportacion(ap1)
+//                .tipoAlimento(ta2)
+//                .cantidadKilos(5)
+//                .id(new DetalleAportacionPK(ap1.getId(), 2L))
+//                .build();
+//
+//        DetalleAportacion det3 = DetalleAportacion.builder()
+//                .aportacion(ap2)
+//                .tipoAlimento(ta3)
+//                .cantidadKilos(3.2)
+//                .id(new DetalleAportacionPK(ap1.getId(), 1L))
+//                .build();
+//
+//        DetalleAportacion det4 = DetalleAportacion.builder()
+//                .aportacion(ap2)
+//                .tipoAlimento(ta2)
+//                .cantidadKilos(8.90)
+//                .id(new DetalleAportacionPK(ap1.getId(), 2L))
+//                .build();
+//
+//        ap1.getDetalles().addAll(List.of(det1,det2,det3,det4));
+//
+//        aportacionRepository.saveAll(List.of(ap1,ap2));
+//
 
         //nico //intentando crear una aportacion
 //        Aportacion a = Aportacion.builder()

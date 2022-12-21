@@ -50,9 +50,13 @@ public class DestinatarioController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    @Operation
+    @Operation(summary = "Este endpoint obtiene la lista de destinatarios")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se han encontrado destinatarios", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = GetDestinatarioDTOM.class)), examples = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se han encontrado destinatarios",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = GetDestinatarioDTOM.class)),
+                            examples = {
                     @ExampleObject(value = """
                             [
                                 {
@@ -83,14 +87,14 @@ public class DestinatarioController {
             @ApiResponse(responseCode = "404", description = "No se han econtrado destinatarios", content = @Content)
     })
     @GetMapping("/")
-    public ResponseEntity<List<GetDestinatarioDto>> getAllDestinatarios() {
+    public ResponseEntity<List<GetDestinatarioDTOM>> getAllDestinatarios() {
         List<Destinatario> result = destinatarioService.getAll();
         if (result.isEmpty())
             return ResponseEntity.notFound().build();
         else
             return ResponseEntity.ok(
                     result.stream()
-                            .map(GetDestinatarioDto::of)
+                            .map(GetDestinatarioDTOM::of)
                             .toList());
     }
 
