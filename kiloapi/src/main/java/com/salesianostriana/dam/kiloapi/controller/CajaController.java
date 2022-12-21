@@ -350,6 +350,7 @@ public class CajaController {
                     caja.map(old -> {
                         old.setQr(edit.getQr());
                         old.setNumCaja(edit.getNumCaja());
+                        cajaService.save(old);
                         return Optional.of(cajaDtoConverter.cajaToGetCajaDtoPut(old));
                     }).orElse(Optional.empty())
             );
