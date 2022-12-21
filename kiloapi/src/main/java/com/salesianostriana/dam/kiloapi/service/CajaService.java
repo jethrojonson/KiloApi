@@ -40,26 +40,33 @@ public class CajaService {
 
         Caja c = cajaRepository.findById(idC).get();
         TipoAlimento ta = tipoAlimentoRepository.findById(idA).get();
+        Tiene t = findTieneByIds(idC, idA);
 
-        c.getTieneList().forEach(t -> {
-            if(t.getTipoAlimento().equals(ta) && kgs < t.getTipoAlimento().getKilosDisponibles().getCantidadDisponible()){
-                ResponseEntity.of(
-                        kilosDisponiblesRepository.findById(ta.getId())
-                                .map(old -> {
-                                    old.setTipoAlimento(t.getTipoAlimento());
-                                    old.setId(t.getTipoAlimento().getId());
-                                    old.setCantidadDisponible(old.getCantidadDisponible() + t.getCantidadKgs() - kgs);
-                                    return kilosDisponiblesRepository.save(old);
-                                })
-                );
-                c.setKilosTotales(c.getKilosTotales() + kgs - t.getCantidadKgs());
-                t.setCantidadKgs(kgs);
-                repo.save(c);
-            }
-        });
+        ResponseEntity.of(
+                kilosDisponiblesRepository.findById(ta.getId())
+                        .map(old -> {
+                            old.setTipoAlimento(t.getTipoAlimento());
+                            old.setId(t.getTipoAlimento().getId());
+                            old.setCantidadDisponible(old.getCantidadDisponible() + t.getCantidadKgs() - kgs);
+                            return kilosDisponiblesRepository.save(old);
+                        })
+        );
+        c.setKilosTotales(c.getKilosTotales() + kgs - t.getCantidadKgs());
+        t.setCantidadKgs(kgs);
+        repo.save(c);
 
         return c;
 
+    }
+
+    public Tiene findTieneByIds(Long idC, Long idA){
+
+        TienePK pk = TienePK.builder()
+                .caja_id(idC)
+                .tipo_alimento_id(idA)
+                .build();
+
+        return tieneRepository.findById(pk).get();
     }
 
     public Long preRemoveAlimentos (Long id) {
