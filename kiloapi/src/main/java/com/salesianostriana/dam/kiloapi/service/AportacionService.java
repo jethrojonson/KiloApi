@@ -76,13 +76,15 @@ public class AportacionService {
         List<DetalleAportacion> aux = new ArrayList<>();
 
         dto.getTipoAlimento().forEach((aLong, aDouble) -> {
-            DetalleAportacion da = DetalleAportacion.builder()
-                    .id(generateNumLinea(ap.getId(), (long) aux.size()+1))
-                    .cantidadKilos(aDouble)
-                    .tipoAlimento(tipoRepo.findById(aLong).get())
-                    .build();
-            ap.addDetalleAportacion(da);
-            aux.add(da);
+            if (tipoRepo.existsById(aLong)){
+                DetalleAportacion da = DetalleAportacion.builder()
+                        .id(generateNumLinea(ap.getId(), (long) aux.size()+1))
+                        .cantidadKilos(aDouble)
+                        .tipoAlimento(tipoRepo.findById(aLong).get())
+                        .build();
+                ap.addDetalleAportacion(da);
+                aux.add(da);
+            }
         });
         kilosDisponiblesService.sumAportacionesToKilosDisponibles(ap);
         save(ap);
