@@ -159,7 +159,7 @@ public class CajaController {
         double cantDisp = kilosDisponiblesService.findById(idA).get().getCantidadDisponible();
 
         if(idC == null || idA == null || kgs == null || cantDisp < kgs
-        || !cajaService.existById(idC) || !tipoAlimentoService.existById(idA))
+        || !cajaService.existById(idC) || !tipoAlimentoService.existById(idA) || kgs < 0)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         else if (kgs == 0)
             return ResponseEntity.ok(cajaDtoConverter.createDtoPut(cajaService.findById(idC).get()));
@@ -212,10 +212,10 @@ public class CajaController {
     })
     @PostMapping("/{idC}/destinatario/{idD}")
     public ResponseEntity<CajaDtoPut> asignarDestinatario(@PathVariable Long idC, @PathVariable Long idD){
-        if(idC == null || idD == null)
+        Optional<Caja> caja = cajaService.findById(idC);
+        if(idC == null || idD == null || caja.get().getDestinatario() != null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        Optional<Caja> caja = cajaService.findById(idC);
         caja.get().addToDestinatario(destinatarioService.findById(idD).get());
         cajaService.save(caja.get());
 
