@@ -21,11 +21,9 @@ public class GetOneDestinatarioDTOM {
 
     public static GetOneDestinatarioDTOM of(Destinatario d){
         double kgTotal = 0;
-
         for(Caja c : d.getCajas()){
             kgTotal += c.getKilosTotales();
         }
-
         return GetOneDestinatarioDTOM.builder()
                 .id(d.getId())
                 .nombre(d.getNombre())
@@ -36,5 +34,6 @@ public class GetOneDestinatarioDTOM {
                 .cajasRecibidas(d.getCajas().size())
                 .build();
     }
+
 
 }

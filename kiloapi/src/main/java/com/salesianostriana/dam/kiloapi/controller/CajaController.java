@@ -223,10 +223,15 @@ public class CajaController {
         Optional <TipoAlimento> tipoResult = tipoService.findById(id);
         if(cajaResult==null||tipoResult==null)
             return ResponseEntity.noContent().build();
-        else{
-            tieneService.remove(tieneService.findById(id,idTipoAlim));
-            return ResponseEntity.ok(cajaResult.get());
-        }
+        if(cajaResult.get().getTieneList().contains(tipoResult.get())) {
+            tieneService.remove(tieneService.findById(id, idTipoAlim));
+        } else
+            return ResponseEntity.noContent().build();
+
+//        else{
+//            tieneService.remove(tieneService.findById(id,idTipoAlim));
+//            return ResponseEntity.ok(cajaResult.get());
+//        }
     }
     @Operation(summary = "Añadir la cantidad de kilos de un tipo de alimento a una caja")
     @ApiResponses(value = {

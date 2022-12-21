@@ -58,8 +58,6 @@ public class Tiene {
     public void setNull(){
         removeFromCaja(caja);
         removeFromTipoAlimento(tipoAlimento);
-
-
     }
 
 

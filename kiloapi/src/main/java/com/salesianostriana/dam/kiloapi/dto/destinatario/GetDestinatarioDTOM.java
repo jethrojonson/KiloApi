@@ -20,19 +20,22 @@ public class GetDestinatarioDTOM {
     private int [] cajasNum;
 
     public static GetDestinatarioDTOM of(Destinatario d) {
-        double kgTotal = 0;
-
-        for(Caja c : d.getCajas()){
-            kgTotal += c.getKilosTotales();
+        int contador = 0;
+        double kilos = 0;
+        int[] cajas = new int[d.getCajas().size()];
+        for (Caja c : d.getCajas()) {
+            cajas[contador] = c.getNumCaja();
+            kilos += c.getKilosTotales();
+            contador++;
         }
-
         return GetDestinatarioDTOM.builder()
                 .id(d.getId())
                 .nombre(d.getNombre())
-                .direccion(d.getDireccion())
                 .personaContacto(d.getPersonaContacto())
                 .telefono(d.getTelefono())
-                .kgTotales(kgTotal)
+                .cajasNum(cajas)
+                .direccion(d.getDireccion())
+                .kgTotales(kilos)
                 .build();
     }
 }
