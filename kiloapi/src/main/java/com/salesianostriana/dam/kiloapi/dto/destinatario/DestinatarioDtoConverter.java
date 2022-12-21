@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class DestinatarioDTOConverter {
+public class DestinatarioDtoConverter {
 
     private final DestinatarioService destinatarioService;
 

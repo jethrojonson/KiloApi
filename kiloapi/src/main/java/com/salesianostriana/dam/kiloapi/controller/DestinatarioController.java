@@ -1,16 +1,12 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
-import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionClaseDto;
-import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoBasicN;
-import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoPut;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDTOM;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetOneDestinatarioDTOM;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.CreateDestinatarioDto;
-import com.salesianostriana.dam.kiloapi.dto.destinatario.DestinatarioDTOConverter;
+import com.salesianostriana.dam.kiloapi.dto.destinatario.DestinatarioDtoConverter;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDetalleDto;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDto;
-import com.salesianostriana.dam.kiloapi.model.Caja;
 import com.salesianostriana.dam.kiloapi.model.Destinatario;
 import com.salesianostriana.dam.kiloapi.service.DestinatarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,7 +32,7 @@ import java.util.Optional;
 public class DestinatarioController {
 
     private final DestinatarioService destinatarioService;
-    private final DestinatarioDTOConverter destinatarioDtoConverter;
+    private final DestinatarioDtoConverter destinatarioDtoConverter;
 
     @Operation(summary = "Elimina un destinatario específico")
     @ApiResponses(value = {
@@ -231,9 +227,9 @@ public class DestinatarioController {
                             {   
                                 "id":4,
                                 "nombre": "Miguel",
-                                "dirección": "Calle sin nombre, número",
+                                "direccion": "Calle sin nombre, número",
                                 "personaContacto": "Ángel",
-                                "teléfono": "954761259"
+                                "telefono": "954761259"
                             }
                             """)))
     @ApiResponses(value = {

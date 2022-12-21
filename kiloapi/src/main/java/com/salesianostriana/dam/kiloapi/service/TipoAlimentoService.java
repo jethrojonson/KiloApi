@@ -1,6 +1,10 @@
 package com.salesianostriana.dam.kiloapi.service;
 
+import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDto;
+import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
+import com.salesianostriana.dam.kiloapi.model.KilosDisponibles;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
+import com.salesianostriana.dam.kiloapi.repos.KilosDisponiblesRepository;
 import com.salesianostriana.dam.kiloapi.repos.TipoAlimentoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,7 @@ import java.util.Optional;
 public class TipoAlimentoService {
 
     private final TipoAlimentoRepository repo;
+    private final KilosDisponiblesRepository kilosDisponiblesRepository;
 
     public List<TipoAlimento> findAll(){ return repo.findAll(); }
 
@@ -23,5 +28,19 @@ public class TipoAlimentoService {
     public void deleteById (Long id) { repo.deleteById(id); }
 
     public boolean existById (Long id) { return repo.existsById(id); }
+
+    public TipoAlimentoDtoBasicN createTipoAlimento(TipoAlimentoDto tipoAlimentoDto) {
+        TipoAlimento nuevo = TipoAlimentoDto.of(tipoAlimentoDto);
+        save(nuevo);
+
+        KilosDisponibles kilos = KilosDisponibles.builder()
+                .id(nuevo.getId())
+                .tipoAlimento(nuevo)
+                .cantidadDisponible(0.0)
+                .build();
+        kilosDisponiblesRepository.save(kilos);
+        TipoAlimentoDtoBasicN response = TipoAlimentoDtoBasicN.of(nuevo);
+        return response;
+    }
     
 }
