@@ -16,9 +16,11 @@ public class CajaDtoConverterN {
 
     public CajaDtoN CajaToCajaDto(Caja caja){
         return CajaDtoN.builder()
+                .id(caja.getId())
                 .qr(caja.getQr())
                 .numCaja(caja.getNumCaja())
                 .kilosTotales(caja.getKilosTotales())
+                .tiene(caja.getTieneList())
                 .build();
     }
 

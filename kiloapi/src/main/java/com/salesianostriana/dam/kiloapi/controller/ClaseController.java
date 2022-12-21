@@ -99,7 +99,7 @@ public class ClaseController {
                                                     "tutor" : "Luis Miguel"
                                                 },
                                                 {
-                                                    "id" : 1,
+                                                    "id" : 3,
                                                     "nombre" : "1º AyF",
                                                     "tutor" : "Luis"
                                                 }

@@ -8,6 +8,7 @@ import com.salesianostriana.dam.kiloapi.model.Destinatario;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
 import com.salesianostriana.dam.kiloapi.service.CajaService;
 import com.salesianostriana.dam.kiloapi.service.DestinatarioService;
+import com.salesianostriana.dam.kiloapi.service.TieneService;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,6 +34,10 @@ public class CajaController {
     private final CajaService cajaService;
     private final DestinatarioService destinatarioService;
     private final CajaDtoConverterN cajaDtoConverter;
+
+    private final TipoAlimentoService tipoService;
+
+    private final TieneService tieneService;
 
 
     @Operation(summary = "Obtiene todas las cajas")
@@ -115,18 +120,21 @@ public class CajaController {
                     description = "No se ha encontrado la clase indicada",
                     content = @Content)
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<CajaDtoOfN> getOneCaja(@PathVariable Long id) {
-        ResponseEntity<CajaDtoOfN> CajaDtoOfN = null;
-        return CajaDtoOfN;
-       // return ResponseEntity.of(cajaService.findById(id).map(CajaDtoOfN::of)); esto es lo que quiero que ponga lo otro es provisional hasta que funcione el OF
+    @GetMapping("/{id}") //NICO TOCA ESTO
+    public ResponseEntity<CajaDtoN> getOneCaja(@PathVariable Long id) {
+        Optional <Caja> result = cajaService.findById(id);
+        if(result.isPresent())
+            return ResponseEntity.ok(cajaDtoConverter.CajaToCajaDto(result.get()));
+        // return ResponseEntity.of(cajaService.findById(id).map(CajaDtoOfN::of)); esto es lo que quiero que ponga lo otro es provisional hasta que funcione el OF
+        else
+            return ResponseEntity.notFound().build();
     }
 
 
     @PutMapping("/{idC}/tipo/{idA}/kg/{kgs}")
-    public ResponseEntity<CajaDtoPut> editarKilosCaja (@PathVariable Long idC, @PathVariable Long idA, @PathVariable Double kgs){
+    public ResponseEntity<CajaDtoPut> editarKilosCaja(@PathVariable Long idC, @PathVariable Long idA, @PathVariable Double kgs) {
 
-        if(idC == null || idA == null || kgs == null)
+        if (idC == null || idA == null || kgs == null)
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         return ResponseEntity.ok(cajaDtoConverter.createDtoPut(cajaService.changeTipoAlimentoAmount(idC, idA, kgs)));
@@ -134,9 +142,9 @@ public class CajaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Caja> delete (@PathVariable Long id){
+    public ResponseEntity<Caja> delete(@PathVariable Long id) {
 
-        if(cajaService.existById(id))
+        if (cajaService.existById(id))
             cajaService.deleteById(cajaService.preRemoveAlimentos(id));
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -144,8 +152,8 @@ public class CajaController {
 
 
     @PostMapping("/caja/{idC}/destinatario/{idD}")
-    public ResponseEntity<CajaDtoPut> asignarDestinatario(@PathVariable Long idC, @PathVariable Long idD){
-        if(idC == null || idD == null)
+    public ResponseEntity<CajaDtoPut> asignarDestinatario(@PathVariable Long idC, @PathVariable Long idD) {
+        if (idC == null || idD == null)
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         Optional<Caja> caja = cajaService.findById(idC);
@@ -155,4 +163,17 @@ public class CajaController {
         return ResponseEntity.ok(cajaDtoConverter.createDtoPut(caja.get()));
     }
 
+    //JERO
+
+    @DeleteMapping("/{id}/tipo/{idTipoAlim}")
+    public ResponseEntity<Caja> deleteTipoAlimentoFromCaja(@PathVariable Long id, @PathVariable Long idTipoAlim){
+        Optional <Caja> cajaResult = cajaService.findById(id);
+        Optional <TipoAlimento> tipoResult = tipoService.findById(id);
+        if(cajaResult==null||tipoResult==null)
+            return ResponseEntity.noContent().build();
+        else{
+            tieneService.remove(tieneService.findById(id,idTipoAlim));
+            return ResponseEntity.ok(cajaResult.get());
+        }
+    }
 }

@@ -5,6 +5,7 @@ import com.salesianostriana.dam.kiloapi.repos.DestinatarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,4 +29,6 @@ public class DestinatarioService {
     public Optional<Destinatario> findById(Long id){
         return destinatarioRepository.findById(id);
     }
+
+    public List<Destinatario> getAll(){ return destinatarioRepository.findAll(); }
 }
