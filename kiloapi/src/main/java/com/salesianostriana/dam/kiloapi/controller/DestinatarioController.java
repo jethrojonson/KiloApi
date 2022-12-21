@@ -3,7 +3,6 @@ package com.salesianostriana.dam.kiloapi.controller;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDTOM;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetOneDestinatarioDTOM;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
-import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionClaseDto;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.CreateDestinatarioDto;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.DestinatarioDTOConverter;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDetalleDto;
