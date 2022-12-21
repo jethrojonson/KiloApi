@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.kiloapi.service;
 
+import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoN;
 import com.salesianostriana.dam.kiloapi.dto.caja.CajaTipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.model.*;
 import com.salesianostriana.dam.kiloapi.repos.CajaRepository;
@@ -118,4 +119,7 @@ public class CajaService {
 
     }
 
+    public List<CajaDtoN> findAllCajas() {
+        return cajaRepository.findAllCajas();
+    }
 }
