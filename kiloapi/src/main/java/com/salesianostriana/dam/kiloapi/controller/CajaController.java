@@ -208,7 +208,8 @@ public class CajaController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
         Optional<Caja> caja = cajaService.findById(idC);
-        caja.get().setDestinatario(destinatarioService.findById(idD).get());
+        caja.get().addToDestinatario(destinatarioService.findById(idD).get());
+        cajaService.save(caja.get());
 
         return ResponseEntity.ok(cajaDtoConverter.createDtoPut(caja.get()));
     }
