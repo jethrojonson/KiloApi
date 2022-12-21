@@ -4,6 +4,7 @@ import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoConverterN;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
+import com.salesianostriana.dam.kiloapi.service.KilosDisponiblesService;
 import com.salesianostriana.dam.kiloapi.service.TipoAlimentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,6 +30,7 @@ public class TipoAlimentoController {
 
     private final TipoAlimentoService tipoAlimentoService;
     private final TipoAlimentoDtoConverterN tipoAlimentoDtoConverter;
+    private final KilosDisponiblesService kilosDisponiblesService;
 
 
     @Operation(summary = "Edita un tipo de alimento específico")
@@ -181,8 +183,8 @@ public class TipoAlimentoController {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteTipoAlimento(@PathVariable Long id) {
-        if(tipoAlimentoService.findById(id).isPresent())
-            tipoAlimentoService.deleteById(id);
+        if(tipoAlimentoService.findById(id).isPresent() && tipoAlimentoService.comprobarBorradoTipoAlimento(id))
+            kilosDisponiblesService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 

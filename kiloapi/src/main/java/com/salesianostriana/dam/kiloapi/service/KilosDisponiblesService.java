@@ -102,4 +102,8 @@ public class KilosDisponiblesService {
         return kilosDisponiblesRepository.findDetallesOfKiloDisponible(idTipoAlimento);
     }
 
+    public void deleteById(Long id){
+        kilosDisponiblesRepository.deleteById(id);
+    }
+
 }

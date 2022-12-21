@@ -20,7 +20,7 @@ public class TipoAlimento {
     
     private String nombre;
 
-    @OneToOne(mappedBy = "tipoAlimento", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "tipoAlimento", fetch = FetchType.EAGER , cascade = {CascadeType.REMOVE})//cascade
     private KilosDisponibles kilosDisponibles;
 
     @OneToMany(mappedBy = "tipoAlimento", fetch = FetchType.EAGER)
@@ -41,5 +41,8 @@ public class TipoAlimento {
         kd.setTipoAlimento(null);
     }
 
-
+    public TipoAlimento(Long id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
 }

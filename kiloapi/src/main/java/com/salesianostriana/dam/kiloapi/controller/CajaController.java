@@ -1,8 +1,10 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.salesianostriana.dam.kiloapi.dto.caja.*;
 import com.salesianostriana.dam.kiloapi.model.*;
 import com.salesianostriana.dam.kiloapi.service.*;
+import com.salesianostriana.dam.kiloapi.views.CajaViews;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -44,8 +46,14 @@ public class CajaController {
                             schema = @Schema(implementation = CajaDtoN.class)
                             , examples = @ExampleObject(
                             value = """
-                                    {//poner ejemplo
-                                    }
+                                    [
+                                        {
+                                            "id": 12,
+                                            "qr": "No existe",
+                                            "numCaja": 1,
+                                            "kilosTotales": 7.4
+                                        }
+                                    ]
                                     """
                     ))}),
             @ApiResponse(responseCode = "404",
@@ -53,19 +61,14 @@ public class CajaController {
                     content = @Content),
     })
     @GetMapping("/")
+    @JsonView(CajaViews.Master.class)
     public ResponseEntity<List<CajaDtoN>> getAllCajas() {
         if (!cajaService.findAll().isEmpty()) {
-            return ResponseEntity.ok(
-                    cajaService.findAll()
-                            .stream()
-                            .map(c -> cajaDtoConverter.CajaToCajaDto(c))
-                            .toList()
-            );
+            return ResponseEntity.ok(cajaService.findAllCajas());
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-
-    }//probar a ponerlo con el método of y el collectors en vez de dos converter
+    }
 
 
     @Operation(summary = "Crea una caja")
