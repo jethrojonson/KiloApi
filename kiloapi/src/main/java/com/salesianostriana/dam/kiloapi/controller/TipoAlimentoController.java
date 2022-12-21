@@ -1,5 +1,6 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
+import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoBasicN;
 import com.salesianostriana.dam.kiloapi.dto.tipoalimento.TipoAlimentoDtoConverterN;
 import com.salesianostriana.dam.kiloapi.model.TipoAlimento;
@@ -109,7 +110,7 @@ public class TipoAlimentoController {
                                     [
                                         {
                                             "id": 1,
-                                            "nombre": "Precocinados"
+                                            "nombre": "Congelados"
                                         },
                                         {
                                             "id": 2,
@@ -117,7 +118,7 @@ public class TipoAlimentoController {
                                         },
                                         {
                                             "id": 3,
-                                            "nombre": "Chocolates"
+                                            "nombre": "Bebidas"
                                         }
                                     ]
                                     """
@@ -129,9 +130,8 @@ public class TipoAlimentoController {
     @GetMapping("/")
     public ResponseEntity<List<TipoAlimentoDtoBasicN>> getAll() {
 
-        //guardar la lista de findall en vez de llamarla dos veces
-
-        if (!tipoAlimentoService.findAll().isEmpty()) {
+        List<TipoAlimento> tiposAlimentos = tipoAlimentoService.findAll();
+        if (!tiposAlimentos.isEmpty()) {
             return ResponseEntity.ok(
                     tipoAlimentoService.findAll()
                             .stream()
@@ -162,14 +162,12 @@ public class TipoAlimentoController {
                     content = @Content),
     })
     @PostMapping("/")
-    public ResponseEntity<TipoAlimentoDtoBasicN> crearTipoAlimento(@RequestBody TipoAlimento nuevo) {
-        if (nuevo.getNombre() != null)
+    public ResponseEntity<TipoAlimentoDtoBasicN> crearTipoAlimento(@RequestBody TipoAlimentoDto nuevo) {
+        if (nuevo.getNombre() != null){
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(
-                            tipoAlimentoDtoConverter.tipoAlimentoToTipoAlimentoDtoBasicN(
-                                    tipoAlimentoService.save(TipoAlimento.builder().nombre(nuevo.getNombre()).build())
-                            )
-                    );
+                    .body(tipoAlimentoService.createTipoAlimento(nuevo));
+        }
+
 
         return ResponseEntity.badRequest().build();
     }

@@ -20,6 +20,5 @@ public class CajaDtoN {
     private int numCaja;
     private List<Tiene> tiene;
     private double kilosTotales;
-    //private Destinatario destinatario;
 
 }
