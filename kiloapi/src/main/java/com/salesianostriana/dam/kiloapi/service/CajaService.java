@@ -40,26 +40,33 @@ public class CajaService {
 
         Caja c = cajaRepository.findById(idC).get();
         TipoAlimento ta = tipoAlimentoRepository.findById(idA).get();
+        Tiene t = findTieneByIds(idC, idA);
 
-        c.getTieneList().forEach(t -> {
-            if(t.getTipoAlimento().equals(ta) && kgs < t.getTipoAlimento().getKilosDisponibles().getCantidadDisponible()){
-                ResponseEntity.of(
-                        kilosDisponiblesRepository.findById(ta.getId())
-                                .map(old -> {
-                                    old.setTipoAlimento(t.getTipoAlimento());
-                                    old.setId(t.getTipoAlimento().getId());
-                                    old.setCantidadDisponible(old.getCantidadDisponible() + t.getCantidadKgs() - kgs);
-                                    return kilosDisponiblesRepository.save(old);
-                                })
-                );
-                c.setKilosTotales(c.getKilosTotales() + kgs - t.getCantidadKgs());
-                t.setCantidadKgs(kgs);
-                repo.save(c);
-            }
-        });
+        ResponseEntity.of(
+                kilosDisponiblesRepository.findById(ta.getId())
+                        .map(old -> {
+                            old.setTipoAlimento(t.getTipoAlimento());
+                            old.setId(t.getTipoAlimento().getId());
+                            old.setCantidadDisponible(old.getCantidadDisponible() + t.getCantidadKgs() - kgs);
+                            return kilosDisponiblesRepository.save(old);
+                        })
+        );
+        c.setKilosTotales(c.getKilosTotales() + kgs - t.getCantidadKgs());
+        t.setCantidadKgs(kgs);
+        repo.save(c);
 
         return c;
 
+    }
+
+    public Tiene findTieneByIds(Long idC, Long idA){
+
+        TienePK pk = TienePK.builder()
+                .caja_id(idC)
+                .tipo_alimento_id(idA)
+                .build();
+
+        return tieneRepository.findById(pk).get();
     }
 
     public Long preRemoveAlimentos (Long id) {
@@ -83,16 +90,28 @@ public class CajaService {
     }
 
     public void addTipoAlimentoToCaja(Caja c, TipoAlimento ta, Double cantKg) {
+
         Optional<TipoAlimento> tipoAlimento = tipoAlimentoRepository.findById(ta.getId());
         Optional<Caja> caja = cajaRepository.findById(c.getId());
-        Optional<Tiene> tiene = tieneRepository.findById(new TienePK(tipoAlimento.get().getId(), caja.get().getId()));
+        TienePK idTiene = new TienePK(tipoAlimento.get().getId(), caja.get().getId());
+        Optional<Tiene> tiene = tieneRepository.findById(idTiene);
 
         tipoAlimento.get().getKilosDisponibles().setCantidadDisponible
                 (tipoAlimento.get().getKilosDisponibles().getCantidadDisponible() - cantKg);
         tipoAlimentoRepository.save(tipoAlimento.get());
 
-        tiene.get().setCantidadKgs(cantKg + tiene.get().getCantidadKgs());
-        tieneRepository.save(tiene.get());
+        if(tiene.isEmpty()) {
+            Tiene t = Tiene.builder()
+                    .id(new TienePK(tipoAlimento.get().getId(), caja.get().getId()))
+                    .tipoAlimento(tipoAlimento.get())
+                    .caja(caja.get())
+                    .cantidadKgs(cantKg)
+                    .build();
+            tieneRepository.save(t);
+        } else{
+            tiene.get().setCantidadKgs(cantKg + tiene.get().getCantidadKgs());
+            tieneRepository.save(tiene.get());
+        }
 
         caja.get().setKilosTotales(cantKg + caja.get().getKilosTotales());
         cajaRepository.save(caja.get());

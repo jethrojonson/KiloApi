@@ -46,7 +46,7 @@ public class AportacionDtoConverter {
             aux.add(
                     GetAportacionClaseDto.builder()
                             .fecha(a.getFecha())
-                            .aportaciones(aportacionService.queryToGetACDto(c))
+                            .aportaciones(aportacionService.queryToGetACDto(a))
                             .build()
             );
         });

@@ -104,6 +104,7 @@ public class KilosDisponiblesController {
                     content = @Content)
     })
     @GetMapping("/{idTipoAlimento}")
+    @JsonView(KilosDisponiblesViews.Details.class)
     public ResponseEntity<GetKilosDisponiblesDto> getOneKilosDisponibles(@Parameter(description = "Identificador del tipo de alimento para buscar sus kilos disponibles")
                                                                                 @PathVariable Long idTipoAlimento) {
         Optional<KilosDisponibles> kilosDisponibles = kilosDisponiblesService.findById(idTipoAlimento);
