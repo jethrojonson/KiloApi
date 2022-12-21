@@ -34,9 +34,13 @@ public class TipoAlimentoController {
     @Operation(summary = "Edita un tipo de alimento específico")
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
             content = @Content(mediaType = "application/json",
-                    schema = @Schema(implementation = String.class),
-                    examples = @ExampleObject(value = """
-                            nombre : Frutas""")))
+                    schema = @Schema(implementation = TipoAlimentoDto.class),
+                    examples = @ExampleObject(
+                            value = """
+                                    {
+                                        "nombre": "Pasta"
+                                    }
+                            """)))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",
                     description = "Se ha editado el tipo de alimento",
@@ -55,9 +59,9 @@ public class TipoAlimentoController {
                     content = @Content),
     })
     @PutMapping("/{id}")
-    public ResponseEntity<TipoAlimentoDtoBasicN> update(@RequestBody TipoAlimento t, @Parameter(description = "Id del tipo de alimento") @PathVariable Long id) {
+    public ResponseEntity<TipoAlimentoDtoBasicN> update(@RequestBody TipoAlimentoDto t, @Parameter(description = "Id del tipo de alimento") @PathVariable Long id) {
 
-        if (t.getNombre().isEmpty() || t.getNombre() == null || !tipoAlimentoService.existById(id))
+        if (t.getNombre() == null || t.getNombre().isEmpty() || !tipoAlimentoService.existById(id))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         return ResponseEntity.of(
