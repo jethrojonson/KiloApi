@@ -34,7 +34,7 @@ public class DestinatarioController {
             @ApiResponse(responseCode = "204", description = "Se ha eliminado el destinatario", content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Destinatario> deleteDestinatario(@PathVariable Long id) {
+    public ResponseEntity<Destinatario> deleteDestinatario(@Parameter(description = "Id del destinatario") @PathVariable Long id) {
 
         Optional<Destinatario> destinatario = destinatarioService.findById(id);
 

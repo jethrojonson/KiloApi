@@ -22,10 +22,6 @@ public class KilosDisponiblesService {
         return kilosDisponiblesRepository.findAll();
     }
 
-    public void deleteById (Long id){
-        kilosDisponiblesRepository.deleteById(id);
-    }
-
     public void sumAportacionesToKilosDisponibles(Aportacion a) {
 
         List<KilosDisponibles> lista = findAll();
