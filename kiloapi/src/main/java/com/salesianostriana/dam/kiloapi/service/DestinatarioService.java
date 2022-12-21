@@ -1,5 +1,9 @@
 package com.salesianostriana.dam.kiloapi.service;
 
+import com.salesianostriana.dam.kiloapi.dto.destinatario.CreateDestinatarioDto;
+import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDto;
+import com.salesianostriana.dam.kiloapi.dto.destinatario.ListaDetallesCajaDto;
+import com.salesianostriana.dam.kiloapi.dto.destinatario.ListaTipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.model.Destinatario;
 import com.salesianostriana.dam.kiloapi.repos.DestinatarioRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,4 +35,26 @@ public class DestinatarioService {
     }
 
     public List<Destinatario> getAll(){ return destinatarioRepository.findAll(); }
+    public GetDestinatarioDto createDestinatario(CreateDestinatarioDto createDestinatarioDto) {
+        Destinatario newDestinatario = CreateDestinatarioDto.of(createDestinatarioDto);
+        save(newDestinatario);
+        GetDestinatarioDto response = GetDestinatarioDto.of(newDestinatario);
+        return response;
+    }
+
+    public List<ListaTipoAlimentoDto> findNombreTipoAlimentoYCantidadKgsDeUnDestinatario(Long idDestinatario) {
+        return destinatarioRepository.findNombreTipoAlimentoYCantidadKgsDeUnDestinatario(idDestinatario);
+    }
+
+    public List<ListaDetallesCajaDto> findNumCajaYKgsTotalesDeUnDestinatario(Long idDestinatario) {
+        return destinatarioRepository.findNumCajaYKgsTotalesDeUnDestinatario(idDestinatario);
+    }
+
+    public List<ListaDetallesCajaDto> getListaDetallesCajaDto(Destinatario destinatario) {
+        List<ListaDetallesCajaDto> aux = findNumCajaYKgsTotalesDeUnDestinatario(destinatario.getId());
+        aux.forEach(listaDetallesCajaDto -> {
+            listaDetallesCajaDto.setAlimentos(findNombreTipoAlimentoYCantidadKgsDeUnDestinatario(destinatario.getId()));
+        });
+        return aux;
+    }
 }

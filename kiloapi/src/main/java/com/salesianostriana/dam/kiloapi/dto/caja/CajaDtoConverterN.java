@@ -24,10 +24,20 @@ public class CajaDtoConverterN {
                 .build();
     }
 
-    public Caja CajaDtoBasicNtoCaja (CajaDtoBasicN cajaDtoBasicN){
-        return Caja.builder()
+    public CajaDtoN CajaDtoBasicNtoCajaDtoN (CajaDtoBasicN cajaDtoBasicN){
+        return CajaDtoN.builder()
                 .qr(cajaDtoBasicN.getQr())
                 .numCaja(cajaDtoBasicN.getNumCaja())
+                .build();
+    }
+
+
+    public Caja CajaDtoToCaja(CajaDtoN cajaDtoN) {
+        return Caja.builder()
+                .id(cajaDtoN.getId())
+                .qr(cajaDtoN.getQr())
+                .numCaja(cajaDtoN.getNumCaja())
+                .kilosTotales(cajaDtoN.getKilosTotales())
                 .build();
     }
 
@@ -59,6 +69,16 @@ public class CajaDtoConverterN {
                 .listaAlimentos(auxList)
                 .build();
 
+    }
+
+    public CajaDtoPut cajaToGetCajaDtoPut(Caja caja) {
+        return CajaDtoPut.builder()
+                .id(caja.getId())
+                .qr(caja.getQr())
+                .numCaja(caja.getNumCaja())
+                .kilosTotales(caja.getKilosTotales())
+                .listaAlimentos(cajaService.findAlimentosOfACaja(caja.getId()))
+                .build();
     }
 }
 
