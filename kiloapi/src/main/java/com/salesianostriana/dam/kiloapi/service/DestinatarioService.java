@@ -34,6 +34,7 @@ public class DestinatarioService {
         return destinatarioRepository.findById(id);
     }
 
+    public List<Destinatario> getAll(){ return destinatarioRepository.findAll(); }
     public GetDestinatarioDto createDestinatario(CreateDestinatarioDto createDestinatarioDto) {
         Destinatario newDestinatario = CreateDestinatarioDto.of(createDestinatarioDto);
         save(newDestinatario);
