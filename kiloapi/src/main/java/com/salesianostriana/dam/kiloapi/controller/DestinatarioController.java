@@ -1,12 +1,7 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
-import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDTOM;
-import com.salesianostriana.dam.kiloapi.dto.destinatario.GetOneDestinatarioDTOM;
+import com.salesianostriana.dam.kiloapi.dto.destinatario.*;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
-import com.salesianostriana.dam.kiloapi.dto.destinatario.CreateDestinatarioDto;
-import com.salesianostriana.dam.kiloapi.dto.destinatario.DestinatarioDtoConverter;
-import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDetalleDto;
-import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDto;
 import com.salesianostriana.dam.kiloapi.model.Destinatario;
 import com.salesianostriana.dam.kiloapi.service.DestinatarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +27,7 @@ import java.util.Optional;
 public class DestinatarioController {
 
     private final DestinatarioService destinatarioService;
-    private final DestinatarioDtoConverter destinatarioDtoConverter;
+    private final DestinatarioDTOConverter destinatarioDtoConverter;
 
     @Operation(summary = "Elimina un destinatario específico")
     @ApiResponses(value = {
