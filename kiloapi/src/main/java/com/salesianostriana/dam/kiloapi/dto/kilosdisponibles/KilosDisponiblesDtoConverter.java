@@ -22,8 +22,8 @@ public class KilosDisponiblesDtoConverter {
         lista.forEach(l -> {
             aux.add(
                     GetKilosDisponiblesDto.builder()
-                            .idAlimento(l.getId())
-                            .nombreAlimento(l.getTipoAlimento().getNombre())
+                            .id(l.getId())
+                            .nombre(l.getTipoAlimento().getNombre())
                             .kilosDisponibles(l.getCantidadDisponible())
                             .build()
             );
@@ -35,8 +35,8 @@ public class KilosDisponiblesDtoConverter {
 
     public GetOneKilosDisponiblesDto kilosDisponiblesToGetOneKilosDisponibles(KilosDisponibles kilosDisponibles) {
         return GetOneKilosDisponiblesDto.builder()
-                .idAlimento(kilosDisponibles.getId())
-                .nombreAlimento(kilosDisponibles.getTipoAlimento().getNombre())
+                .id(kilosDisponibles.getId())
+                .nombre(kilosDisponibles.getTipoAlimento().getNombre())
                 .kilosDisponibles(kilosDisponibles.getCantidadDisponible())
                 .aportaciones(kilosDisponiblesService.findDetallesOfKiloDisponible(kilosDisponibles.getId()))
                 .build();
