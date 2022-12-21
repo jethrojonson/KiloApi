@@ -56,7 +56,7 @@ public class TipoAlimentoController {
     @PutMapping("/{id}")
     public ResponseEntity<TipoAlimento> update(@RequestBody TipoAlimento t, @Parameter(description = "Id del tipo de alimento") @PathVariable Long id) {
 
-        if (t.getNombre().isEmpty() || t.getNombre() == null)
+        if (t.getNombre().isEmpty() || t.getNombre() == null || !tipoAlimentoService.existById(id))
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         return ResponseEntity.of(
