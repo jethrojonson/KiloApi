@@ -55,15 +55,11 @@ public class AportacionService {
         return repo.findFirstByOrderByIdDesc();
     }
 
-    public Map<String, Double> queryToGetACDto (Clase c){
+    public Map<String, Double> queryToGetACDto (Aportacion a){
 
-        List<GetAportacionQueryDto> auxList = repo.getListOfNamesAmount(c.getId());
         Map<String, Double> auxMap = new HashMap<>();
 
-
-        auxList.forEach(a -> {
-            auxMap.put(a.getNombre(), a.getCantidad());
-        });
+        a.getDetalles().forEach(d -> auxMap.put(d.getTipoAlimento().getNombre(), d.getCantidadKilos()));
 
         return auxMap;
     }
