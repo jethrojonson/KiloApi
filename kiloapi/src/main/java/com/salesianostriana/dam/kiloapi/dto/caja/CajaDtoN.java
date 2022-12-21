@@ -16,6 +16,5 @@ public class CajaDtoN {
     private String qr;
     private int numCaja;
     private double kilosTotales;
-    //private Destinatario destinatario;
 
 }

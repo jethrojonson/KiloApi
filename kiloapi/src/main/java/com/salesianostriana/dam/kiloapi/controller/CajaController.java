@@ -93,9 +93,11 @@ public class CajaController {
         if (nuevo.getQr() == "") {
             return ResponseEntity.badRequest().build();
         }
-        CajaDtoN saved = cajaDtoConverter.CajaDtoBasicNtoCajaDtoN(nuevo);//doble converter??
-        Caja cajita = cajaDtoConverter.CajaDtoToCaja(saved);
+
+        Caja cajita = cajaDtoConverter.CajaDtoBasicNtoCaja(nuevo);
         cajaService.save(cajita);
+        CajaDtoN saved= cajaDtoConverter.CajaToCajaDto(cajita);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 

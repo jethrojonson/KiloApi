@@ -1,10 +1,13 @@
 package com.salesianostriana.dam.kiloapi.controller;
 
 import com.salesianostriana.dam.kiloapi.dto.aportacion.GetAportacionClaseDto;
+import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoBasicN;
+import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoPut;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.CreateDestinatarioDto;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.DestinatarioDtoConverter;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDetalleDto;
 import com.salesianostriana.dam.kiloapi.dto.destinatario.GetDestinatarioDto;
+import com.salesianostriana.dam.kiloapi.model.Caja;
 import com.salesianostriana.dam.kiloapi.model.Destinatario;
 import com.salesianostriana.dam.kiloapi.service.DestinatarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -143,6 +146,84 @@ public class DestinatarioController {
         if(destinatario.isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(destinatarioDtoConverter.destinatarioToGetDestinatarioDetalleDto(destinatario.get()));
+    }
+
+
+
+
+    @Operation(summary = "Edita a un destinatario")
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            content = @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = GetDestinatarioDto.class),
+                    examples = @ExampleObject(value = """
+                            {   
+                                "id":4,
+                                "nombre": "Miguel",
+                                "dirección": "Calle sin nombre, número",
+                                "personaContacto": "Ángel",
+                                "teléfono": "954761259"
+                            }
+                            """)))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha editado la aportación correctamente",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GetDestinatarioDto.class),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "id": 9,
+                                                "qr": "No existe",
+                                                "numCaja": 1,
+                                                "kilosTotales": 7.4,
+                                                "alimentos": [
+                                                    {
+                                                        "id": 4,
+                                                        "nombre": "Garbanzos",
+                                                        "kgs": 3.0
+                                                    },
+                                                    {
+                                                        "id": 5,
+                                                        "nombre": "Dodotis",
+                                                        "kgs": 3.1
+                                                    },
+                                                    {
+                                                        "id": 6,
+                                                        "nombre": "Lentejas",
+                                                        "kgs": 1.3
+                                                    }
+                                                ]
+                                            }
+                                            """
+                            )})
+                    }),
+            @ApiResponse(responseCode = "400",
+                    description = "No se ha editado correctamente la caja",
+                    content = {@Content}),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la clase a editar",
+                    content = {@Content})
+    })
+
+    @PutMapping("/{id}")
+    public ResponseEntity<GetDestinatarioDto> update (@PathVariable Long id, @RequestBody CreateDestinatarioDto cambio) {
+        Optional<Destinatario> destinatario = destinatarioService.findById(id);
+        if (destinatario.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        } else if (cambio.getNombre() == null || cambio.getDireccion() == null || cambio.getPersonaContacto() == null || cambio.getTelefono() == null) {
+            return ResponseEntity.badRequest().build();
+        } else {
+            Destinatario edit = CreateDestinatarioDto.of(cambio);
+            return ResponseEntity.of(
+                    destinatario.map(old -> {
+                        old.setNombre(edit.getNombre());
+                        old.setDireccion(edit.getDireccion());
+                        old.setPersonaContacto((edit.getPersonaContacto()));
+                        old.setTelefono((edit.getTelefono()));
+                        return Optional.of(destinatarioDtoConverter.destinatarioToGetDestinatarioDto(old));
+                    }).orElse(Optional.empty())
+            );
+        }
     }
 
 }

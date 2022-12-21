@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Builder
 public class AportacionDtoN {
 
+    private Long id;
     private LocalDate fecha;
     private String nombreClase;
     private double kilosAportacion;
@@ -27,6 +28,7 @@ public class AportacionDtoN {
 
 
         return AportacionDtoN.builder()
+                .id(aportacion.getId())
                 .fecha(aportacion.getFecha())
                 .nombreClase(aportacion.getClase().getNombre())
                 .kilosAportacion(kilos)

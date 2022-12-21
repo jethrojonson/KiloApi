@@ -6,12 +6,12 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TipoAlimentoRepository extends JpaRepository<TipoAlimento, Long> {
 
-    TipoAlimento findTipoAlimentoById(Long id);
+
+    @Query("SELECT t FROM Tiene t WHERE t.tipoAlimento.id=:id")
+    Boolean findTipoAlimentoById(Long id);
 
 
-    //query
-    //@Query
-            //("SELECT t.tipoAlimento.id FROM Tiene t WHERE t.tipoAlimento.id=:id")
-
+   // @Query("SELECT t.tipoAlimento.id FROM Tiene t WHERE t.tipoAlimento.id=:id")
+  // TipoAlimento findTipoAlimentoById(Long id);
     //y lo mismo con detalle aportacion
 }
