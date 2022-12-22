@@ -217,8 +217,9 @@ public class CajaController {
     public ResponseEntity<CajaDtoPut> asignarDestinatario(@Parameter(description = "Id de la caja") @PathVariable Long idC,
                                                           @Parameter(description = "Id del destinatario") @PathVariable Long idD){
         Optional<Caja> caja = cajaService.findById(idC);
-        if(idC == null || idD == null || caja.get().getDestinatario() != null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Optional<Destinatario> dest = destinatarioService.findById(idD);
+        if(idC == null || idD == null || caja.get().getDestinatario() != null || dest.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         caja.get().addToDestinatario(destinatarioService.findById(idD).get());
         cajaService.save(caja.get());
