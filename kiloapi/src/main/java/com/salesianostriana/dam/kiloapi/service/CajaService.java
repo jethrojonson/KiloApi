@@ -1,6 +1,7 @@
 package com.salesianostriana.dam.kiloapi.service;
 
 import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoN;
+import com.salesianostriana.dam.kiloapi.dto.caja.CajaDtoOfN;
 import com.salesianostriana.dam.kiloapi.dto.caja.CajaTipoAlimentoDto;
 import com.salesianostriana.dam.kiloapi.model.*;
 import com.salesianostriana.dam.kiloapi.repos.CajaRepository;
@@ -26,18 +27,27 @@ public class CajaService {
 
     private final CajaRepository repo;
 
-    public List<Caja> findAll(){
+    public List<Caja> findAll() {
         return cajaRepository.findAll();
     }
 
-    public Optional<Caja> findById(Long id) { return repo.findById(id); }
+    public Optional<Caja> findById(Long id) {
+        return repo.findById(id);
+    }
 
-    public Caja save(Caja c) { return repo.save(c); }
+    public Caja save(Caja c) {
+        return repo.save(c);
+    }
 
-    public void deleteById(Long id) { repo.deleteById(id); }
-    public boolean existById (Long id) { return repo.existsById(id); }
+    public void deleteById(Long id) {
+        repo.deleteById(id);
+    }
 
-    public Caja changeTipoAlimentoAmount (Long idC, Long idA, Double kgs){
+    public boolean existById(Long id) {
+        return repo.existsById(id);
+    }
+
+    public Caja changeTipoAlimentoAmount(Long idC, Long idA, Double kgs) {
 
         Caja c = cajaRepository.findById(idC).get();
         TipoAlimento ta = tipoAlimentoRepository.findById(idA).get();
@@ -60,7 +70,7 @@ public class CajaService {
 
     }
 
-    public Tiene findTieneByIds(Long idC, Long idA){
+    public Tiene findTieneByIds(Long idC, Long idA) {
 
         TienePK pk = TienePK.builder()
                 .caja_id(idC)
@@ -70,14 +80,14 @@ public class CajaService {
         return tieneRepository.findById(pk).get();
     }
 
-    public void preRemoveAlimentos (Caja c) {
+    public void preRemoveAlimentos(Caja c) {
 
         List<Tiene> tieneList = c.getTieneList();
 
         tieneList.forEach(tiene -> {
             kilosDisponiblesRepository.findAll().forEach(k -> {
-                if (tiene.getTipoAlimento().equals(k.getTipoAlimento())){
-                    k.setCantidadDisponible(k.getCantidadDisponible()+tiene.getCantidadKgs());
+                if (tiene.getTipoAlimento().equals(k.getTipoAlimento())) {
+                    k.setCantidadDisponible(k.getCantidadDisponible() + tiene.getCantidadKgs());
                     kilosDisponiblesRepository.save(k);
                 }
             });
@@ -106,7 +116,7 @@ public class CajaService {
                 (tipoAlimento.get().getKilosDisponibles().getCantidadDisponible() - cantKg);
         tipoAlimentoRepository.save(tipoAlimento.get());
 
-        if(tiene.isEmpty()) {
+        if (tiene.isEmpty()) {
             Tiene t = Tiene.builder()
                     .id(new TienePK(tipoAlimento.get().getId(), caja.get().getId()))
                     .tipoAlimento(tipoAlimento.get())
@@ -114,7 +124,7 @@ public class CajaService {
                     .cantidadKgs(cantKg)
                     .build();
             tieneRepository.save(t);
-        } else{
+        } else {
             tiene.get().setCantidadKgs(cantKg + tiene.get().getCantidadKgs());
             tieneRepository.save(tiene.get());
         }
@@ -126,5 +136,23 @@ public class CajaService {
 
     public List<CajaDtoN> findAllCajas() {
         return cajaRepository.findAllCajas();
+    }
+
+    public CajaDtoOfN deleteTAFromCaja(Caja c, TipoAlimento ta) {
+        Tiene result = tieneRepository.findOneTiene(c.getId(), ta.getId());
+        if(result.getTipoAlimento().equals(ta)) {
+            c.getTieneList().remove(result);
+            cajaRepository.save(c);
+            ta.getTieneList().remove(result);
+            ta.getKilosDisponibles().setCantidadDisponible(
+                    ta.getKilosDisponibles().getCantidadDisponible() + result.getCantidadKgs()
+            );
+            kilosDisponiblesRepository.save(ta.getKilosDisponibles());
+            tipoAlimentoRepository.save(ta);
+            tieneRepository.delete(result);
+        }
+
+        return CajaDtoOfN.of(c);
+
     }
 }
