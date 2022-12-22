@@ -283,7 +283,7 @@ public class CajaController {
         Optional<TipoAlimento> tipoAlimento = tipoAlimentoService.findById(idTipoAlimento);
 
         if(caja.isEmpty() || tipoAlimento.isEmpty() || cantidad == null ||
-                tipoAlimento.get().getKilosDisponibles().getCantidadDisponible() < cantidad) {
+                tipoAlimento.get().getKilosDisponibles().getCantidadDisponible() < cantidad || cantidad < 0) {
             return ResponseEntity.badRequest().build();
         } else {
             cajaService.addTipoAlimentoToCaja(caja.get(), tipoAlimento.get(), cantidad);
