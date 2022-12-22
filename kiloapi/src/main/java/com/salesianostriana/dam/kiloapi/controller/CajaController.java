@@ -7,6 +7,7 @@ import com.salesianostriana.dam.kiloapi.service.*;
 import com.salesianostriana.dam.kiloapi.views.CajaViews;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -223,16 +224,51 @@ public class CajaController {
         return ResponseEntity.ok(cajaDtoConverter.createDtoPut(caja.get()));
     }
 
+    @Operation(summary = "Elimina un tipo de alimento de una caja")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Se ha eliminado el tipo alimento de la caja",
+                    content = @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = CajaDtoOfN.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "id": 12,
+                                                "qr": "No existe",
+                                                "numCaja": 1,
+                                                "kilosTotales": 7.4,
+                                                "alimentos": [
+                                                    {
+                                                        "id": 7,
+                                                        "nombre": "Dodotis",
+                                                        "kilos": 3.1
+                                                    },
+                                                    {
+                                                        "id": 8,
+                                                        "nombre": "Lentejas",
+                                                        "kilos": 1.3
+                                                    }
+                                                ],
+                                                "idDestinatario": 10,
+                                                "nombreDestinatario": "Asociación Don Bosco"
+                                            }
+                                            """
+                            )}
+                    )
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "No se ha encontrado la caja o el tipo de alimento",
+                    content = @Content
+            )
+    })
     @DeleteMapping("/{id}/tipo/{idTipoAlim}")
-    public ResponseEntity<Caja> deleteTipoAlimentoFromCaja(@PathVariable Long id, @PathVariable Long idTipoAlim){
+    public ResponseEntity<CajaDtoOfN> deleteTipoAlimentoFromCaja(@PathVariable Long id, @PathVariable Long idTipoAlim){
         Optional <Caja> cajaResult = cajaService.findById(id);
-        Optional <TipoAlimento> tipoResult = tipoService.findById(id);
-        if(cajaResult==null||tipoResult==null)
-            return ResponseEntity.noContent().build();
-        else{
-            tieneService.remove(tieneService.findById(id,idTipoAlim));
-            return ResponseEntity.ok(cajaResult.get());
-        }
+        Optional <TipoAlimento> tipoResult = tipoService.findById(idTipoAlim);
+        if(cajaResult.isEmpty()||tipoResult.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        return ResponseEntity.ok(cajaService.deleteTAFromCaja(cajaResult.get(),tipoResult.get()));
     }
     @Operation(summary = "Añadir la cantidad de kilos de un tipo de alimento a una caja")
     @ApiResponses(value = {
