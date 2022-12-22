@@ -27,8 +27,8 @@ public class CajaDtoOfN {
                 .numCaja(caja.getNumCaja())
                 .kilosTotales(caja.getKilosTotales())
                 .alimentos(caja.getTieneList().stream().map(TieneDtoN::of).toList())
-                .idDestinatario(caja.getDestinatario().getId())
-                .nombreDestinatario(caja.getDestinatario().getNombre())
+                .idDestinatario(caja.getDestinatario() != null ? caja.getDestinatario().getId() : null)
+                .nombreDestinatario(caja.getDestinatario() != null ? caja.getDestinatario().getNombre() : null)
                 .build();
     }
 }

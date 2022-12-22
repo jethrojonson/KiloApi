@@ -3,6 +3,7 @@ package com.salesianostriana.dam.kiloapi.controller;
 import com.salesianostriana.dam.kiloapi.dto.aportacion.*;
 import com.salesianostriana.dam.kiloapi.dto.aportacion.PostDetalleAportacionDto;
 import com.salesianostriana.dam.kiloapi.model.Aportacion;
+import com.salesianostriana.dam.kiloapi.model.Clase;
 import com.salesianostriana.dam.kiloapi.model.DetalleAportacion;
 import com.salesianostriana.dam.kiloapi.service.AportacionService;
 import com.salesianostriana.dam.kiloapi.service.ClaseService;
@@ -133,7 +134,8 @@ public class AportacionController {
     })
     @PostMapping("/")
     public ResponseEntity<GetNewAportacionDto> create(@RequestBody PostDetalleAportacionDto dto) {
-        if (dto.getTipoAlimento() == null || dto.getClaseId() == null)
+        Optional<Clase> clase = claseService.findById(dto.getClaseId());
+        if (dto.getTipoAlimento() == null || dto.getClaseId() == null || clase.isEmpty())
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         Aportacion nueva = aportacionService.createAportacion(dto);

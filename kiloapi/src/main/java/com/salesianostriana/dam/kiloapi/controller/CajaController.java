@@ -155,7 +155,9 @@ public class CajaController {
                     content = @Content),
     })
     @PutMapping("/{idC}/tipo/{idA}/kg/{kgs}")
-    public ResponseEntity<CajaDtoPut> editarKilosCaja(@PathVariable Long idC, @PathVariable Long idA, @PathVariable Double kgs) {
+    public ResponseEntity<CajaDtoPut> editarKilosCaja(@Parameter(description = "Id de la caja") @PathVariable Long idC,
+                                                      @Parameter(description = "Id del tipo alimento") @PathVariable Long idA,
+                                                      @Parameter(description = "Cantidad a editar") @PathVariable Double kgs) {
 
         double cantDisp = kilosDisponiblesService.findById(idA).get().getCantidadDisponible();
 
@@ -175,7 +177,7 @@ public class CajaController {
                     content = @Content)
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Caja> delete(@PathVariable Long id) {
+    public ResponseEntity<Caja> delete(@Parameter(description = "Id de la caja") @PathVariable Long id) {
 
         Optional<Caja> caja = cajaService.findById(id);
 
@@ -213,10 +215,12 @@ public class CajaController {
                     content = @Content),
     })
     @PostMapping("/{idC}/destinatario/{idD}")
-    public ResponseEntity<CajaDtoPut> asignarDestinatario(@PathVariable Long idC, @PathVariable Long idD){
+    public ResponseEntity<CajaDtoPut> asignarDestinatario(@Parameter(description = "Id de la caja") @PathVariable Long idC,
+                                                          @Parameter(description = "Id del destinatario") @PathVariable Long idD){
         Optional<Caja> caja = cajaService.findById(idC);
-        if(idC == null || idD == null || caja.get().getDestinatario() != null)
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        Optional<Destinatario> dest = destinatarioService.findById(idD);
+        if(idC == null || idD == null || caja.get().getDestinatario() != null || dest.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         caja.get().addToDestinatario(destinatarioService.findById(idD).get());
         cajaService.save(caja.get());
